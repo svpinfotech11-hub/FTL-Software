@@ -12,10 +12,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/', [HomeController::class, 'home'])->name('pages.home');
+// Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
 
 Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
 Route::get('/', [HomeController::class, 'home'])->name('pages.home');
 // Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
+
 
 Route::get('/lrmaster/create', [LRMasterController::class, 'create'])->name('admin.lrmaster.create');
 Route::post('/lrmaster/create', [LRMasterController::class, 'store'])->name('admin.lrmaster.store');
@@ -58,4 +61,3 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Superadmin logout
 Route::post('/superadmin/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
-

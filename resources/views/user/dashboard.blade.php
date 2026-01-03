@@ -1,3 +1,7 @@
+@extends('admin.partials.app') 
+@section('main-content')
+ 
+ 
  <!--begin::App Content Header-->
         <div class="app-content-header">
           <!--begin::Container-->
@@ -436,3 +440,5 @@
           <!--end::Container-->
         </div>
         <!--end::App Content-->
+
+        @endsection

@@ -1,5 +1,4 @@
  <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-<<<<<<< HEAD
         <!--begin::Sidebar Brand-->
         <div class="sidebar-brand">
           <!--begin::Brand Link-->
@@ -466,7 +465,7 @@
         </div>
         <!--end::Sidebar Wrapper-->
       </aside>
-=======
+
    <!--begin::Sidebar Brand-->
    <div class="sidebar-brand">
      <!--begin::Brand Link-->
@@ -561,5 +560,7 @@
      </nav>
    </div>
    <!--end::Sidebar Wrapper-->
+
  </aside>
->>>>>>> 18bd947 (home page and super admin updated)
+
+ </aside>

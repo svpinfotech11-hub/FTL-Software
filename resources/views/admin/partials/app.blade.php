@@ -10,5 +10,5 @@
        @yield('main-content')
       </main>
 
-      @include('footer')
+      @include('admin.partials.footer')
       

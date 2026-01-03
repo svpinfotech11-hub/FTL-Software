@@ -1,5 +1,5 @@
  <nav class="app-header navbar navbar-expand bg-body">
-<<<<<<< HEAD
+
         <!--begin::Container-->
         <div class="container-fluid">
           <!--begin::Start Navbar Links-->
@@ -196,7 +196,7 @@
         </div>
         <!--end::Container-->
       </nav>
-=======
+
    <!--begin::Container-->
    <div class="container-fluid">
      <!--begin::Start Navbar Links-->
@@ -399,5 +399,8 @@
      <!--end::End Navbar Links-->
    </div>
    <!--end::Container-->
+
  </nav>
->>>>>>> 18bd947 (home page and super admin updated)
+
+ </nav>
+
