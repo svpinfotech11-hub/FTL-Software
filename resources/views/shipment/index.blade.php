@@ -131,6 +131,7 @@
                                 <td>{{ $row->branch_name ?? 'BHIWANDI HO' }}</td>
                                 <td>{{ optional($row->user)->name ?? 'Admin' }}</td>
                                 <td>{{ $row->eway_no ?? '-' }}</td>
+                                
                                 <td>
                                     <div class="btn-group-vertical">
                                         <a href="{{ route('domestic.shipment.edit', $row->id) }}"
