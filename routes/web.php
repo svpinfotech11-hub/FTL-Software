@@ -1,9 +1,7 @@
 <?php
 
-<<<<<<< HEAD
+
 use App\Http\Controllers\UserController;
-=======
->>>>>>> 18bd947 (home page and super admin updated)
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -15,10 +13,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-<<<<<<< HEAD
 
 Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
-=======
 Route::get('/', [HomeController::class, 'home'])->name('pages.home');
 // Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
 
@@ -63,4 +59,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Superadmin logout
 Route::post('/superadmin/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
->>>>>>> 18bd947 (home page and super admin updated)
+
