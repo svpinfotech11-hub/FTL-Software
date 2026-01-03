@@ -19,14 +19,16 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dash
 Route::get('/', [HomeController::class, 'home'])->name('pages.home');
 // Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
 
+Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
+Route::post('/user/create', [UserController::class, 'store'])->name('user.store');
+Route::get('/user/index', [UserController::class, 'index'])->name('user.index');
+Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
-Route::get('/lrmaster/create', [LRMasterController::class, 'create'])->name('admin.lrmaster.create');
-Route::post('/lrmaster/create', [LRMasterController::class, 'store'])->name('admin.lrmaster.store');
-Route::get('/lrmaster/index', [LRMasterController::class, 'index'])->name('admin.lrmaster.index');
 
 Route::post('/send-phone-otp', [AuthController::class, 'sendPhoneOtp']);
 Route::post('/verify-phone-otp', [AuthController::class, 'verifyPhoneOtp']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::get('/register', [AuthController::class, 'register'])->name('user.register');
+Route::post('/register', [AuthController::class, 'registerStore'])->name('user.register.store');
 
 Route::post('/send-email-otp', [AuthController::class, 'sendEmailOtp']);
 Route::post('/verify-email-otp', [AuthController::class, 'verifyEmailOtp']);
@@ -37,19 +39,23 @@ Route::get('/auth/index', [UserController::class, 'index'])->name('admin.auth.in
 
 
 /* ================= USER ================= */
+// Route::middleware('guest')->group(function () {
 Route::get('/login', [AuthController::class, 'userLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'userLogin']);
+Route::post('/login', [AuthController::class, 'userLogin'])->name('user.login.store');
+// });
 
-Route::middleware(['auth','role:user'])->group(function () {
+// Route::middleware(['auth','role:user'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])
-        ->name('admin.dashboard');
-});
+        ->name('user.dashboard');
+// });
 
 /* ================= SUPERADMIN ================= */
+Route::middleware('guest')->group(function () {
 Route::get('/superadmin/login', [SuperAdminController::class, 'getmethod'])
     ->name('superadmin.login');
 
 Route::post('/superadmin/login', [SuperAdminController::class, 'adminLogin'])->name('superadmin.login');
+});
 
 Route::middleware(['superadmin'])->group(function () {
     Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboardpp'])
@@ -61,3 +67,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Superadmin logout
 Route::post('/superadmin/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
+Route::post('/user/verify-otp', [AuthController::class, 'verifyOtp'])->name('user.verifyOtp');

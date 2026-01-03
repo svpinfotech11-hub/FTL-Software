@@ -23,7 +23,49 @@ document.getElementById('logoutForm').addEventListener('submit', function(e) {
 });
 </script>
 
+<script>
+document.querySelectorAll('.delete-user-form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // prevent immediate submit
 
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This user will be deleted!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit(); // submit the specific form
+            }
+        });
+    });
+});
+</script>
+
+ <!-- {{-- SweetAlert Global Messages --}} -->
+    @if ($errors->any())
+    <script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        html: `{!! implode('<br>', $errors->all()) !!}`
+    });
+    </script>
+    @endif
+
+    @if (session('success'))
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: @json(session('success'))
+    });
+    </script>
+    @endif
 
   <!--end::App Main-->
   <!--begin::Footer-->

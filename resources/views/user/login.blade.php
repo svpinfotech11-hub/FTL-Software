@@ -3,8 +3,9 @@
 <!--begin::Head-->
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>AdminLTE 4 | Login Page</title>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  <title>AdminLTE 4 | Login Page</title>
   <!--begin::Accessibility Meta Tags-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="color-scheme" content="light dark" />
@@ -62,53 +63,139 @@
 
     @if ($errors->any())
     <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+      <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+      </ul>
     </div>
-@endif
+    @endif
 
 
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
-        <p class="login-box-msg">Admin Login</p>
-        <form id="" action="{{ route('superadmin.login') }}" method="post">
+        <p class="login-box-msg">User Login</p>
+
+        {{-- Step 1: Enter email/phone --}}
+        <form id="loginForm">
           @csrf
-
           <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control" placeholder="Email" required />
+            <input type="text" id="loginInput" name="login" class="form-control" placeholder="Email or Phone" required />
             <div class="input-group-text">
-              <span class="bi bi-envelope"></span>
+              <span class="bi bi-person"></span>
             </div>
           </div>
-
-          <div class="input-group mb-3">
-            <input type="password" name="password" class="form-control" placeholder="Password" required />
-            <div class="input-group-text">
-              <span class="bi bi-lock-fill"></span>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-4">
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">
-                  Sign In
-                </button>
-              </div>
-            </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary" id="sendOtpBtn">Send OTP</button>
+            <a href="{{ route('user.register') }}" class="btn btn-info">Register</a>
           </div>
         </form>
 
-        <!-- <div id="loginError" class="text-danger mt-2"></div> -->
-
+        {{-- Step 2: OTP verification --}}
+        <div id="otpStep" style="display:none;" class="mt-3">
+          <input type="text" id="otp" placeholder="Enter OTP" class="form-control mb-2">
+          <button id="verifyOtp" class="btn btn-success">Verify OTP</button>
+        </div>
       </div>
-      <!-- /.login-card-body -->
+
     </div>
   </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+$(document).ready(function () {
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    });
+
+    /* STEP 1: SEND OTP */
+    $('#loginForm').submit(function (e) {
+        e.preventDefault();
+
+        let btn = $('#sendOtpBtn');
+        btn.prop('disabled', true).text('Sending...');
+
+        $.post('/login', $(this).serialize())
+            .done(function (res) {
+                btn.prop('disabled', false).text('Send OTP');
+
+                if (res.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OTP Sent!',
+                        text: 'Please check your phone or email',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    $('#loginForm').hide();
+                    $('#otpStep').show();
+                } else {
+                    Swal.fire('Error', res.message, 'error');
+                }
+            })
+            .fail(function (xhr) {
+                btn.prop('disabled', false).text('Send OTP');
+                Swal.fire('Error', xhr.responseJSON?.message || 'Something went wrong', 'error');
+            });
+    });
+
+    /* STEP 2: VERIFY OTP */
+    $('#verifyOtp').click(function () {
+
+        let otp = $('#otp').val();
+        let login = $('#loginInput').val();
+
+        if (!otp) {
+            Swal.fire('Error', 'Please enter OTP', 'error');
+            return;
+        }
+
+        let btn = $(this);
+        btn.prop('disabled', true).text('Verifying...');
+
+        $.post('/user/verify-otp', {
+            otp: otp,
+            login: login
+        })
+        .done(function (res) {
+            btn.prop('disabled', false).text('Verify OTP');
+
+            if (res.status) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: res.message,
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1500);
+            } else {
+                Swal.fire('Error', res.message, 'error');
+            }
+        })
+        .fail(function (xhr) {
+            btn.prop('disabled', false).text('Verify OTP');
+            Swal.fire('Error', xhr.responseJSON?.message || 'Something went wrong', 'error');
+        });
+    });
+
+});
+</script>
+
   <!-- /.login-box -->
   <!--begin::Third Party Plugin(OverlayScrollbars)-->
   <script

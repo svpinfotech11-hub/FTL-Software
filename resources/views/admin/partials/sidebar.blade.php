@@ -45,13 +45,13 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="{{ route('admin.lrmaster.create') }}" class="nav-link active">
+               <a href="{{ route('user.create') }}" class="nav-link active">
                  <i class="nav-icon bi bi-circle"></i>
                  <p>Add New</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="{{ route('admin.lrmaster.index') }}" class="nav-link">
+               <a href="{{ route('user.index') }}" class="nav-link">
                  <i class="nav-icon bi bi-circle"></i>
                  <p>All Record</p>
                </a>
@@ -66,21 +66,21 @@
            <a href="#" class="nav-link active">
              <i class="nav-icon bi bi-speedometer"></i>
              <p>
-               User Module
+               Users
                <i class="nav-arrow bi bi-chevron-right"></i>
              </p>
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="{{ route('user.something') }}" class="nav-link active">
+               <a href="{{ route('user.create') }}" class="nav-link active">
                  <i class="nav-icon bi bi-circle"></i>
-                 <p>Dashboard</p>
+                 <p>Add New</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="{{ route('user.somethingelse') }}" class="nav-link">
+               <a href="{{ route('user.index') }}" class="nav-link">
                  <i class="nav-icon bi bi-circle"></i>
-                 <p>All Records</p>
+                 <p>All Record</p>
                </a>
              </li>
            </ul>

@@ -7,20 +7,40 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class RoleMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-     public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $role)
     {
-        if (!Auth::check() || Auth::user()->role !== $role) {
-            Auth::logout();
-            return redirect()->route('login');
+        if (!Auth::check()) {
+            // Not logged in → redirect to login based on role
+            return $this->redirectByRole($role);
+        }
+
+        if (Auth::user()->role !== $role) {
+            // Logged in but wrong role → redirect to their dashboard
+            return $this->redirectToDashboard(Auth::user()->role);
         }
 
         return $next($request);
+    }
+
+    protected function redirectByRole($role)
+    {
+        return $role === 'superadmin'
+            ? redirect()->route('superadmin.login')
+            : redirect()->route('login');
+    }
+
+    protected function redirectToDashboard($role)
+    {
+        return match ($role) {
+            'superadmin' => redirect()->route('superadmin.dashboard'),
+            'user'       => redirect()->route('user.dashboard'),
+            default      => redirect()->route('login'),
+        };
     }
 }

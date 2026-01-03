@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
@@ -63,13 +64,13 @@ class AuthController extends Controller
         $encodedMessage = urlencode($message);
 
         $url = "https://sms.cell24x7.in/mspProducerM/sendSMS?"
-             . "user=noka"
-             . "&pwd=123456789"
-             . "&sender=NOKAFW"
-             . "&mobile={$number}"
-             . "&msg={$encodedMessage}"
-             . "&mt=0"
-             . "&tempId={$templateId}";
+            . "user=noka"
+            . "&pwd=123456789"
+            . "&sender=NOKAFW"
+            . "&mobile={$number}"
+            . "&msg={$encodedMessage}"
+            . "&mt=0"
+            . "&tempId={$templateId}";
 
         $ch = curl_init();
 
@@ -136,65 +137,20 @@ class AuthController extends Controller
         return response()->json(['status' => false]);
     }
 
-    // public function register(Request $request)
-    // {
-    //     if (!Session::get('phone_verified') || !Session::get('email_verified')) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Phone and Email verification required'
-    //         ]);
-    //     }
+    public function register()
+    {
+        return view('user.register');
+    }
 
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'password' => 'required|min:6',
-    //     ]);
-
-    //     $user = User::create([
-    //         'name' => $request->name,
-    //         'phone' => Session::get('phone'),
-    //         'email' => Session::get('email'),
-    //         'pan' => $request->pan,
-    //         'gst' => $request->gst,
-    //         'country' => $request->country,
-    //         'state' => $request->state,
-    //         'city' => $request->city,
-    //         'address' => $request->address,
-    //         'password' => Hash::make($request->password),
-    //         'phone_verified' => true,
-    //         'email_verified' => true,
-    //     ]);
-
-    //     // ✅ Login user (SESSION STORED AUTOMATICALLY)
-    //     Auth::login($user);
-
-    //     // clear temp session data
-    //     Session::forget([
-    //         'phone',
-    //         'email',
-    //         'phone_verified',
-    //         'email_verified',
-    //         'phone_otp',
-    //         'email_otp'
-    //     ]);
-
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Registered & logged in successfully'
-    //     ]);
-    // }
-
-
-
-    public function register(Request $request)
+    public function registerStore(Request $request)
     {
         $request->validate([
             'phone' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'name' => 'required|string',
-            'password' => 'required|string|min:6',
+            'password' => 'nullable|string|min:6',
             'status' => 'required',
-            'role' => 'required|in:' . implode(',', array_keys($this->roles())),
+            // 'role' => $request->role ?? 'user',
         ]);
 
         if (!session('phone_verified')) {
@@ -212,6 +168,7 @@ class AuthController extends Controller
             'state' => $request->state,
             'city' => $request->city,
             'address' => $request->address,
+             'role'     => 'user', // ✅ DEFAULT ROLE
         ]);
 
         auth()->login($user);
@@ -219,59 +176,92 @@ class AuthController extends Controller
         return response()->json(['status' => true, 'message' => 'Registration successful']);
     }
 
-    public function userLoginForm(){
-         return view('user.login');
-    }
-    // public function userLogin(Request $request)
-    // {
-    //     $credentials = $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     if (Auth::attempt($credentials)) {
-    //         $request->session()->regenerate();
-
-    //         $user = Auth::user();
-
-    //         // Default redirect
-    //         $redirect = route('user.dashboard');
-
-    //         // Role-based redirect
-    //         if ($user->role === 'super_admin') {
-    //             $redirect = route('admin.dashboard');
-    //         } elseif ($user->role === 'user') {
-    //             $redirect = route('user.dashboard');
-    //         }
-
-    //         return response()->json([
-    //             'status'   => true,
-    //             'message'  => 'Login successful',
-    //             'role'     => $user->role,
-    //             'redirect' => $redirect
-    //         ]);
-    //     }
-
-    //     return response()->json([
-    //         'status' => false,
-    //         'message' => 'Invalid credentials'
-    //     ]);
-    // }
-
-
-     protected function roles(): array
+    public function userLoginForm()
     {
-        return [
-            'super_admin'       => 'Super Admin',
-            'branch_manager'    => 'Branch Manager',
-            'booking_executive' => 'Booking Executive',
-            'accounts_user'     => 'Accounts User',
-            'fleet_manager'     => 'Fleet Manager',
-            'vendor_manager'    => 'Vendor Manager',
-            'viewer'            => 'Viewer / Reports Only',
-        ];
+        return view('user.login');
+    }
+    public function userLogin(Request $request)
+    {
+        $request->validate([
+            'login' => 'required',
+        ]);
+
+        $login = $request->login;
+
+        // Detect login type
+        $isEmail = filter_var($login, FILTER_VALIDATE_EMAIL);
+
+        $user = User::where(
+            $isEmail ? 'email' : 'phone',
+            $login
+        )->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ]);
+        }
+
+        // Generate OTP
+        $otp = rand(100000, 999999);
+
+        Cache::put('login_otp_' . $user->id, $otp, now()->addMinutes(5));
+
+        // ✅ SEND OTP ONLY BASED ON INPUT TYPE
+        if ($isEmail) {
+            // Send EMAIL OTP
+            Mail::to($user->email)->send(new OtpMail($otp));
+        } else {
+            // Send SMS OTP
+            $sms = $this->sendOtpphone($user->phone, $otp);
+
+            if (!$sms['success']) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to send OTP via SMS'
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'OTP sent successfully'
+        ]);
     }
 
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'login' => 'nullable', // email or phone
+            'otp' => 'required|numeric',
+        ]);
+
+        $user = User::where('email', $request->login)
+            ->orWhere('phone', $request->login)
+            ->first();
+
+        if (!$user) {
+            return response()->json(['status' => false, 'message' => 'User not found']);
+        }
+
+        $cachedOtp = Cache::get('login_otp_' . $user->id);
+
+        if ($request->otp == $cachedOtp) {
+            Auth::login($user);
+            Cache::forget('login_otp_' . $user->id);
+
+            $redirect = $user->role === 'super_admin' ? route('admin.dashboard') : route('user.dashboard');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Login successful',
+                'redirect' => $redirect
+            ]);
+        }
+
+        return response()->json(['status' => false, 'message' => 'Invalid OTP']);
+    }
 
     public function logout(Request $request)
     {
@@ -282,5 +272,4 @@ class AuthController extends Controller
 
         return redirect()->route('login');
     }
-
 }

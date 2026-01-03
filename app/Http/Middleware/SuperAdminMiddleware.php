@@ -16,21 +16,16 @@ class SuperAdminMiddleware
      */
    
  public function handle($request, Closure $next)
-{
-    if (!Auth::check()) {
-        return redirect()->route('superadmin.login');
+    {
+        if (!Auth::check()) {
+            return redirect()->route('superadmin.login');
+        }
+
+        if (Auth::user()->role !== 'superadmin') {
+            abort(403, 'Unauthorized');
+        }
+
+        return $next($request);
     }
-
-    if (Auth::user()->role !== 'superadmin') {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('superadmin.login');
-    }
-
-    return $next($request);
-}
-
 
 }

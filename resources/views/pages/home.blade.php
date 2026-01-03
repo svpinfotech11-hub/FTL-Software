@@ -344,7 +344,7 @@
     </div>
 </div>
 
-<div class="site-section border-top">
+<!-- <div class="site-section border-top">
     <div class="container">
         <div class="row text-center">
             <div class="col-md-12">
@@ -356,14 +356,14 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 <div class="site-section border-top">
     <div class="container">
         <div class="row text-center">
             <div class="col-md-12">
-                <h2 class="mb-5 text-black">Login</h2>
+                <h2 class="mb-5 text-black">Register</h2>
                 <p class="mb-0"><a href="#" class="btn btn-success" data-toggle="modal" data-target="#registerModal">
                         Register
                     </a>
@@ -405,119 +405,152 @@
 
 <!-- REGISTER / PHONE MODAL -->
 <div class="modal fade" id="registerModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title">Register</h5>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Register</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
 
-   <div class="modal-body">
+            <div class="container mt-5">
+             <div class="row justify-content-center">
+        <div class="col-md-6">
 
-    <!-- Step 1: Phone Input -->
-    <div id="phoneStep">
-      <form id="phoneForm">
-        <div class="form-group">
-          <label>Phone Number</label>
-          <input type="text" name="phone" class="form-control" placeholder="Enter phone" required>
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-primary text-white">
+                    <h4>Register</h4>
+                </div>
+
+                <div class="card-body">
+
+                    {{-- Step 1: Phone --}}
+                    <div id="stepPhone">
+                        <form id="phoneForm">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <input type="text" name="phone" class="form-control" placeholder="Enter phone" required>
+                                <div class="input-group-text"><span class="bi bi-telephone"></span></div>
+                            </div>
+                            <div class="text-danger mb-2" id="phoneMsg"></div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Send OTP</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    {{-- Step 2: Phone OTP --}}
+                    <div id="stepPhoneOtp" style="display:none;">
+                        <form id="phoneOtpForm">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <input type="text" name="otp" class="form-control" placeholder="Enter phone OTP" required>
+                                <div class="input-group-text"><span class="bi bi-key-fill"></span></div>
+                            </div>
+                            <div class="text-danger mb-2" id="phoneOtpMsg"></div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Verify OTP</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    {{-- Step 3: Email --}}
+                    <div id="stepEmail" style="display:none;">
+                        <form id="emailForm">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <input type="email" name="email" class="form-control" placeholder="Enter email" required>
+                                <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+                            </div>
+                            <div class="text-danger mb-2" id="emailMsg"></div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Send OTP</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    {{-- Step 4: Email OTP --}}
+                    <div id="stepEmailOtp" style="display:none;">
+                        <form id="emailOtpForm">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <input type="text" name="otp" class="form-control" placeholder="Enter email OTP" required>
+                                <div class="input-group-text"><span class="bi bi-key-fill"></span></div>
+                            </div>
+                            <div class="text-danger mb-2" id="emailOtpMsg"></div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Verify OTP</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    {{-- Step 5: Registration Form --}}
+                    <div id="stepRegister" style="display:none;">
+                        <form id="registerForm" action="{{ route('user.register.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="phone">
+                            <input type="hidden" name="email">
+
+                            <div class="input-group mb-3">
+                                <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+                                <div class="input-group-text"><span class="bi bi-person"></span></div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="password" name="password" class="form-control" placeholder="Password (optional)">
+                                <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" name="pan" class="form-control" placeholder="PAN Card (optional)">
+                                <div class="input-group-text"><span class="bi bi-card-text"></span></div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" name="gst" class="form-control" placeholder="GST No (optional)">
+                                <div class="input-group-text"><span class="bi bi-file-text"></span></div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <select name="country" class="form-select">
+                                    <option>India</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" name="state" class="form-control" placeholder="State">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input type="text" name="city" class="form-control" placeholder="City">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <textarea name="address" class="form-control" placeholder="Address"></textarea>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <select name="status" class="form-select" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Complete Registration</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Send OTP</button>
-      </form>
-      <div id="phoneMsg" class="text-danger mt-2"></div>
     </div>
-
-    <!-- Step 2: OTP Input for Phone -->
-    <div id="otpStep" style="display:none;">
-      <form id="otpForm">
-        <div class="form-group">
-          <label>Enter Phone OTP</label>
-          <input type="text" name="otp" class="form-control" placeholder="Enter OTP" required>
-        </div>
-        <button type="submit" class="btn btn-success btn-block">Verify OTP</button>
-      </form>
-      <div id="otpMsg" class="text-danger mt-2"></div>
-    </div>
-
-    <!-- Step 3: Email Verification -->
-    <div id="emailStep" style="display:none;">
-      <form id="emailForm">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
-        </div>
-        <button type="submit" class="btn btn-success btn-block">Verify Email</button>
-      </form>
-      <div id="emailMsg" class="text-danger mt-2"></div>
-    </div>
-
-    <!-- Step 4: Email OTP Input -->
-    <div id="emailOtpStep" style="display:none;">
-    <form id="emailOtpForm">
-        <div class="form-group">
-        <label>Enter Email OTP</label>
-        <input type="text" name="otp" class="form-control" placeholder="Enter OTP" required>
-        </div>
-        <button type="submit" class="btn btn-success btn-block">Verify OTP</button>
-    </form>
-    <div id="emailOtpMsg" class="text-danger mt-2"></div>
-    </div>
-
-    <!-- Step 4: Complete Registration -->
-    <div id="registerStep" style="display:none;">
-      <form id="registerForm">
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="text" name="phone" class="form-control" readonly>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" name="email" class="form-control" readonly>
-        </div>
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" name="name" class="form-control" placeholder="Enter name" required>
-        </div>
-        <div class="form-group">
-          <label>PAN Card</label>
-          <input type="text" name="pan" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>GST No</label>
-          <input type="text" name="gst" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Country</label>
-          <select name="country" class="form-control">
-            <option>India</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>State</label>
-          <input type="text" name="state" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>City</label>
-          <input type="text" name="city" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Address</label>
-          <textarea name="address" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
-      </form>
-      <div id="registerMsg" class="text-danger mt-2"></div>
-    </div>
-
 </div>
 
-
+        </div>
     </div>
-  </div>
 </div>
 
 
@@ -525,97 +558,112 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
 
-  $.ajaxSetup({
-    headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}
-  });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
 
-  // STEP 1: Send phone OTP
-  $('#phoneForm').submit(function(e){
+        // STEP 1: Send phone OTP
+        $('#phoneForm').submit(function(e) {
+            e.preventDefault();
+            $.post('/send-phone-otp', $(this).serialize(), function(res) {
+                if (res.status) {
+                    $('#phoneStep').hide();
+                    $('#otpStep').show();
+                    $('#phoneMsg').text('');
+                }
+                if (res.type === 'exists') {
+                    $('#phoneMsg').html(
+                        res.message + '<br><a href="#" data-toggle="modal" data-target="#loginModal">Login</a>'
+                    );
+                }
+            });
+        });
+
+        // STEP 2: Verify phone OTP
+        $('#otpForm').submit(function(e) {
+            e.preventDefault();
+            $.post('/verify-phone-otp', $(this).serialize(), function(res) {
+                if (res.status) {
+                    $('#otpStep').hide();
+                    $('#emailStep').show();
+
+                    // Pre-fill phone in registration form
+                    var phone = $('#phoneForm input[name=phone]').val();
+                    $('#registerForm input[name=phone]').val(phone);
+                    $('#otpMsg').text('');
+                } else {
+                    $('#otpMsg').text(res.message);
+                }
+            });
+        });
+
+        // STEP 3: Send email OTP
+        $('#emailForm').submit(function(e) {
+            e.preventDefault();
+            $.post('/send-email-otp', $(this).serialize(), function(res) {
+                if (res.status) {
+                    $('#emailForm').hide();
+                    $('#emailOtpStep').show();
+                    $('#emailMsg').text('');
+                } else {
+                    $('#emailMsg').text(res.message);
+                }
+            });
+        });
+
+        // STEP 4: Verify email OTP
+        $('#emailOtpForm').submit(function(e) {
+            e.preventDefault();
+            $.post('/verify-email-otp', $(this).serialize(), function(res) {
+                if (res.status) {
+                    $('#emailOtpStep').hide();
+                    $('#registerStep').show();
+
+                    // Pre-fill email
+                    var email = $('#emailForm input[name=email]').val();
+                    $('#registerForm input[name=email]').val(email);
+                    $('#emailOtpMsg').text('');
+                } else {
+                    $('#emailOtpMsg').text(res.message);
+                }
+            });
+        });
+
+
+
+    $('#registerForm').submit(function(e) {
     e.preventDefault();
-    $.post('/send-phone-otp', $(this).serialize(), function(res){
-      if(res.status){
-        $('#phoneStep').hide();
-        $('#otpStep').show();
-        $('#phoneMsg').text('');
-      }
-      if(res.type === 'exists'){
-        $('#phoneMsg').html(
-          res.message + '<br><a href="#" data-toggle="modal" data-target="#loginModal">Login</a>'
-        );
-      }
-    });
-  });
 
-  // STEP 2: Verify phone OTP
-  $('#otpForm').submit(function(e){
-    e.preventDefault();
-    $.post('/verify-phone-otp', $(this).serialize(), function(res){
-      if(res.status){
-        $('#otpStep').hide();
-        $('#emailStep').show();
+    $.post('/register', $(this).serialize(), function(res) {
+        if (res.status) {
+            // SweetAlert success popup
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: res.message,
+                timer: 2000,         // auto close after 2 seconds
+                showConfirmButton: false
+            });
 
-        // Pre-fill phone in registration form
-        var phone = $('#phoneForm input[name=phone]').val();
-        $('#registerForm input[name=phone]').val(phone);
-        $('#otpMsg').text('');
-      } else {
-        $('#otpMsg').text(res.message);
-      }
-    });
-  });
+            // Close modal after short delay
+            setTimeout(function() {
+                $('#registerModal').modal('hide');
+                location.reload(); // reload page or update table
+            }, 2000);
 
- // STEP 3: Send email OTP
-$('#emailForm').submit(function(e){
-    e.preventDefault();
-    $.post('/send-email-otp', $(this).serialize(), function(res){
-        if(res.status){
-            $('#emailForm').hide();
-            $('#emailOtpStep').show();
-            $('#emailMsg').text('');
         } else {
-            $('#emailMsg').text(res.message);
+            // Show error message in div
+            $('#registerMsg').text(res.message);
         }
     });
 });
 
-// STEP 4: Verify email OTP
-$('#emailOtpForm').submit(function(e){
-    e.preventDefault();
-    $.post('/verify-email-otp', $(this).serialize(), function(res){
-        if(res.status){
-            $('#emailOtpStep').hide();
-            $('#registerStep').show();
-
-            // Pre-fill email
-            var email = $('#emailForm input[name=email]').val();
-            $('#registerForm input[name=email]').val(email);
-            $('#emailOtpMsg').text('');
-        } else {
-            $('#emailOtpMsg').text(res.message);
-        }
-    });
-});
-
-  
-
-  // STEP 4: Complete registration
-  $('#registerForm').submit(function(e){
-    e.preventDefault();
-    $.post('/register', $(this).serialize(), function(res){
-      if(res.status){
-        alert(res.message);
-        $('#registerModal').modal('hide');
-        location.reload();
-      } else {
-        $('#registerMsg').text(res.message);
-      }
-    });
-  });
 
 });
-
 </script>
 
 

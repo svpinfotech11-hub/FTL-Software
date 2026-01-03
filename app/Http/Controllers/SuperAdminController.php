@@ -9,6 +9,9 @@ class SuperAdminController extends Controller
 {
     public function getmethod()
     {
+         if (Auth::check() && Auth::user()->role === 'superadmin') {
+        return redirect()->route('superadmin.dashboard');
+    }
         return view('admin.superadmin.login');
     }
 
@@ -16,24 +19,22 @@ class SuperAdminController extends Controller
     {
         $user = Auth::user();
 
-        // Safety check
         if (!$user) {
-            return redirect()->route('login');
+            return redirect()->route('superadmin.login');
         }
 
-        // Redirect based on role
         if ($user->role === 'superadmin') {
-            return view('admin.superadmin.dashboard');   // superadmin dashboard
+            return view('admin.superadmin.dashboard');
         }
 
         if ($user->role === 'user') {
-            return redirect()->route('user.dashboard');
+            return redirect()->route('pages.home');
         }
 
-        // Fallback (optional)
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('superadmin.login');
     }
+
 
     public function adminLogin(Request $request)
     {
