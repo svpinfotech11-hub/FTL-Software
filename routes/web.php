@@ -1,10 +1,11 @@
 <?php
 
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VendorController;
 use App\Http\Controllers\LRMasterController;
 use App\Http\Controllers\SuperAdminController;
 
@@ -68,3 +69,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Superadmin logout
 Route::post('/superadmin/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
 Route::post('/user/verify-otp', [AuthController::class, 'verifyOtp'])->name('user.verifyOtp');
+
+Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
+Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendors.store');
+Route::get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
+Route::delete('/user/{user}', [VendorController::class, 'destroy'])->name('user.destroy');
