@@ -148,6 +148,10 @@
                                                 🗑️
                                             </button>
                                         </form>
+                                        <a href="{{ route('domestic.shipment.pod', $row->id) }}" target="_blank"
+                                            class="btn btn-sm btn-danger" title="View POD">
+                                            📄
+                                        </a>
                                     </div>
                                 </td>
 

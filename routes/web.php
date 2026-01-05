@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\DomesticShipmentController;
-use App\Http\Controllers\LRMasterController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+
 use Khsingh\India\Entities\City;
+
+
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\LRMasterController;
 use App\Http\Controllers\SuperAdminController;
 
 
@@ -48,16 +52,16 @@ Route::post('/login', [AuthController::class, 'userLogin'])->name('user.login.st
 // });
 
 // Route::middleware(['auth','role:user'])->group(function () {
-    Route::get('/dashboard', [UserController::class, 'dashboard'])
-        ->name('user.dashboard');
+Route::get('/dashboard', [UserController::class, 'dashboard'])
+    ->name('user.dashboard');
 // });
 
 /* ================= SUPERADMIN ================= */
 Route::middleware('guest')->group(function () {
-Route::get('/superadmin/login', [SuperAdminController::class, 'getmethod'])
-    ->name('superadmin.login');
+    Route::get('/superadmin/login', [SuperAdminController::class, 'getmethod'])
+        ->name('superadmin.login');
 
-Route::post('/superadmin/login', [SuperAdminController::class, 'adminLogin'])->name('superadmin.login');
+    Route::post('/superadmin/login', [SuperAdminController::class, 'adminLogin'])->name('superadmin.login');
 });
 
 Route::middleware(['superadmin'])->group(function () {
@@ -75,6 +79,9 @@ Route::get('/domestic-shipment/index', [DomesticShipmentController::class, 'inde
 Route::get('/domestic-shipment/{id}/edit', [DomesticShipmentController::class, 'edit'])->name('domestic.shipment.edit');
 Route::put('/domestic-shipment/{id}', [DomesticShipmentController::class, 'update'])->name('domestic.shipment.update');
 Route::delete('/domestic-shipment/{id}', [DomesticShipmentController::class, 'destroy'])->name('domestic.shipment.destroy');
+Route::get('/new_pod/{id}', [DomesticShipmentController::class, 'show'])->name('domestic.shipment.pod');
+
+
 
 Route::get('/get-cities/{state}', [DomesticShipmentController::class, 'getCities']);
 
@@ -94,3 +101,10 @@ Route::get('consigner-details/{id}', function ($id) {
 Route::post('/superadmin/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
 Route::post('/user/verify-otp', [AuthController::class, 'verifyOtp'])->name('user.verifyOtp');
 
+
+Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
+Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendors.store');
+Route::get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
+Route::delete('/user/{user}', [VendorController::class, 'destroy'])->name('user.destroy');
+
+Route::resource('branches', BranchController::class);

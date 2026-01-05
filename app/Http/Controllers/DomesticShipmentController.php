@@ -190,4 +190,13 @@ class DomesticShipmentController extends Controller
 
         return response()->json($cities);
     }
+
+    public function show($id)
+    {
+        $shipment = DomesticShipment::with([
+            'invoices'
+        ])->findOrFail($id);
+
+        return view('shipment.pod', compact('shipment'));
+    }
 }

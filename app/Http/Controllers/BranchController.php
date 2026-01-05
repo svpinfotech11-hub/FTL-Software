@@ -54,7 +54,6 @@ class BranchController extends Controller
     public function destroy($id)
     {
         Branch::findOrFail($id)->delete();
-        return back()->with('success', 'Branch Deleted');
+        return back()->with('deleted', 'Branch Deleted Successfully');
     }
-
 }
