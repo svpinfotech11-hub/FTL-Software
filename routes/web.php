@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\DomesticShipmentController;
+use App\Http\Controllers\LRMasterController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+use Khsingh\India\Entities\City;
+
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -7,6 +13,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LRMasterController;
 use App\Http\Controllers\SuperAdminController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -65,6 +72,29 @@ Route::middleware(['superadmin'])->group(function () {
 // User logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
+Route::get('/domestic-shipment/create', [DomesticShipmentController::class, 'create'])->name('domestic.shipment.create');
+Route::post('/domestic-shipment/store', [DomesticShipmentController::class, 'store'])->name('domestic.shipment.store');
+Route::get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
+Route::get('/domestic-shipment/{id}/edit', [DomesticShipmentController::class, 'edit'])->name('domestic.shipment.edit');
+Route::put('/domestic-shipment/{id}', [DomesticShipmentController::class, 'update'])->name('domestic.shipment.update');
+Route::delete('/domestic-shipment/{id}', [DomesticShipmentController::class, 'destroy'])->name('domestic.shipment.destroy');
+
+Route::get('/get-cities/{state}', [DomesticShipmentController::class, 'getCities']);
+
+Route::get('/consignee-details/{id}', function ($id) {
+    return response()->json(
+        \App\Models\DomesticShipment::findOrFail($id)
+    );
+});
+
+Route::get('consigner-details/{id}', function ($id) {
+    return response()->json(
+        \App\Models\DomesticShipment::findOrFail($id)
+    );
+});
+
 // Superadmin logout
 Route::post('/superadmin/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
 Route::post('/user/verify-otp', [AuthController::class, 'verifyOtp'])->name('user.verifyOtp');
+
