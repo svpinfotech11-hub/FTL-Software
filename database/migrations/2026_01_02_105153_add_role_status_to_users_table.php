@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('l_r_masters', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+             $table->string('role')->default('user')->after('password');
+            $table->boolean('status')->default(1)->after('role');
         });
     }
 
@@ -22,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('l_r_masters');
+        Schema::table('users', function (Blueprint $table) {
+             $table->dropColumn(['role', 'status']);
+        });
     }
 };
