@@ -1,17 +1,13 @@
 <?php
 
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\DomesticShipmentController;
 use App\Http\Controllers\LRMasterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Khsingh\India\Entities\City;
-
-
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LRMasterController;
 use App\Http\Controllers\SuperAdminController;
 
 
