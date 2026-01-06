@@ -486,7 +486,7 @@
 
                     {{-- Step 5: Registration Form --}}
                     <div id="stepRegister" style="display:none;">
-                        <form id="registerForm" action="{{ route('user.register.store') }}" method="POST">
+                        <form id="registerForm" action="" method="POST">
                             @csrf
                             <input type="hidden" name="phone">
                             <input type="hidden" name="email">

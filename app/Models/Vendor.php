@@ -17,6 +17,7 @@ class Vendor extends Model
         'state',
         'city',
         'rate_per_kg',
-        'minimum_kg'
+        'minimum_kg',
+        'user_id'
     ];
 }

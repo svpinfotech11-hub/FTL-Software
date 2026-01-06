@@ -68,7 +68,9 @@ class DomesticShipment extends Model
         'cgst',
         'sgst',
         'igst',
-        'grand_total'
+        'grand_total',
+
+        'user_id'
     ];
 
     public function invoices()

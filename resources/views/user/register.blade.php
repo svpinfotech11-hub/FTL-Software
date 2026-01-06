@@ -93,7 +93,7 @@
                                     <div class="text-danger mb-2" id="phoneMsg"></div>
                                     <div class="d-grid gap-2">
                                         <button type="submit" class="btn btn-primary">Send OTP</button>
-                                        <a href="{{ route('login') }}" class="btn btn-info">Login</a>
+                                         <a href="{{ route('login') }}" class="btn btn-info">Login</a>
                                     </div>
                                 </form>
                             </div>
@@ -102,6 +102,7 @@
                             <div id="otpStep" style="display:none;">
                                 <form id="otpForm">
                                     @csrf
+                                        <input type="hidden" name="phone" id="otpPhone">
                                     <div class="input-group mb-3">
                                         <input type="text" name="otp" class="form-control" placeholder="Enter phone OTP" required>
                                         <div class="input-group-text"><span class="bi bi-key-fill"></span></div>
@@ -132,6 +133,8 @@
                             <div id="emailOtpStep" style="display:none;">
                                 <form id="emailOtpForm">
                                     @csrf
+                                    <input type="hidden" name="email" id="emailOtpEmail">
+
                                     <div class="input-group mb-3">
                                         <input type="text" name="otp" class="form-control" placeholder="Enter email OTP" required>
                                         <div class="input-group-text"><span class="bi bi-key-fill"></span></div>
@@ -146,7 +149,7 @@
                             <div id="registerStep" style="display:none;">
                                 <form id="registerForm" method="POST" action="{{ route('user.register.store') }}">
                                     @csrf
-
+                                    <input type="hidden" name="role" value="user">
                                     <!-- Verified Phone -->
                                     <div class="input-group mb-3">
                                         <input type="text" name="phone" class="form-control" readonly>
@@ -219,225 +222,166 @@
 
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            });
+  <script>
+$(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    });
 
-            // Helper function to toggle loader on button
-            function toggleLoader(button, isLoading) {
-                if (isLoading) {
-                    button.prop('disabled', true);
-                    button.html('<span class="spinner-border spinner-border-sm me-2"></span>Processing...');
-                } else {
-                    button.prop('disabled', false);
-                    button.html(button.data('original'));
-                }
+    // Helper function to toggle loader on button
+    function toggleLoader(button, isLoading) {
+        if(isLoading) {
+            button.prop('disabled', true);
+            button.html('<span class="spinner-border spinner-border-sm me-2"></span>Processing...');
+        } else {
+            button.prop('disabled', false);
+            button.html(button.data('original'));
+        }
+    }
+
+    // STEP 1: Send phone OTP
+    $('#phoneForm').submit(function(e) {
+        e.preventDefault();
+        var btn = $(this).find('button[type=submit]');
+        btn.data('original', btn.html());
+        toggleLoader(btn, true);
+
+        $.post('/send-phone-otp', $(this).serialize())
+        .done(function(res) {
+            if(res.status) {
+                $('#stepPhone').hide();
+                $('#otpStep').show();
+                $('#phoneMsg').text('');
+
+                  var phone = $('#phoneForm input[name=phone]').val();
+        $('#otpPhone').val(phone); // ✅ set phone in hidden input
+                Swal.fire({ icon: 'success', title: 'OTP sent!', text: res.message });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: res.message });
             }
-
-            // STEP 1: Send phone OTP
-            $('#phoneForm').submit(function(e) {
-                e.preventDefault();
-                var btn = $(this).find('button[type=submit]');
-                btn.data('original', btn.html());
-                toggleLoader(btn, true);
-
-                $.post('/send-phone-otp', $(this).serialize())
-                    .done(function(res) {
-                        if (res.status) {
-                            $('#stepPhone').hide();
-                            $('#otpStep').show();
-                            $('#phoneMsg').text('');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'OTP sent!',
-                                text: res.message
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: res.message
-                            });
-                        }
-                    })
-                    .fail(function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: xhr.responseJSON?.message || 'Something went wrong!'
-                        });
-                    })
-                    .always(function() {
-                        toggleLoader(btn, false);
-                    });
-            });
-
-            // STEP 2: Verify phone OTP
-            $('#otpForm').submit(function(e) {
-                e.preventDefault();
-                var btn = $(this).find('button[type=submit]');
-                btn.data('original', btn.html());
-                toggleLoader(btn, true);
-
-                $.post('/verify-phone-otp', $(this).serialize())
-                    .done(function(res) {
-                        if (res.status) {
-                            $('#otpStep').hide();
-                            $('#emailStep').show();
-                            var phone = $('#phoneForm input[name=phone]').val();
-                            $('#registerForm input[name=phone]').val(phone);
-                            $('#otpMsg').text('');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Verified!',
-                                text: 'Phone OTP verified successfully.'
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: res.message
-                            });
-                        }
-                    })
-                    .fail(function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: xhr.responseJSON?.message || 'Something went wrong!'
-                        });
-                    })
-                    .always(function() {
-                        toggleLoader(btn, false);
-                    });
-            });
-
-            // STEP 3: Send email OTP
-            $('#emailForm').submit(function(e) {
-                e.preventDefault();
-                var btn = $(this).find('button[type=submit]');
-                btn.data('original', btn.html());
-                toggleLoader(btn, true);
-
-                $.post('/send-email-otp', $(this).serialize())
-                    .done(function(res) {
-                        if (res.status) {
-                            $('#emailStep').hide();
-                            $('#emailOtpStep').show();
-                            $('#emailMsg').text('');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'OTP sent!',
-                                text: res.message
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: res.message
-                            });
-                        }
-                    })
-                    .fail(function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: xhr.responseJSON?.message || 'Something went wrong!'
-                        });
-                    })
-                    .always(function() {
-                        toggleLoader(btn, false);
-                    });
-            });
-
-            // STEP 4: Verify email OTP
-            $('#emailOtpForm').submit(function(e) {
-                e.preventDefault();
-                var btn = $(this).find('button[type=submit]');
-                btn.data('original', btn.html());
-                toggleLoader(btn, true);
-
-                $.post('/verify-email-otp', $(this).serialize())
-                    .done(function(res) {
-                        if (res.status) {
-                            $('#emailOtpStep').hide();
-                            $('#registerStep').show();
-                            var email = $('#emailForm input[name=email]').val();
-                            $('#registerForm input[name=email]').val(email);
-                            $('#emailOtpMsg').text('');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Verified!',
-                                text: 'Email OTP verified successfully.'
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: res.message
-                            });
-                        }
-                    })
-                    .fail(function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: xhr.responseJSON?.message || 'Something went wrong!'
-                        });
-                    })
-                    .always(function() {
-                        toggleLoader(btn, false);
-                    });
-            });
-
-            // STEP 5: Complete registration
-            $('#registerForm').submit(function(e) {
-                e.preventDefault();
-                var btn = $(this).find('button[type=submit]');
-                btn.data('original', btn.html());
-                toggleLoader(btn, true);
-
-                $.post('{{ route('
-                        user.register.store ') }}', $(this).serialize())
-                    .done(function(res) {
-                        if (res.status) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success!',
-                                text: res.message,
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: res.message
-                            });
-                        }
-                    })
-                    .fail(function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: xhr.responseJSON?.message || 'Something went wrong!'
-                        });
-                    })
-                    .always(function() {
-                        toggleLoader(btn, false);
-                    });
-            });
+        })
+        .fail(function(xhr) {
+            Swal.fire({ icon: 'error', title: 'Error', text: xhr.responseJSON?.message || 'Something went wrong!' });
+        })
+        .always(function() {
+            toggleLoader(btn, false);
         });
-    </script>
+    });
+
+    // STEP 2: Verify phone OTP
+    $('#otpForm').submit(function(e) {
+        e.preventDefault();
+        var btn = $(this).find('button[type=submit]');
+        btn.data('original', btn.html());
+        toggleLoader(btn, true);
+
+        $.post('/verify-phone-otp', $(this).serialize())
+        .done(function(res) {
+            if(res.status) {
+                $('#otpStep').hide();
+                $('#emailStep').show();
+                var phone = $('#phoneForm input[name=phone]').val();
+                $('#registerForm input[name=phone]').val(phone);
+                $('#otpMsg').text('');
+                Swal.fire({ icon: 'success', title: 'Verified!', text: 'Phone OTP verified successfully.' });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: res.message });
+            }
+        })
+        .fail(function(xhr) {
+            Swal.fire({ icon: 'error', title: 'Error', text: xhr.responseJSON?.message || 'Something went wrong!' });
+        })
+        .always(function() {
+            toggleLoader(btn, false);
+        });
+    });
+
+    // STEP 3: Send email OTP
+    $('#emailForm').submit(function(e) {
+        e.preventDefault();
+        var btn = $(this).find('button[type=submit]');
+        btn.data('original', btn.html());
+        toggleLoader(btn, true);
+
+        $.post('/send-email-otp', $(this).serialize())
+        .done(function(res) {
+            if(res.status) {
+                $('#emailStep').hide();
+                $('#emailOtpStep').show();
+                $('#emailMsg').text('');
+                 var email = $('#emailForm input[name=email]').val();
+        $('#emailOtpEmail').val(email); // add email to OTP form
+                Swal.fire({ icon: 'success', title: 'OTP sent!', text: res.message });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: res.message });
+            }
+        })
+        .fail(function(xhr) {
+            Swal.fire({ icon: 'error', title: 'Error', text: xhr.responseJSON?.message || 'Something went wrong!' });
+        })
+        .always(function() {
+            toggleLoader(btn, false);
+        });
+    });
+
+    // STEP 4: Verify email OTP
+    $('#emailOtpForm').submit(function(e) {
+        e.preventDefault();
+        var btn = $(this).find('button[type=submit]');
+        btn.data('original', btn.html());
+        toggleLoader(btn, true);
+
+        $.post('/verify-email-otp', $(this).serialize())
+        .done(function(res) {
+            if(res.status) {
+                $('#emailOtpStep').hide();
+                $('#registerStep').show();
+                var email = $('#emailForm input[name=email]').val();
+                $('#registerForm input[name=email]').val(email);
+                $('#emailOtpMsg').text('');
+                Swal.fire({ icon: 'success', title: 'Verified!', text: 'Email OTP verified successfully.' });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: res.message });
+            }
+        })
+        .fail(function(xhr) {
+            Swal.fire({ icon: 'error', title: 'Error', text: xhr.responseJSON?.message || 'Something went wrong!' });
+        })
+        .always(function() {
+            toggleLoader(btn, false);
+        });
+    });
+
+    // STEP 5: Complete registration
+    $('#registerForm').submit(function(e) {
+        e.preventDefault();
+        var btn = $(this).find('button[type=submit]');
+        btn.data('original', btn.html());
+        toggleLoader(btn, true);
+
+        $.post('{{ route('user.register.storeppppp') }}', $(this).serialize())
+        .done(function(res) {
+            console.log(res)
+            if(res.status) {
+                Swal.fire({ icon: 'success', title: 'Success!', text: res.message, timer: 2000, showConfirmButton: false });
+                setTimeout(function() { location.reload(); }, 2000);
+            } else {
+                Swal.fire({ icon: 'error', title: 'Error', text: res.message });
+            }
+        })
+        .fail(function(xhr) {
+            Swal.fire({ icon: 'error', title: 'Error', text: xhr.responseJSON?.message || 'Something went wrong!' });
+        })
+        .always(function() {
+            toggleLoader(btn, false);
+        });
+    });
+});
+</script>
 
 
     <!-- /.login-box -->

@@ -4,53 +4,82 @@ namespace App\Http\Controllers;
 
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VendorController extends Controller
 {
-     public function create()
+    // Show create form
+    public function create()
     {
         return view('vendors.create');
     }
 
-     public function index()
+    // List vendors for the logged-in user
+    public function index()
     {
-        $vendors = Vendor::paginate(10);
+        $vendors = Vendor::where('user_id', auth()->id()) // only user's vendors
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
         return view('vendors.index', compact('vendors'));
     }
 
+    // Store a new vendor for the logged-in user
     public function store(Request $request)
     {
         $validated = $request->validate([
             'vendor_name' => 'required|string',
             'contact' => 'required|string',
             'address' => 'required|string',
-            'pincode' => 'required',
-            'state' => 'required',
-            'city' => 'required',
+            'pincode' => 'required|string',
+            'state' => 'required|string',
+            'city' => 'required|string',
             'rate_per_kg' => 'required|numeric',
             'minimum_kg' => 'required|numeric',
         ]);
 
-     Vendor::create($validated);
+        $validated['user_id'] = auth()->id(); // attach logged-in user
 
-     return redirect('vendors/index')->with('success', 'Vendor Created SuccessFully!');
+        Vendor::create($validated);
+
+        return redirect()->route('vendors.index')
+            ->with('success', 'Vendor Created Successfully!');
     }
 
+    // Show a single vendor (only if belongs to user)
     public function show($id)
     {
-        return Vendor::findOrFail($id);
-    }
+        $vendor = Vendor::where('id', $id)
+                        ->where('user_id', auth()->id())
+                        ->firstOrFail();
 
-    public function update(Request $request, $id)
-    {
-        $vendor = Vendor::findOrFail($id);
-        $vendor->update($request->all());
         return $vendor;
     }
 
+    // Update vendor (only if belongs to user)
+    public function update(Request $request, $id)
+    {
+        $vendor = Vendor::where('id', $id)
+                        ->where('user_id', auth()->id())
+                        ->firstOrFail();
+
+        $vendor->update($request->all());
+
+        return response()->json([
+            'message' => 'Vendor updated successfully',
+            'vendor' => $vendor
+        ]);
+    }
+
+    // Delete vendor (only if belongs to user)
     public function destroy($id)
     {
-        Vendor::findOrFail($id)->delete();
-        return response()->json(['message' => 'Vendor deleted']);
+        $vendor = Vendor::where('id', $id)
+                        ->where('user_id', auth()->id())
+                        ->firstOrFail();
+
+        $vendor->delete();
+
+        return response()->json(['message' => 'Vendor deleted successfully']);
     }
 }

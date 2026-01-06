@@ -37,7 +37,7 @@
 
        @auth
        {{-- Superadmin only menu --}}
-       @if(Auth::user()->role === 'superadmin')
+       @if(Auth::user()->role === 'super_admin')
 
      
        @endif
@@ -46,9 +46,9 @@
        @if(Auth::user()->role === 'user')
        <li class="nav-item menu-openpp">
          <a href="#" class="nav-link active">
-           <i class="nav-icon bi bi-speedometer"></i>
+           <i class="nav-icon fa fa-users"></i>
            <p>
-             Users
+             Users Master
              <i class="nav-arrow bi bi-chevron-right"></i>
            </p>
          </a>
@@ -70,9 +70,9 @@
 
          <li class="nav-item menu-openpp">
          <a href="#" class="nav-link">
-           <i class="nav-icon bi bi-speedometer"></i>
+           <i class="nav-icon bi bi-people"></i>
            <p>
-             Vendors
+             Vendors Master
              <i class="nav-arrow bi bi-chevron-right"></i>
            </p>
          </a>
@@ -94,9 +94,9 @@
 
        <li class="nav-item menu-openkk">
          <a href="#" class="nav-link">
-           <i class="nav-icon bi bi-speedometer"></i>
+           <i class="nav-icon bi bi-truck"></i>
            <p>
-             Domestic
+             Domestic Master
              <i class="nav-arrow bi bi-chevron-right"></i>
            </p>
          </a>
@@ -109,6 +109,31 @@
            </li>
            <li class="nav-item">
              <a href="{{ route('domestic.shipment.index') }}" class="nav-link">
+               <i class="nav-icon bi bi-circle"></i>
+               <p>All Record</p>
+             </a>
+           </li>
+
+         </ul>
+       </li>
+
+       <li class="nav-item menu-openkkp">
+         <a href="#" class="nav-link">
+           <i class="nav-icon fa fa-users"></i>
+           <p>
+             Customer Master
+             <i class="nav-arrow bi bi-chevron-right"></i>
+           </p>
+         </a>
+         <ul class="nav nav-treeview">
+           <li class="nav-item">
+             <a href="{{ route('customers.create') }}" class="nav-link active">
+               <i class="nav-icon bi bi-circle"></i>
+               <p>Add New</p>
+             </a>
+           </li>
+           <li class="nav-item">
+             <a href="{{ route('customers.index') }}" class="nav-link">
                <i class="nav-icon bi bi-circle"></i>
                <p>All Record</p>
              </a>

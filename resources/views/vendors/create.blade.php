@@ -43,7 +43,7 @@
                     <!--end::Header-->
 
                     <!-- Validation Errors -->
-                    @if ($errors->any())
+                    <!-- @if ($errors->any())
                         <div class="alert alert-danger m-3">
                             <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
@@ -51,7 +51,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                    @endif
+                    @endif -->
 
                     <!-- Success Message -->
                     @if(session('success'))
@@ -103,7 +103,7 @@
                                 <!-- Pincode -->
                                 <div class="col-md-4">
                                     <label class="form-label">Pincode</label>
-                                    <input type="text" name="pincode" class="form-control"
+                                    <input type="number" name="pincode" class="form-control"
                                         value="{{ old('pincode') }}" placeholder="Enter pincode" required>
                                 </div>
 
