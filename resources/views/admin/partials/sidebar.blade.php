@@ -1,142 +1,167 @@
- <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+
+    <!-- Sidebar Brand -->
+    <div class="sidebar-brand">
+        <a href="{{ Auth::check() && Auth::user()->role === 'super_admin'
+            ? route('superadmin.dashboard')
+            : route('user.dashboard') }}"
+            class="brand-link">
+
+            <img src="{{ asset('assets/assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+                class="brand-image opacity-75 shadow">
+
+            <span class="brand-text fw-light">AdminLTE 4</span>
+        </a>
+    </div>
+    <!-- /Sidebar Brand -->
+
+    <!-- Sidebar Wrapper -->
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
+                data-accordion="false">
+
+                @auth
+
+                    {{-- SUPER ADMIN MENU --}}
+                    @if (Auth::user()->role === 'super_admin')
+                        {{-- Add Super Admin menus here --}}
+                    @endif
 
 
+                    {{-- USER MENU --}}
+                    @if (Auth::user()->role === 'user')
+                        {{-- Users --}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-people"></i>
+                                <p>
+                                    Users
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('user.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('user.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-     <!--begin::Sidebar Brand-->
-     <div class="sidebar-brand">
-         <!--begin::Brand Link-->
-         <a href="{{ Auth::check() && Auth::user()->role === 'superadmin'
-             ? route('superadmin.dashboard')
-             : route('user.dashboard') }}"
-             class="brand-link">
+                        {{-- Vendors --}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-truck"></i>
+                                <p>
+                                    Vendors
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('vendors.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('vendors.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-             <!--begin::Brand Image-->
-             <img src="{{ asset('assets/assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                 class="brand-image opacity-75 shadow" />
-             <!--end::Brand Image-->
-             <!--begin::Brand Text-->
-             <span class="brand-text fw-light">AdminLTE 4</span>
-             <!--end::Brand Text-->
-         </a>
-         <!--end::Brand Link-->
-     </div>
-     <!--end::Sidebar Brand-->
-     <!--begin::Sidebar Wrapper-->
-     <div class="sidebar-wrapper">
-         <nav class="mt-2">
-             <!--begin::Sidebar Menu-->
-             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
-                 aria-label="Main navigation" data-accordion="false" id="navigation">
+                        {{-- Domestic --}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-box"></i>
+                                <p>
+                                    Domestic
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('domestic.shipment.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('domestic.shipment.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-                 @auth
-                     {{-- Superadmin only menu --}}
-                     @if (Auth::user()->role === 'superadmin')
-                     @endif
+                        {{-- Branches --}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-diagram-3-fill"></i>
+                                <p>
+                                    Branches
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('branches.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('branches.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-                     {{-- User only menu --}}
-                     @if (Auth::user()->role === 'user')
-                         <li class="nav-item menu-openpp">
-                             <a href="#" class="nav-link active">
-                                 <i class="nav-icon bi bi-speedometer"></i>
-                                 <p>
-                                     Users
-                                     <i class="nav-arrow bi bi-chevron-right"></i>
-                                 </p>
-                             </a>
-                             <ul class="nav nav-treeview">
-                                 <li class="nav-item">
-                                     <a href="{{ route('user.create') }}" class="nav-link active">
-                                         <i class="nav-icon bi bi-circle"></i>
-                                         <p>Add New</p>
-                                     </a>
-                                 </li>
-                                 <li class="nav-item">
-                                     <a href="{{ route('user.index') }}" class="nav-link">
-                                         <i class="nav-icon bi bi-circle"></i>
-                                         <p>All Record</p>
-                                     </a>
-                                 </li>
-                             </ul>
-                         </li>
+                        {{-- Customers --}}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-users"></i>
+                                <p>
+                                    Customer Master
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('customers.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('customers.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
 
-                         <li class="nav-item menu-openpp">
-                             <a href="#" class="nav-link">
-                                 <i class="nav-icon bi bi-speedometer"></i>
-                                 <p>
-                                     Vendors
-                                     <i class="nav-arrow bi bi-chevron-right"></i>
-                                 </p>
-                             </a>
-                             <ul class="nav nav-treeview">
-                                 <li class="nav-item">
-                                     <a href="{{ route('vendors.create') }}" class="nav-link active">
-                                         <i class="nav-icon bi bi-circle"></i>
-                                         <p>Add New</p>
-                                     </a>
-                                 </li>
-                                 <li class="nav-item">
-                                     <a href="{{ route('vendors.index') }}" class="nav-link">
-                                         <i class="nav-icon bi bi-circle"></i>
-                                         <p>All Record</p>
-                                     </a>
-                                 </li>
-                             </ul>
-                         </li>
+                @endauth
 
-                         <li class="nav-item menu-openkk">
-                             <a href="#" class="nav-link">
-                                 <i class="nav-icon bi bi-speedometer"></i>
-                                 <p>
-                                     Domestic
-                                     <i class="nav-arrow bi bi-chevron-right"></i>
-                                 </p>
-                             </a>
-                             <ul class="nav nav-treeview">
-                                 <li class="nav-item">
-                                     <a href="{{ route('domestic.shipment.create') }}" class="nav-link active">
-                                         <i class="nav-icon bi bi-circle"></i>
-                                         <p>Add New</p>
-                                     </a>
-                                 </li>
-                                 <li class="nav-item">
-                                     <a href="{{ route('domestic.shipment.index') }}" class="nav-link">
-                                         <i class="nav-icon bi bi-circle"></i>
-                                         <p>All Record</p>
-                                     </a>
-                                 </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- /Sidebar Wrapper -->
 
-                             </ul>
-                         </li>
-                         <li class="nav-item menu-open">
-                             <a href="#" class="nav-link active">
-                                 <i class="nav-icon bi bi-diagram-3-fill"></i>
-                                 <p>
-                                     Branches
-                                     <i class="nav-arrow bi bi-chevron-right"></i>
-                                 </p>
-                             </a>
-                             <ul class="nav nav-treeview">
-                                 <li class="nav-item">
-                                     <a href="{{ route('branches.create') }}" class="nav-link active">
-                                         <i class="nav-icon bi bi-plus-circle"></i>
-                                         <p>Add New</p>
-                                     </a>
-                                 </li>
-                                 <li class="nav-item">
-                                     <a href="{{ route('branches.index') }}" class="nav-link">
-                                         <i class="nav-icon bi bi-list-ul"></i>
-                                         <p>All Record</p>
-                                     </a>
-                                 </li>
-                             </ul>
-                         </li>
-                     @endif
-                 @endauth
-             </ul>
-
-             <!--end::Sidebar Menu-->
-         </nav>
-     </div>
-
-     <!--end::Sidebar Wrapper-->
- </aside>
+</aside>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\DomesticShipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,20 +18,12 @@ class DomesticShipmentController extends Controller
 
     public function create()
     {
+        $userId = auth()->id(); // current logged-in user
+
+        // Fetch consignees saved by this user
         $consignees = DomesticShipment::where('consignee_save_to_address_book', 1)
+            ->where('user_id', $userId)
             ->select(
-                'id',
-                'consignee_name',
-                'consignee_company',
-                'consignee_address',
-                'consignee_pincode',
-                'consignee_state',
-                'consignee_city',
-                'zone',
-                'consignee_contact',
-                'gst_no'
-            )
-            ->groupBy(
                 'id',
                 'consignee_name',
                 'consignee_company',
@@ -44,19 +37,10 @@ class DomesticShipmentController extends Controller
             )
             ->get();
 
+        // Fetch consigners saved by this user
         $consigners = DomesticShipment::where('consigner_save_to_address_book', 1)
+            ->where('user_id', $userId)
             ->select(
-                'id',
-                'consigner_name',
-                'consigner_address',
-                'consigner_pincode',
-                'consigner_state',
-                'consigner_city',
-                'consigner_contact',
-                'coll_type',
-                'delivery_type'
-            )
-            ->groupBy(
                 'id',
                 'consigner_name',
                 'consigner_address',
@@ -69,14 +53,18 @@ class DomesticShipmentController extends Controller
             )
             ->get();
 
+        // Fetch states (no user filter needed)
         $states = DB::table('cities')
             ->select('city_state')
             ->distinct()
             ->orderBy('city_state')
             ->get();
 
-        return view('shipment.create', compact('consignees', 'consigners', 'states'));
+        $customers = Customer::all();
+
+        return view('shipment.create', compact('consignees', 'consigners', 'states', 'customers'));
     }
+
 
     public function store(Request $request)
     {
@@ -91,6 +79,8 @@ class DomesticShipmentController extends Controller
         );
 
         $data = $request->except(['invoices', 'charges']);
+
+        $data['user_id'] = auth()->id(); // <-- Add this line
 
         if ($request->has('charges')) {
             foreach ($request->charges as $key => $value) {
@@ -182,6 +172,11 @@ class DomesticShipmentController extends Controller
 
     public function getCities($state)
     {
+        // Optional: Basic validation
+        if (empty($state)) {
+            return response()->json([]);
+        }
+        // Fetch cities matching the state
         $cities = DB::table('cities')
             ->where('city_state', $state)
             ->select('city_name')
