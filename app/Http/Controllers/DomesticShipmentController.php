@@ -177,6 +177,16 @@ class DomesticShipmentController extends Controller
         return response()->json([]);
     }
 
+
+    public function show($id)
+    {
+        $shipment = DomesticShipment::with([
+            'invoices'
+        ])->findOrFail($id);
+
+        return view('shipment.pod', compact('shipment'));
+    }
+
     // Fetch cities matching the state
     $cities = DB::table('cities')
         ->where('city_state', $state)

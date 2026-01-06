@@ -131,7 +131,7 @@
                                 <td>{{ $row->branch_name ?? 'BHIWANDI HO' }}</td>
                                 <td>{{ optional($row->user)->name ?? 'Admin' }}</td>
                                 <td>{{ $row->eway_no ?? '-' }}</td>
-                                
+
                                 <td>
                                     <div class="btn-group-vertical">
                                         <a href="{{ route('domestic.shipment.edit', $row->id) }}"
@@ -148,6 +148,10 @@
                                                 🗑️
                                             </button>
                                         </form>
+                                        <a href="{{ route('domestic.shipment.pod', $row->id) }}" target="_blank"
+                                            class="btn btn-sm btn-danger" title="View POD">
+                                            📄
+                                        </a>
                                     </div>
                                 </td>
 
@@ -170,43 +174,40 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    // Delete button click
-    document.querySelectorAll('.delete-btn').forEach(function(button) {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
+        document.querySelectorAll('.delete-btn').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
 
-            const form = this.closest('.delete-shipment-form');
+                const form = this.closest('.delete-shipment-form');
 
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
             });
         });
+
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        @endif
+
     });
-
-    // SweetAlert for success message from session
-    @if(session('success'))
-        Swal.fire({
-            icon: 'success',
-            title: 'Deleted!',
-            text: "{{ session('success') }}",
-            timer: 2000,
-            showConfirmButton: false
-        });
-    @endif
-
-});
 </script>
-
