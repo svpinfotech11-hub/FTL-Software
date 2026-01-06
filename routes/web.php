@@ -1,9 +1,13 @@
 <?php
 
+
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\DomesticShipmentController;
 
+
 use Khsingh\India\Entities\City;
+
+use Illuminate\Support\Facades\DB;
 
 
 use Illuminate\Support\Facades\Route;
@@ -11,8 +15,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LRMasterController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\DomesticShipmentController;
 
 
 Route::get('/', function () {
@@ -27,7 +33,7 @@ Route::get('/', [HomeController::class, 'home'])->name('pages.home');
 // Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
 
 Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
-Route::post('/user/create', [UserController::class, 'store'])->name('user.store');
+Route::post('/user/create', [UserController::class, 'store'])->name('user.store.submit');
 Route::get('/user/index', [UserController::class, 'index'])->name('user.index');
 Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
@@ -35,7 +41,7 @@ Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.de
 Route::post('/send-phone-otp', [AuthController::class, 'sendPhoneOtp']);
 Route::post('/verify-phone-otp', [AuthController::class, 'verifyPhoneOtp']);
 Route::get('/register', [AuthController::class, 'register'])->name('user.register');
-Route::post('/register', [AuthController::class, 'registerStore'])->name('user.register.store');
+Route::post('/register', [AuthController::class, 'registerStore'])->name('user.register.storeppppp');
 
 Route::post('/send-email-otp', [AuthController::class, 'sendEmailOtp']);
 Route::post('/verify-email-otp', [AuthController::class, 'verifyEmailOtp']);
@@ -107,4 +113,27 @@ Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendor
 Route::get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
 Route::delete('/user/{user}', [VendorController::class, 'destroy'])->name('user.destroy');
 
+
 Route::resource('branches', BranchController::class);
+
+Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
+Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
+Route::get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
+Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
+Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+
+Route::get('/get-location/{pincode}', function ($pincode) {
+    $data = DB::table('pincodes')->where('pincode', $pincode)->first();
+
+    if (!$data) {
+        return response()->json(['error' => 'Invalid pincode'], 404);
+    }
+
+    return response()->json([
+        'state' => $data->state,
+        'city'  => $data->city
+    ]);
+});
+

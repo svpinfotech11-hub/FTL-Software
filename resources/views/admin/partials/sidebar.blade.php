@@ -2,6 +2,7 @@
 
 
 
+
      <!--begin::Sidebar Brand-->
      <div class="sidebar-brand">
          <!--begin::Brand Link-->
@@ -17,6 +18,24 @@
              <!--begin::Brand Text-->
              <span class="brand-text fw-light">AdminLTE 4</span>
              <!--end::Brand Text-->
+
+       @auth
+       {{-- Superadmin only menu --}}
+       @if(Auth::user()->role === 'super_admin')
+
+     
+       @endif
+
+       {{-- User only menu --}}
+       @if(Auth::user()->role === 'user')
+       <li class="nav-item menu-openpp">
+         <a href="#" class="nav-link active">
+           <i class="nav-icon fa fa-users"></i>
+           <p>
+             Users Master
+             <i class="nav-arrow bi bi-chevron-right"></i>
+           </p>
+
          </a>
          <!--end::Brand Link-->
      </div>
@@ -27,6 +46,7 @@
              <!--begin::Sidebar Menu-->
              <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
                  aria-label="Main navigation" data-accordion="false" id="navigation">
+
 
                  @auth
                      {{-- Superadmin only menu --}}
@@ -83,6 +103,53 @@
                              </ul>
                          </li>
 
+         <li class="nav-item menu-openpp">
+         <a href="#" class="nav-link">
+           <i class="nav-icon bi bi-people"></i>
+           <p>
+             Vendors Master
+             <i class="nav-arrow bi bi-chevron-right"></i>
+           </p>
+         </a>
+         <ul class="nav nav-treeview">
+           <li class="nav-item">
+             <a href="{{ route('vendors.create') }}" class="nav-link active">
+               <i class="nav-icon bi bi-circle"></i>
+               <p>Add New</p>
+             </a>
+           </li>
+           <li class="nav-item">
+             <a href="{{ route('vendors.index') }}" class="nav-link">
+               <i class="nav-icon bi bi-circle"></i>
+               <p>All Record</p>
+             </a>
+           </li>
+         </ul>
+       </li>
+
+       <li class="nav-item menu-openkk">
+         <a href="#" class="nav-link">
+           <i class="nav-icon bi bi-truck"></i>
+           <p>
+             Domestic Master
+             <i class="nav-arrow bi bi-chevron-right"></i>
+           </p>
+         </a>
+         <ul class="nav nav-treeview">
+           <li class="nav-item">
+             <a href="{{ route('domestic.shipment.create') }}" class="nav-link active">
+               <i class="nav-icon bi bi-circle"></i>
+               <p>Add New</p>
+             </a>
+           </li>
+           <li class="nav-item">
+             <a href="{{ route('domestic.shipment.index') }}" class="nav-link">
+               <i class="nav-icon bi bi-circle"></i>
+               <p>All Record</p>
+             </a>
+           </li>
+
+
                          <li class="nav-item menu-openkk">
                              <a href="#" class="nav-link">
                                  <i class="nav-icon bi bi-speedometer"></i>
@@ -104,6 +171,7 @@
                                          <p>All Record</p>
                                      </a>
                                  </li>
+
 
                              </ul>
                          </li>
@@ -133,6 +201,33 @@
                      @endif
                  @endauth
              </ul>
+=======
+       <li class="nav-item menu-openkkp">
+         <a href="#" class="nav-link">
+           <i class="nav-icon fa fa-users"></i>
+           <p>
+             Customer Master
+             <i class="nav-arrow bi bi-chevron-right"></i>
+           </p>
+         </a>
+         <ul class="nav nav-treeview">
+           <li class="nav-item">
+             <a href="{{ route('customers.create') }}" class="nav-link active">
+               <i class="nav-icon bi bi-circle"></i>
+               <p>Add New</p>
+             </a>
+           </li>
+           <li class="nav-item">
+             <a href="{{ route('customers.index') }}" class="nav-link">
+               <i class="nav-icon bi bi-circle"></i>
+               <p>All Record</p>
+             </a>
+           </li>
+
+         </ul>
+       </li>
+
+
 
              <!--end::Sidebar Menu-->
          </nav>

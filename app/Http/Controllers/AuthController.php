@@ -14,16 +14,11 @@ use Illuminate\Support\Facades\Session;
 class AuthController extends Controller
 {
 
-    // STEP 1: Send OTP to Phone
     public function sendPhoneOtp(Request $request)
     {
-        // Validate phone input
         $request->validate(['phone' => 'required|string']);
 
-        $phone = $request->phone;
-
-        // Check if phone already exists
-        if (User::where('phone', $phone)->exists()) {
+        if (User::where('phone', $request->phone)->exists()) {
             return response()->json([
                 'status' => false,
                 'type' => 'exists',
@@ -31,17 +26,20 @@ class AuthController extends Controller
             ]);
         }
 
-        // Generate OTP
         $otp = rand(100000, 999999);
 
-        // Store phone and OTP in session
-        session([
-            'phone' => $phone,
-            'phone_otp' => $otp
+        // Save OTP in DB
+        \App\Models\Otp::create([
+            'type' => 'phone',
+            'value' => $request->phone,
+            'otp' => $otp,
+            'expires_at' => now()->addMinutes(10), // OTP valid for 10 mins
         ]);
 
-        // Send OTP via SMS
-        $smsResult = $this->sendOtpphone($phone, $otp);
+        // Optional: also save in session
+        session(['phone' => $request->phone, 'phone_otp' => $otp]);
+
+        $smsResult = $this->sendOtpphone($request->phone, $otp);
 
         if (!$smsResult['success']) {
             return response()->json([
@@ -50,10 +48,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return response()->json([
-            'status' => true,
-            'message' => 'OTP sent successfully'
-        ]);
+        return response()->json(['status' => true, 'message' => 'OTP sent successfully']);
     }
 
     // Helper function to send SMS using Cell24x7
@@ -103,14 +98,22 @@ class AuthController extends Controller
     // STEP 2: Verify OTP
     public function verifyPhoneOtp(Request $request)
     {
-        $request->validate(['otp' => 'required']);
+        $request->validate(['otp' => 'required', 'phone' => 'required']);
 
-        if ($request->otp == session('phone_otp')) {
+        $otpRecord = \App\Models\Otp::where('type', 'phone')
+            ->where('value', $request->phone)
+            ->where('otp', $request->otp)
+            ->where('verified', false)
+            ->where('expires_at', '>=', now())
+            ->first();
+
+        if ($otpRecord) {
+            $otpRecord->update(['verified' => true]);
             session(['phone_verified' => true]);
             return response()->json(['status' => true]);
         }
 
-        return response()->json(['status' => false, 'message' => 'Invalid OTP']);
+        return response()->json(['status' => false, 'message' => 'Invalid or expired OTP']);
     }
 
     // STEP 2: Email OTP
@@ -119,23 +122,43 @@ class AuthController extends Controller
         $request->validate(['email' => 'required|email|unique:users']);
 
         $otp = rand(100000, 999999);
-        Session::put('email_otp', $otp);
-        Session::put('email', $request->email);
 
-        // Send OTP email
+        \App\Models\Otp::create([
+            'type' => 'email',
+            'value' => $request->email,
+            'otp' => $otp,
+            'expires_at' => now()->addMinutes(10),
+        ]);
+
+        Session::put('email', $request->email);
+        Session::put('email_otp', $otp);
+
         Mail::to($request->email)->send(new OtpMail($otp));
 
         return response()->json(['status' => true, 'message' => 'OTP sent to email']);
     }
 
+
     public function verifyEmailOtp(Request $request)
     {
-        if ($request->otp == Session::get('email_otp')) {
+        $request->validate(['otp' => 'required', 'email' => 'required|email']);
+
+        $otpRecord = \App\Models\Otp::where('type', 'email')
+            ->where('value', $request->email)
+            ->where('otp', $request->otp)
+            ->where('verified', false)
+            ->where('expires_at', '>=', now())
+            ->first();
+
+        if ($otpRecord) {
+            $otpRecord->update(['verified' => true]);
             Session::put('email_verified', true);
             return response()->json(['status' => true]);
         }
-        return response()->json(['status' => false]);
+
+        return response()->json(['status' => false, 'message' => 'Invalid or expired OTP']);
     }
+
 
     public function register()
     {
@@ -144,13 +167,13 @@ class AuthController extends Controller
 
     public function registerStore(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'phone' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'name' => 'required|string',
             'password' => 'nullable|string|min:6',
             'status' => 'required',
-            // 'role' => $request->role ?? 'user',
         ]);
 
         if (!session('phone_verified')) {
@@ -168,7 +191,7 @@ class AuthController extends Controller
             'state' => $request->state,
             'city' => $request->city,
             'address' => $request->address,
-             'role'     => 'user', // ✅ DEFAULT ROLE
+            'role' => 'user',  
         ]);
 
         auth()->login($user);
