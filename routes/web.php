@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\AddExpenseController;
 use App\Http\Controllers\BranchController;
 
 
@@ -18,7 +18,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LRMasterController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\DomesticShipmentController;
-
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\VehicleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -135,3 +136,9 @@ Route::get('/get-location/{pincode}', function ($pincode) {
         'city'  => $data->city
     ]);
 });
+
+
+Route::resource('vehicles', VehicleController::class);
+Route::resource('drivers', DriverController::class);
+Route::resource('add-expenses', AddExpenseController::class);
+

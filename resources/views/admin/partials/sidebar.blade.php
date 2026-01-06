@@ -155,6 +155,79 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-truck"></i>
+                                <p>
+                                    Vehicles
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('vehicles.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('vehicles.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-person-badge"></i>
+                                <p>
+                                    Drivers
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('drivers.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('drivers.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-cash-stack"></i>
+                                <p>
+                                    Add Expense
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('add-expenses.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('add-expenses.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
 
                 @endauth
