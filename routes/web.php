@@ -1,6 +1,8 @@
 <?php
 
+
 use App\Http\Controllers\BranchController;
+
 
 use Khsingh\India\Entities\City;
 
@@ -110,7 +112,9 @@ Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendor
 Route::get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
 Route::delete('/user/{user}', [VendorController::class, 'destroy'])->name('user.destroy');
 
+
 Route::resource('branches', BranchController::class);
+
 Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
 Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
 Route::get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
