@@ -23,5 +23,13 @@ class Vehicle extends Model
         'vehicle_permit_renewal_date',
         'vehicle_insurance_renew_date',
         'vehicle_capacity',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    protected $dates = ['deleted_at'];
 }

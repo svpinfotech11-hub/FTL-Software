@@ -78,7 +78,7 @@
 
                                 @if ($drivers->isEmpty())
                                     <tr>
-                                        <td colspan="6" class="text-center">No Drivers Found</td>
+                                        <td colspan="15" class="text-center">No Drivers Found</td>
                                     </tr>
                                 @endif
 

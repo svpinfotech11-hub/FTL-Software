@@ -15,10 +15,19 @@ class AddExpense extends Model
         'amount',
         'description',
         'attachment',
+        'user_id'
     ];
 
     public function driver()
     {
         return $this->belongsTo(Driver::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    protected $dates = ['deleted_at'];
 }

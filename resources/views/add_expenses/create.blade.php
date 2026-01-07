@@ -4,7 +4,7 @@
 
         <div class="app-content-header">
             <div class="container-fluid">
-                <h3>Add Driver Expense</h3>
+                <h3>Add Expense</h3>
             </div>
         </div>
 
@@ -67,8 +67,16 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label>LR No</label>
-                                    <input type="text" name="lr_no" class="form-control">
+                                    <select name="lr_no" class="form-control form-select">
+                                        <option value="">--Select LR No--</option>
+                                        @foreach ($airwayNos as $id => $airway_no)
+                                            <option value="{{ $airway_no }}">
+                                                {{ $airway_no }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
+
 
                                 <div class="col-md-4">
                                     <label>Amount</label>
