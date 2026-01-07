@@ -81,7 +81,7 @@
                             <div class="row mb-2">
                                 <label class="col-md-4">Description</label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control" name="discretion">{{ $shipment->discretion }}</textarea>
+                                    <textarea class="form-control" name="discretion">{{ $shipment->description }}</textarea>
                                 </div>
                             </div>
 
@@ -102,6 +102,27 @@
                         <div class="card-header fw-bold">Consigner Detail</div>
                         <div class="card-body">
 
+
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-md-4 col-form-label">Customer</label>
+                            <div class="col-md-8">
+                            <select class="form-control form-select"
+                                name="customer_id"
+                                id="customerSelect">
+
+                            <option value="">Select Customer</option>
+
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}"
+                                    {{ isset($shipment) && $shipment->customer_id == $customer->id ? 'selected' : '' }}>
+                                    {{ $customer->customer_name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                            </div>
+                        </div>
+
                             <!-- Select Consigner -->
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">
@@ -113,7 +134,7 @@
                                         @foreach ($consigners as $c)
                                             <option value="{{ $c->id }}"
                                                 {{ $shipment->consigner_id == $c->id ? 'selected' : '' }}>
-                                                {{ $c->consigner_name }}
+                                                {{ $c->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -125,7 +146,7 @@
                                 <label class="col-md-4 col-form-label">Name<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="consigner_name"
-                                        value="{{ $shipment->consigner_name }}">
+                                        value="{{ $shipment->consigner->name }}">
                                 </div>
                             </div>
 
@@ -133,7 +154,7 @@
                             <div class="row mb-2">
                                 <label class="col-md-4 col-form-label">Address</label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control" name="consigner_address">{{ $shipment->consigner_address }}</textarea>
+                                    <textarea class="form-control" name="consigner_address">{{ $shipment->consigner->address }}</textarea>
                                 </div>
                             </div>
 
@@ -141,44 +162,37 @@
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">Pincode<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" name="consigner_pincode"
-                                        value="{{ $shipment->consigner_pincode }}">
+                                    <input type="text" class="form-control" id="consignerPincode" name="consigner_pincode"
+                                        value="{{ $shipment->consigner->pincode }}">
                                 </div>
                             </div>
 
                             <!-- State -->
-                            <div class="row mb-2 align-items-center">
-                                <label class="col-md-4 col-form-label">State<span class="text-danger">*</span></label>
-                                <div class="col-md-8">
-                                    <select class="form-control form-select" id="consignerState" name="consigner_state">
-                                        <option value="">Select State</option>
-                                        @foreach ($states as $s)
-                                            <option value="{{ $s->city_state }}"
-                                                {{ $shipment->consigner_state == $s->city_state ? 'selected' : '' }}>
-                                                {{ $s->city_state }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                           <div class="row mb-2 align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                State <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-8">
+                               
+                               <input type="text" id="consigner_state" name="consigner_state" value="{{ $shipment->consigner->state }}" class="form-control">
                             </div>
+                        </div>
 
-                            <!-- City -->
-                            <div class="row mb-2 align-items-center">
-                                <label class="col-md-4 col-form-label">City<span class="text-danger">*</span></label>
-                                <div class="col-md-8">
-                                    <select class="form-control form-select" id="consignerCity" name="consigner_city">
-                                        <option value="{{ $shipment->consigner_city }}">{{ $shipment->consigner_city }}
-                                        </option>
-                                    </select>
-                                </div>
+                          <div class="row mb-2 align-items-center">
+                            <label class="col-md-4 col-form-label">
+                                City <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-8">
+                               <input type="text" id="consigner_city" name="consigner_city" value="{{ $shipment->consigner->city }}" class="form-control">
                             </div>
+                        </div>
 
                             <!-- Contact -->
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">Contact No</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="consigner_contact"
-                                        value="{{ $shipment->consigner_contact }}">
+                                        value="{{ $shipment->consigner->contact_no }}">
                                 </div>
                             </div>
 
@@ -202,7 +216,7 @@
                                         @foreach ($consignees as $c)
                                             <option value="{{ $c->id }}"
                                                 {{ $shipment->consignee_id == $c->id ? 'selected' : '' }}>
-                                                {{ $c->consignee_name }}
+                                                {{ $c->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -214,7 +228,7 @@
                                 <label class="col-md-4 col-form-label">Name<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="consignee_name"
-                                        value="{{ $shipment->consignee_name }}">
+                                        value="{{ $shipment->consignee->name }}">
                                 </div>
                             </div>
 
@@ -223,7 +237,7 @@
                                 <label class="col-md-4 col-form-label">Company<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="consignee_company"
-                                        value="{{ $shipment->consignee_company }}">
+                                        value="{{ $shipment->consignee->company }}">
                                 </div>
                             </div>
 
@@ -231,7 +245,7 @@
                             <div class="row mb-2">
                                 <label class="col-md-4 col-form-label">Address</label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control" name="consignee_address">{{ $shipment->consignee_address }}</textarea>
+                                    <textarea class="form-control" name="consignee_address">{{ $shipment->consignee->address }}</textarea>
                                 </div>
                             </div>
 
@@ -239,8 +253,8 @@
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">Pincode<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" name="consignee_pincode"
-                                        value="{{ $shipment->consignee_pincode }}">
+                                    <input type="text" class="form-control" id="consigneePincode" name="consignee_pincode"
+                                        value="{{ $shipment->consignee->pincode }}">
                                 </div>
                             </div>
 
@@ -248,15 +262,8 @@
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">State<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <select class="form-control form-select" id="consigneeState" name="consignee_state">
-                                        <option value="">Select State</option>
-                                        @foreach ($states as $s)
-                                            <option value="{{ $s->city_state }}"
-                                                {{ $shipment->consignee_state == $s->city_state ? 'selected' : '' }}>
-                                                {{ $s->city_state }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                 
+                                <input type="text" id="consignee_state" name="consigneestate" value="{{ $shipment->consignee->state }}" class="form-control" readonly>
                                 </div>
                             </div>
 
@@ -264,11 +271,9 @@
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">City<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <select class="form-control form-select" id="consigneeCity" name="consignee_city">
-                                        <option value="{{ $shipment->consignee_city }}">{{ $shipment->consignee_city }}
-                                        </option>
-                                    </select>
+                                <input type="text" id="consignee_city" name="consignee_city" value="{{ $shipment->consignee->city }}" class="form-control" readonly>
                                 </div>
+                            
                             </div>
 
                             <!-- Zone -->
@@ -276,7 +281,7 @@
                                 <label class="col-md-4 col-form-label">Zone</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="zone"
-                                        value="{{ $shipment->zone }}">
+                                        value="{{ $shipment->consignee->zone }}">
                                 </div>
                             </div>
 
@@ -285,7 +290,7 @@
                                 <label class="col-md-4 col-form-label">Contact No</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="consignee_contact"
-                                        value="{{ $shipment->consignee_contact }}">
+                                        value="{{ $shipment->consignee->contact_no }}">
                                 </div>
                             </div>
 
@@ -294,7 +299,7 @@
                                 <label class="col-md-4 col-form-label">GST No</label>
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="gst_no"
-                                        value="{{ $shipment->gst_no }}">
+                                        value="{{ $shipment->consignee->gst_no }}">
                                 </div>
                             </div>
 
@@ -526,6 +531,7 @@
         </form>
     </div>
 @endsection
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -576,65 +582,53 @@
     });
 </script>
 
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function () {
 
-    const parcelOptions = `
-        <option value="">-Select-</option>
-        <option value="Wooden Box">Wooden Box</option>
-        <option value="Carton">Carton</option>
-        <option value="Drum">Drum</option>
-        <option value="Plastic Wrap">Plastic Wrap</option>
-        <option value="Gunny Bag">Gunny Bag</option>
-        <option value="Pipe">Pipe</option>
-        <option value="Bundle">Bundle</option>
-        <option value="CAND">CAND</option>
-        <option value="IBC">IBC</option>
-        <option value="Box">Box</option>
-        <option value="Pallet">Pallet</option>
-        <option value="BKT">BKT</option>
-        <option value="NOS">NOS</option>
-    `;
+    $('#consignerPincode').on('keyup', function () {
 
-    let invoiceTableBody = document.querySelector('#invoiceTable tbody');
-    let invoiceIndex = invoiceTableBody.querySelectorAll('tr').length;
+        let pincode = $(this).val();
 
-    flatpickr(".invoice-date", { dateFormat: "Y-m-d" });
-    flatpickr(".eway-date", { dateFormat: "Y-m-d" });
+        if (pincode.length === 6) {
+            $.get('/get-location/' + pincode, function (res) {
 
-    function addInvoiceRow() {
-        invoiceTableBody.insertAdjacentHTML('beforeend', `
-            <tr>
-                <td><input class="form-control" name="invoices[${invoiceIndex}][invoice_no]"></td>
-                <td><input type="number" class="form-control" name="invoices[${invoiceIndex}][invoice_value]"></td>
-                <td><input type="text" class="form-control invoice-date" placeholder="Y-m-d" name="invoices[${invoiceIndex}][invoice_date]"></td>
-                <td><input type="number" class="form-control" name="invoices[${invoiceIndex}][quantity]"></td>
-                <td>
-                    <select class="form-control" name="invoices[${invoiceIndex}][type_of_parcel]">
-                        ${parcelOptions}
-                    </select>
-                </td>
-                <td><input class="form-control" name="invoices[${invoiceIndex}][eway_no]"></td>
-                <td><input type="text" class="form-control eway-date" placeholder="Y-m-d" name="invoices[${invoiceIndex}][eway_expiry]"></td>
-                <td>
-                    <button type="button" class="btn btn-danger btn-sm remove-invoice">X</button>
-                </td>
-            </tr>
-        `);
+                // ✅ Set consigner state & city
+                $('#consigner_state').val(res.state);
+                $('#consigner_city').val(res.city);
 
-        flatpickr(".invoice-date", { dateFormat: "Y-m-d" });
-        flatpickr(".eway-date", { dateFormat: "Y-m-d" });
-
-        invoiceIndex++;
-    }
-
-    document.getElementById('addInvoiceBtn').addEventListener('click', addInvoiceRow);
-
-    invoiceTableBody.addEventListener('click', function(e) {
-        if(e.target && e.target.classList.contains('remove-invoice')) {
-            e.target.closest('tr').remove();
+            }).fail(function () {
+                alert('Invalid Pincode');
+            });
         }
     });
 
 });
 </script>
+
+
+<script>
+$(document).ready(function () {
+
+    $('#consigneePincode').on('keyup', function () {
+
+        let pincode = $(this).val();
+
+        if (pincode.length === 6) {
+            $.get('/get-location/' + pincode, function (res) {
+
+                // ✅ Set consigner state & city
+                $('#consignee_state').val(res.state);
+                $('#consignee_city').val(res.city);
+
+            }).fail(function () {
+                alert('Invalid Pincode');
+            });
+        }
+    });
+
+});
+</script>
+
+
+

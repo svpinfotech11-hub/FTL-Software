@@ -2,6 +2,7 @@
 
 @section('main-content')
 
+
 <!--begin::App Main-->
 <main class="app-main">
     <!--begin::App Content Header-->
@@ -40,7 +41,7 @@
                     <div class="card card-primary card-outline mb-4">
                         <!--begin::Header-->
                         <div class="card-header">
-                            <div class="card-title">Add Shipment</div>
+                            <div class="card-title">Quick Example</div>
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->
@@ -171,49 +172,33 @@
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-md-4 col-form-label">Customer</label>
                                                 <div class="col-md-8">
-                                                  <select class="form-control form-select" 
-                                                    name="customer_id" 
-                                                    id="customerSelect">
-                                                <option value="">Select Customer</option>
-                                                @foreach ($customers as $customer)
-                                                    <option value="{{ $customer->id }}">
-                                                        {{ $customer->customer_name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                                    <select class="form-control form-select" name="customer_id">
+                                                        <option>Select Customer</option>
+                                                        @foreach ($customers as $customer)
+                                                        <option value="{{ $customer->id }}">{{ $customer->customer_name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
-                                            
+
                                             <!-- Select Consigner -->
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-md-4 col-form-label">
                                                     Select Consigner<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                     <select name="consigner_id"
-                                                    class="form-control form-select"
-                                                    id="consignerSelect">
-                                                <option value="" id="newConsignerOption">➕ New Consigner</option>
-
-                                                @foreach ($consigners as $c)
-                                                    <option value="{{ $c->id }}"
-                                                        data-name="{{ $c->name }}"
-                                                        data-address="{{ $c->address }}"
-                                                        data-pincode="{{ $c->pincode }}"
-                                                        data-state="{{ $c->state }}"
-                                                        data-city="{{ $c->city }}"
-                                                        data-contact="{{ $c->contact_no }}">
-                                                        {{ $c->name }} 
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
+                                                    <select name="consigner_id" class="form-control form-select" id="consignerSelect">
+                                                        <option value="">-Select Consigner-</option>
+                                                        @foreach ($consigners as $c)
+                                                        <option value="{{ $c->id }}">{{ $c->consigner_name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
 
-
                                             <!-- Save to Address Book -->
                                             <div class="row mb-3">
+                                                <div class="col-md-4"></div>
                                                 <div class="col-md-8">
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" id="saveAddressBook"
@@ -231,7 +216,7 @@
                                                     Name<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                    <input type="text" id="consigner_name" class="form-control" name="consigner_name" disabled>
+                                                    <input type="text" class="form-control" name="consigner_name">
                                                 </div>
                                             </div>
 
@@ -239,7 +224,7 @@
                                             <div class="row mb-2">
                                                 <label class="col-md-4 col-form-label">Address</label>
                                                 <div class="col-md-8">
-                                                    <textarea class="form-control" id="consigner_address" name="consigner_address" rows="2" disabled></textarea>
+                                                    <textarea class="form-control" name="consigner_address" rows="2"></textarea>
                                                 </div>
                                             </div>
 
@@ -249,31 +234,34 @@
                                                     Pincode<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                   <input type="text"
-                                                    class="form-control"
-                                                    name="consigner_pincode"
-                                                    value="" id="consigner_pincode" disabled>
-                                                    
+                                                    <input type="text" class="form-control" name="consigner_pincode">
                                                 </div>
                                             </div>
 
-                                             <!-- State -->
+                                            <!-- State -->
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-md-4 col-form-label">
-                                                    State <span class="text-danger">*</span>
+                                                    State<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                
-                                                <input type="text" id="consigner_state" name="consigner_state" class="form-control" disabled>
+                                                    <select class="form-control form-select" name="consigner_state" id="consignerState">
+                                                        <option value="">Select State</option>
+                                                        @foreach ($states as $state)
+                                                        <option value="{{ $state->city_state }}">{{ $state->city_state }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
 
+                                            <!-- City -->
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-md-4 col-form-label">
-                                                    City <span class="text-danger">*</span>
+                                                    City<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                <input type="text" id="consigner_city" name="consigner_city"  class="form-control" disabled>
+                                                    <select class="form-control form-select" name="consigner_city" id="consignerCity">
+                                                        <option value="">Select City</option>
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -281,7 +269,7 @@
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-md-4 col-form-label">ContactNo.</label>
                                                 <div class="col-md-8">
-                                                    <input type="number" id="consigner_contact" class="form-control" name="consigner_contact" disabled>
+                                                    <input type="number" class="form-control" name="consigner_contact">
                                                 </div>
                                             </div>
 
@@ -298,7 +286,6 @@
                                                     <input type="text" class="form-control" name="consigner_type_of_doc">
                                                 </div>
                                             </div>
-                                           
 
                                             <!-- Coll Type -->
                                             <div class="row mb-2 align-items-center">
@@ -343,26 +330,16 @@
                                                     Select Consignee<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                      <select name="consigner_id"
-                                                    class="form-control form-select"
-                                                    id="consigneeSelect">
-                                                <option value="" id="newConsigneeOption">➕ New Consignee</option>
+                                                    <select name="consignee_id" class="form-control" id="consigneeSelect">
+                                                        <option value="">-Select Consignee-</option>
+                                                        @foreach ($consignees as $c)
+                                                        <option value="{{ $c->id }}">
+                                                            {{ $c->consignee_name }}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
 
-                                                @foreach ($consignees as $cp)
-                                                    <option value="{{ $cp->id }}"
-                                                        data-name="{{ $cp->name }}"
-                                                        data-address="{{ $cp->address }}"
-                                                        data-pincode="{{ $cp->pincode }}"
-                                                        data-state="{{ $cp->state }}"
-                                                        data-city="{{ $cp->city }}"
-                                                        data-company="{{ $cp->company }}"
-                                                        data-contact="{{ $cp->contact_no }}">
-                                                        {{ $cp->name }} 
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
-                                            </div>
+                                                </div>
                                             </div>
 
                                             <!-- Save To Address Book -->
@@ -385,7 +362,7 @@
                                                     Name<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                    <input type="text" class="form-control" id="consignee_name" name="consignee_name">
+                                                    <input type="text" class="form-control" name="consignee_name">
                                                 </div>
                                             </div>
 
@@ -395,7 +372,7 @@
                                                     Company<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                    <input type="text" class="form-control" id="consignee_company" name="consignee_company">
+                                                    <input type="text" class="form-control" name="consignee_company">
                                                 </div>
                                             </div>
 
@@ -403,7 +380,7 @@
                                             <div class="row mb-2">
                                                 <label class="col-md-4 col-form-label">Address</label>
                                                 <div class="col-md-8">
-                                                    <textarea class="form-control" id="consignee_address" name="consignee_address" rows="2"></textarea>
+                                                    <textarea class="form-control" name="consignee_address" rows="2"></textarea>
                                                 </div>
                                             </div>
 
@@ -413,27 +390,36 @@
                                                     Pincode<span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-md-8">
-                                                    <input type="text" class="form-control" name="consignee_pincode" id="consignee_pincode"
+                                                    <input type="text" class="form-control" name="consignee_pincode" id="pincode"
                                                         maxlength="6" placeholder="Enter Pincode">
                                                 </div>
                                             </div>
 
                                             <!-- State -->
                                             <div class="row mb-2 align-items-center">
-                                                <label class="col-md-4 col-form-label">State<span class="text-danger">*</span></label>
+                                                <label class="col-md-4 col-form-label">
+                                                    State<span class="text-danger">*</span>
+                                                </label>
                                                 <div class="col-md-8">
-                                                
-                                                <input type="text" id="consignee_state" name="consignee_state"  class="form-control">
+                                                    <select class="form-control form-select" name="consignee_state" id="consigneeState">
+                                                        <option value="">Select State</option>
+                                                        @foreach ($states as $state)
+                                                        <option value="{{ $state->city_state }}">{{ $state->city_state }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
 
                                             <!-- City -->
                                             <div class="row mb-2 align-items-center">
-                                                <label class="col-md-4 col-form-label">City<span class="text-danger">*</span></label>
+                                                <label class="col-md-4 col-form-label">
+                                                    City<span class="text-danger">*</span>
+                                                </label>
                                                 <div class="col-md-8">
-                                                <input type="text" id="consignee_city" name="consignee_city" class="form-control">
+                                                    <select class="form-control form-select" name="consignee_city" id="consigneeCity">
+                                                        <option value="">Select City</option>
+                                                    </select>
                                                 </div>
-                                            
                                             </div>
 
                                             <!-- Zone -->
@@ -448,7 +434,7 @@
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-md-4 col-form-label">Contact No</label>
                                                 <div class="col-md-8">
-                                                    <input type="number" class="form-control" name="consignee_contact" id="consignee_contact" disabled>
+                                                    <input type="number" class="form-control" name="consignee_contact">
                                                 </div>
                                             </div>
 
@@ -644,9 +630,6 @@
                             </div>
                             <div class="text-end mb-3">
                                 <button class="btn btn-primary">Submit</button>
-                                <a href="{{ route('domestic.shipment.index') }}" class="btn btn-outline-secondary me-2">
-                                     <i class="bi bi-arrow-left"></i> Back
-                                 </a>
                             </div>
                         </form>
                         <!--end::Form-->
@@ -663,162 +646,15 @@
     <!--end::App Content-->
 </main>
 <!--end::App Main-->
-<script>
-$('#consignerSelect').on('change', function () {
-
-    let option = $(this).find('option:selected');
-
-    // ➕ NEW CONSIGNER
-    if (option.attr('id') === 'newConsignerOption') {
-
-        $('#consigner_name').val('');
-        $('#consigner_address').val('');
-        $('#consigner_pincode').val('');
-        $('#consigner_state').val('');
-        $('#consigner_city').val('');
-        $('#consigner_contact').val('');
-
-        return;
-    }
-
-    // 🧾 EXISTING CONSIGNER
-    $('#consigner_name').val(option.data('name') ?? '');
-    $('#consigner_address').val(option.data('address') ?? '');
-    $('#consigner_pincode').val(option.data('pincode') ?? '');
-    $('#consigner_state').val(option.data('state') ?? '');
-    $('#consigner_city').val(option.data('city') ?? '');
-    $('#consigner_contact').val(option.data('contact') ?? '');
-
-});
-</script>
-
-<script>
-$('#consigneeSelect').on('change', function () {
-
-    let option = $(this).find('option:selected');
-
-    // ➕ NEW CONSIGNER
-    if (option.attr('id') === 'newConsigneeOption') {
-
-        $('#consignee_name').val('');
-        $('#consignee_address').val('');
-        $('#consignee_pincode').val('');
-        $('#consignee_state').val('');
-        $('#consignee_city').val('');
-        $('#consignee_contact').val('');
-        $('#consignee_company').val('');
-
-        return;
-    }
-
-    // 🧾 EXISTING CONSIGNER
-    $('#consignee_name').val(option.data('name') ?? '');
-    $('#consignee_company').val(option.data('company') ?? '');
-    $('#consignee_address').val(option.data('address') ?? '');
-    $('#consignee_pincode').val(option.data('pincode') ?? '');
-    $('#consignee_state').val(option.data('state') ?? '');
-    $('#consignee_city').val(option.data('city') ?? '');
-    $('#consignee_contact').val(option.data('contact') ?? '');
-
-});
-</script>
 
 @endsection
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
 
-        $(document).ready(function () {
+<script>
     $('#consignerSelect').change(function () {
     $('#is_existing_consigner').val(1);
 });
 
-
-
-$('#consignerSelect').change(function () {
-    $('input[name^="consigner_"], textarea[name^="consigner_"]').prop('readonly', true);
-});
-
-// $('#consignerSelect').change(function () {
-// $('#customerSelect').prop('disabled', true);
-// });
-});
-</script>
-
-<script>
-$(document).ready(function () {
-$('#customerSelect').change(function () {
-
-    let customerId = $(this).val();
-    console.log("cusomter id", customerId);
-    if (!customerId) return;
-
-    $.get('/customer/' + customerId, function (data) {
-
-        // Fill Consigner fields from Customer Master
-        $('#consigner_name').val(data.customer_name);
-        $('#consigner_address').val(data.address);
-        $('#consigner_pincode').val(data.pincode);
-        $('#consigner_state').val(data.state);
-        $('#consigner_contact').val(data.phone);
-        $('#consigner_gst').val(data.gst_no);
-        $('#phone').val(data.phone);
-        $('#consigner_city').val(data.city);
-
-        // City (select)
-        // $('#consigner_city').html(
-        //     `<option value="${data.city}" selected>${data.city}</option>`
-        // );
-    });
-});
-});
-</script>
-
-<script>
-$(document).ready(function () {
-
-    $('#consigner_pincode').on('keyup', function () {
-
-        let pincode = $(this).val();
-
-        if (pincode.length === 6) {
-            $.get('/get-location/' + pincode, function (res) {
-
-                // ✅ Set consigner state & city
-                $('#consigner_state').val(res.state);
-                $('#consigner_city').val(res.city);
-
-            }).fail(function () {
-                alert('Invalid Pincode');
-            });
-        }
-    });
-
-});
-</script>
-
-
-<script>
-$(document).ready(function () {
-
-    $('#consignee_pincode').on('keyup', function () {
-
-        let pincode = $(this).val();
-
-        if (pincode.length === 6) {
-            $.get('/get-location/' + pincode, function (res) {
-
-                // ✅ Set consigner state & city
-                $('#consignee_state').val(res.state);
-                $('#consignee_city').val(res.city);
-
-            }).fail(function () {
-                alert('Invalid Pincode');
-            });
-        }
-    });
-
-});
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -935,3 +771,119 @@ $(document).ready(function () {
 </script>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // ----- Consignee selection -----
+        document.getElementById('consigneeSelect').addEventListener('change', function() {
+            let id = this.value;
+            if (!id) return;
+
+            fetch('/consignee-details/' + id)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                    $('[name="consignee_name"]').val(data.consignee_name ?? '');
+                    $('[name="consignee_company"]').val(data.consignee_company ?? '');
+                    $('[name="consignee_address"]').val(data.consignee_address ?? '');
+                    $('[name="consignee_pincode"]').val(data.consignee_pincode ?? '');
+                    $('[name="zone"]').val(data.zone ?? '');
+                    $('[name="consignee_contact"]').val(data.consignee_contact ?? '');
+                    $('[name="gst_no"]').val(data.gst_no ?? '');
+
+                    // Handle state dropdown
+                    let stateSelect = $('[name="consignee_state"]');
+                    if (stateSelect.find('option[value="' + data.consignee_state + '"]').length === 0 && data.consignee_state) {
+                        stateSelect.append(new Option(data.consignee_state, data.consignee_state, true, true));
+                    } else {
+                        stateSelect.val(data.consignee_state);
+                    }
+
+                    // Trigger change to load cities
+                    stateSelect.trigger('change');
+
+                    // Delay selecting city until cities are loaded
+                    setTimeout(function() {
+                        let citySelect = $('[name="consignee_city"]');
+                        if (data.consignee_city) citySelect.val(data.consignee_city);
+                    }, 500);
+                })
+                .catch(err => console.error(err));
+        });
+
+        // ----- Consigner selection -----
+        document.getElementById('consignerSelect').addEventListener('change', function() {
+            let id = this.value;
+            if (!id) return;
+
+            fetch('/consigner-details/' + id)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                    $('[name="consigner_name"]').val(data.consigner_name ?? '');
+                    $('[name="consigner_address"]').val(data.consigner_address ?? '');
+                    $('[name="consigner_pincode"]').val(data.consigner_pincode ?? '');
+                    $('[name="consigner_contact"]').val(data.consigner_contact ?? '');
+                    $('[name="consigner_doc_no"]').val(data.consigner_doc_no ?? '');
+                    $('[name="coll_type"]').val(data.coll_type ?? '');
+                    $('[name="delivery_type"]').val(data.delivery_type ?? '');
+
+                    // Handle state dropdown
+                    let stateSelect = $('[name="consigner_state"]');
+                    if (stateSelect.find('option[value="' + data.consigner_state + '"]').length === 0 && data.consigner_state) {
+                        stateSelect.append(new Option(data.consigner_state, data.consigner_state, true, true));
+                    } else {
+                        stateSelect.val(data.consigner_state);
+                    }
+
+                    // Trigger change to load cities
+                    stateSelect.trigger('change');
+
+                    // Delay selecting city until cities are loaded
+                    setTimeout(function() {
+                        let citySelect = $('[name="consigner_city"]');
+                        if (data.consigner_city) citySelect.val(data.consigner_city);
+                    }, 500);
+                })
+                .catch(err => console.error(err));
+        });
+
+        // ----- Load cities on state change -----
+        $('#consigneeState').change(function() {
+            let state = $(this).val();
+            let citySelect = $('#consigneeCity');
+            console.log(citySelect)
+            citySelect.empty().append('<option value="">Select City</option>');
+            if (state) {
+                $.get('/get-cities/' + encodeURIComponent(state), function(data) {
+                    // console.log(data)
+                    $.each(data, function(i, city) {
+                        citySelect.append('<option value="' + city.city_name + '">' + city.city_name + '</option>');
+                    });
+                });
+            }
+        });
+
+        console.log("Attaching change handler");
+        $('#consignerState').change(function() {
+            console.log("State changed");
+            let state = $(this).val();
+            let citySelect = $('#consignerCity');
+            console.log("City dropdown:", citySelect);
+            citySelect.empty().append('<option value="">Select City</option>');
+            if (state) {
+                $.get('/get-cities/' + encodeURIComponent(state), function(data) {
+                    $.each(data, function(i, city) {
+                        citySelect.append('<option value="' + city.city_name + '">' + city.city_name + '</option>');
+                    });
+                });
+            }
+        });
+
+
+    });
+</script>

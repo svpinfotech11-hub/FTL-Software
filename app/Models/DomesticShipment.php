@@ -15,7 +15,7 @@ class DomesticShipment extends Model
         'risk_type',
         'bill_type',
         'vehicle_no',
-        'discretion',
+        'description',
 
         'consigner_name',
         'consigner_address',
@@ -70,11 +70,34 @@ class DomesticShipment extends Model
         'igst',
         'grand_total',
 
-        'user_id'
+        'user_id',
+
+        'customer_id',
+        'consigner_id',
+        'consignee_id',
     ];
 
     public function invoices()
     {
         return $this->hasMany(ShipmentInvoice::class);
     }
+
+    public function consigner()
+    {
+        return $this->belongsTo(Consigner::class);
+    }
+
+    public function consignee()
+    {
+        return $this->belongsTo(Consignee::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+      protected $dates = ['deleted_at'];
+
 }

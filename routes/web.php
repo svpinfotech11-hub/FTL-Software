@@ -1,18 +1,21 @@
 <?php
 
 
-use App\Http\Controllers\BranchController;
+use App\Models\Customer;
+
+
+use App\Models\Consignee;
+
+use App\Models\Consigner;
 
 
 use Khsingh\India\Entities\City;
-
 use Illuminate\Support\Facades\DB;
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LRMasterController;
@@ -136,3 +139,19 @@ Route::get('/get-location/{pincode}', function ($pincode) {
     ]);
 });
 
+Route::get('/consigner/{id}', fn($id) =>
+    Consigner::where('id',$id)
+        ->where('user_id',auth()->id())
+        ->firstOrFail()
+);
+
+Route::get('/consignee/{id}', fn($id) =>
+    Consignee::where('id',$id)
+        ->where('user_id',auth()->id())
+        ->firstOrFail()
+);
+Route::get('/customer/{id}', function ($id) {
+    return Customer::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
+});

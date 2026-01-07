@@ -17,9 +17,11 @@
     flatpickr("#shipment_date", {
         enableTime: true,
         dateFormat: "Y-m-d H:i",
-        time_24hr: true
+        time_24hr: true,
+        defaultDate: new Date() // 👈 current date & time
     });
 </script>
+
 
 
 
