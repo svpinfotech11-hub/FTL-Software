@@ -147,7 +147,7 @@
                             </div>
 
                             <div id="registerStep" style="display:none;">
-                                <form id="registerForm" method="POST" action="{{ route('user.register.store') }}">
+                                <form id="registerForm" method="POST" action="">
                                     @csrf
                                     <input type="hidden" name="role" value="user">
                                     <!-- Verified Phone -->
