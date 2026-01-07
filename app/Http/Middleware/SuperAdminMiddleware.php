@@ -21,7 +21,7 @@ class SuperAdminMiddleware
             return redirect()->route('superadmin.login');
         }
 
-        if (Auth::user()->role !== 'superadmin') {
+        if (Auth::user()->role !== 'super_admin') {
             abort(403, 'Unauthorized');
         }
 

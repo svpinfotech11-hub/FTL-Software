@@ -26,6 +26,25 @@
                     {{-- SUPER ADMIN MENU --}}
                     @if (Auth::user()->role === 'super_admin')
                         {{-- Add Super Admin menus here --}}
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-people"></i>
+                                <p>
+                                    Users
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                              
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
 
 

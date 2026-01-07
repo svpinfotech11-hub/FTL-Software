@@ -30,7 +30,7 @@ class RoleMiddleware
 
     protected function redirectByRole($role)
     {
-        return $role === 'superadmin'
+        return $role === 'super_admin'
             ? redirect()->route('superadmin.login')
             : redirect()->route('login');
     }
@@ -38,7 +38,7 @@ class RoleMiddleware
     protected function redirectToDashboard($role)
     {
         return match ($role) {
-            'superadmin' => redirect()->route('superadmin.dashboard'),
+            'super_admin' => redirect()->route('superadmin.dashboard'),
             'user'       => redirect()->route('user.dashboard'),
             default      => redirect()->route('login'),
         };

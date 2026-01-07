@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Otp;
 use App\Models\User;
 use App\Mail\OtpMail;
 use Illuminate\Http\Request;
@@ -203,15 +204,65 @@ class AuthController extends Controller
     {
         return view('user.login');
     }
-    public function userLogin(Request $request)
+    // public function userLogin(Request $request)
+    // {
+    //     $request->validate([
+    //         'login' => 'required',
+    //     ]);
+
+    //     $login = $request->login;
+
+    //     // Detect login type
+    //     $isEmail = filter_var($login, FILTER_VALIDATE_EMAIL);
+
+    //     $user = User::where(
+    //         $isEmail ? 'email' : 'phone',
+    //         $login
+    //     )->first();
+
+    //     if (!$user) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'User not found'
+    //         ]);
+    //     }
+
+    //     // Generate OTP
+    //     $otp = rand(100000, 999999);
+
+    //     Cache::put('login_otp_' . $user->id, $otp, now()->addMinutes(5));
+
+    //     // ✅ SEND OTP ONLY BASED ON INPUT TYPE
+    //     if ($isEmail) {
+    //         // Send EMAIL OTP
+    //         Mail::to($user->email)->send(new OtpMail($otp));
+    //     } else {
+    //         // Send SMS OTP
+    //         $sms = $this->sendOtpphone($user->phone, $otp);
+
+    //         if (!$sms['success']) {
+    //             return response()->json([
+    //                 'status' => false,
+    //                 'message' => 'Failed to send OTP via SMS'
+    //             ]);
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'OTP sent successfully'
+    //     ]);
+    // }
+
+
+
+        public function userLogin(Request $request)
     {
         $request->validate([
             'login' => 'required',
         ]);
 
         $login = $request->login;
-
-        // Detect login type
         $isEmail = filter_var($login, FILTER_VALIDATE_EMAIL);
 
         $user = User::where(
@@ -226,17 +277,36 @@ class AuthController extends Controller
             ]);
         }
 
-        // Generate OTP
         $otp = rand(100000, 999999);
 
+        /* ---------------------------
+        1️⃣ Invalidate old OTPs
+        ---------------------------- */
+        Otp::where('value', $login)
+            ->where('verified', false)
+            ->update(['verified' => true]);
+
+        /* ---------------------------
+        2️⃣ Save OTP in DB
+        ---------------------------- */
+        Otp::create([
+            'type' => $isEmail ? 'email' : 'phone',
+            'value' => $login,
+            'otp' => $otp,
+            'expires_at' => now()->addMinutes(5),
+        ]);
+
+        /* ---------------------------
+        3️⃣ Optional Cache (Fast)
+        ---------------------------- */
         Cache::put('login_otp_' . $user->id, $otp, now()->addMinutes(5));
 
-        // ✅ SEND OTP ONLY BASED ON INPUT TYPE
+        /* ---------------------------
+        4️⃣ Send OTP
+        ---------------------------- */
         if ($isEmail) {
-            // Send EMAIL OTP
             Mail::to($user->email)->send(new OtpMail($otp));
         } else {
-            // Send SMS OTP
             $sms = $this->sendOtpphone($user->phone, $otp);
 
             if (!$sms['success']) {

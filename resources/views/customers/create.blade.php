@@ -56,76 +56,9 @@
 
                              <!--begin::Body-->
                              <div class="card-body">
-
-                                 <div class="row g-3">
-
-                                     <!-- Name -->
-                                     <div class="col-md-4">
-                                         <label class="form-label">Full Name</label>
-                                         <input
-                                             type="text"
-                                             name="name"
-                                             class="form-control"
-                                             placeholder="Enter full name"
-                                             required />
-                                     </div>
-
-                                     <!-- Email -->
-                                     <div class="col-md-4">
-                                         <label class="form-label">Email Address</label>
-                                         <input
-                                             type="email"
-                                             name="email"
-                                             class="form-control"
-                                             placeholder="Enter email"
-                                             required />
-                                     </div>
-
-                                     <!-- Phone -->
-                                     <div class="col-md-4">
-                                         <label class="form-label">Phone Number</label>
-                                         <input
-                                             type="text"
-                                             name="phone"
-                                             class="form-control"
-                                             placeholder="Enter phone number"
-                                             maxlength="10"
-                                             pattern="\d{10}"
-                                             title="Phone number must be 10 digits"
-                                             required />
-                                     </div>
-
-                                 </div>
-
-                                 <div class="row g-3 mt-3">
-                                     <!-- Role -->
-                                     <div class="col-md-4">
-                                         <label class="form-label">User Role</label>
-                                         <select name="role" class="form-select" required>
-                                             <option value="">Select Role</option>
-                                             <option value="super_admin">Super Admin</option>
-                                             <option value="branch_manager">Branch Manager</option>
-                                             <option value="booking_executive">Booking Executive</option>
-                                             <option value="accounts_user">Accounts User</option>
-                                             <option value="fleet_manager">Fleet Manager</option>
-                                             <option value="vendor_manager">Vendor Manager</option>
-                                             <option value="viewer">Viewer / Reports Only</option>
-                                         </select>
-                                     </div>
-
-                                     <!-- Status -->
-                                     <div class="col-md-4">
-                                         <label class="form-label">Status</label>
-                                         <select name="status" class="form-select" required>
-                                             <option value="active">Active</option>
-                                             <option value="inactive">Inactive</option>
-                                         </select>
-                                     </div>
-                                 </div>
-
                                  <!-- Customer Fields -->
 
-                                 <div class="row g-3 mt-4">
+                                 <div class="row g-3">
 
                                      <div class="col-md-4">
                                          <label class="form-label">Customer Code</label>
@@ -139,7 +72,7 @@
 
                                      <div class="col-md-4">
                                          <label class="form-label">Contact Person</label>
-                                         <input type="text" name="contact_person" class="form-control" placeholder="Enter contact person" />
+                                         <input type="number" name="phone" class="form-control" placeholder="Enter contact person" />
                                      </div>
 
                                      <div class="col-md-4">
