@@ -64,13 +64,22 @@ class SuperAdminController extends Controller
             ->withInput();
     }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
+  public function logout(Request $request)
+{
+    // Capture role BEFORE logout
+    $role = Auth::check() ? Auth::user()->role : null;
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    Auth::logout();
 
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    // Redirect based on role
+    if ($role === 'super_admin') {
         return redirect()->route('superadmin.login');
     }
+
+    return redirect()->route('login');
+}
+
 }
