@@ -72,24 +72,40 @@ Route::middleware('guest')->group(function () {
     Route::post('/superadmin/login', [SuperAdminController::class, 'adminLogin'])->name('superadmin.login');
 });
 
-Route::middleware(['superadmin'])->group(function () {
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
     Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboardpp'])
         ->name('superadmin.dashboard');
 });
 
+
+Route::middleware(['auth', 'role:user'])->group(function () {
+
+    Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
+    Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendors.store');
+    Route::get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
+    Route::delete('/user/{user}', [VendorController::class, 'destroy'])->name('user.destroy');
+
+
+    Route::resource('branches', BranchController::class);
+
+    Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
+    Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
+    Route::get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
+    Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+    Route::get('/domestic-shipment/create', [DomesticShipmentController::class, 'create'])->name('domestic.shipment.create');
+    Route::post('/domestic-shipment/store', [DomesticShipmentController::class, 'store'])->name('domestic.shipment.store');
+    Route::get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
+    Route::get('/domestic-shipment/{id}/edit', [DomesticShipmentController::class, 'edit'])->name('domestic.shipment.edit');
+    Route::put('/domestic-shipment/{id}', [DomesticShipmentController::class, 'update'])->name('domestic.shipment.update');
+    Route::delete('/domestic-shipment/{id}', [DomesticShipmentController::class, 'destroy'])->name('domestic.shipment.destroy');
+    Route::get('/new_pod/{id}', [DomesticShipmentController::class, 'show'])->name('domestic.shipment.pod');
+});
+
 // User logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-
-Route::get('/domestic-shipment/create', [DomesticShipmentController::class, 'create'])->name('domestic.shipment.create');
-Route::post('/domestic-shipment/store', [DomesticShipmentController::class, 'store'])->name('domestic.shipment.store');
-Route::get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
-Route::get('/domestic-shipment/{id}/edit', [DomesticShipmentController::class, 'edit'])->name('domestic.shipment.edit');
-Route::put('/domestic-shipment/{id}', [DomesticShipmentController::class, 'update'])->name('domestic.shipment.update');
-Route::delete('/domestic-shipment/{id}', [DomesticShipmentController::class, 'destroy'])->name('domestic.shipment.destroy');
-Route::get('/new_pod/{id}', [DomesticShipmentController::class, 'show'])->name('domestic.shipment.pod');
-
-
 
 Route::get('/get-cities/{state}', [DomesticShipmentController::class, 'getCities']);
 
@@ -110,20 +126,6 @@ Route::post('/superadmin/logout', [SuperAdminController::class, 'logout'])->name
 Route::post('/user/verify-otp', [AuthController::class, 'verifyOtp'])->name('user.verifyOtp');
 
 
-Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
-Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendors.store');
-Route::get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
-Route::delete('/user/{user}', [VendorController::class, 'destroy'])->name('user.destroy');
-
-
-Route::resource('branches', BranchController::class);
-
-Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
-Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
-Route::get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
-Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
-Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
-Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
 
 Route::get('/get-location/{pincode}', function ($pincode) {
@@ -139,15 +141,19 @@ Route::get('/get-location/{pincode}', function ($pincode) {
     ]);
 });
 
-Route::get('/consigner/{id}', fn($id) =>
-    Consigner::where('id',$id)
-        ->where('user_id',auth()->id())
+Route::get(
+    '/consigner/{id}',
+    fn($id) =>
+    Consigner::where('id', $id)
+        ->where('user_id', auth()->id())
         ->firstOrFail()
 );
 
-Route::get('/consignee/{id}', fn($id) =>
-    Consignee::where('id',$id)
-        ->where('user_id',auth()->id())
+Route::get(
+    '/consignee/{id}',
+    fn($id) =>
+    Consignee::where('id', $id)
+        ->where('user_id', auth()->id())
         ->firstOrFail()
 );
 Route::get('/customer/{id}', function ($id) {
