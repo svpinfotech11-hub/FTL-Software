@@ -3,13 +3,12 @@
     <!-- Sidebar Brand -->
     <div class="sidebar-brand">
         <a href="{{ Auth::check() && Auth::user()->role === 'super_admin'
-                ? route('superadmin.dashboard')
-                : route('user.dashboard') }}"
-           class="brand-link">
+            ? route('superadmin.dashboard')
+            : route('user.dashboard') }}"
+            class="brand-link">
 
-            <img src="{{ asset('assets/assets/img/AdminLTELogo.png') }}"
-                 alt="AdminLTE Logo"
-                 class="brand-image opacity-75 shadow">
+            <img src="{{ asset('assets/assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+                class="brand-image opacity-75 shadow">
 
             <span class="brand-text fw-light">AdminLTE 4</span>
         </a>
@@ -19,15 +18,13 @@
     <!-- Sidebar Wrapper -->
     <div class="sidebar-wrapper">
         <nav class="mt-2">
-            <ul class="nav sidebar-menu flex-column"
-                data-lte-toggle="treeview"
-                role="navigation"
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
                 data-accordion="false">
 
                 @auth
 
                     {{-- SUPER ADMIN MENU --}}
-                    @if(Auth::user()->role === 'super_admin')
+                    @if (Auth::user()->role === 'super_admin')
                         {{-- Add Super Admin menus here --}}
 
                         <li class="nav-item">
@@ -52,8 +49,7 @@
 
 
                     {{-- USER MENU --}}
-                    @if(Auth::user()->role === 'user')
-
+                    @if (Auth::user()->role === 'user')
                         {{-- Users --}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -179,6 +175,78 @@
                             </ul>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-truck"></i>
+                                <p>
+                                    Vehicles
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('vehicles.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('vehicles.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-person-badge"></i>
+                                <p>
+                                    Drivers
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('drivers.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('drivers.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-cash-stack"></i>
+                                <p>
+                                    Add Expense
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('add-expenses.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('add-expenses.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
 
                 @endauth

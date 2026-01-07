@@ -27,6 +27,51 @@ class DomesticShipmentController extends Controller
         return view('shipment.index', compact('shipments'));
     }
 
+
+    public function create()
+    {
+        $userId = auth()->id(); // current logged-in user
+
+        // Fetch consignees saved by this user
+        $consignees = DomesticShipment::where('consignee_save_to_address_book', 1)
+            ->where('user_id', $userId)
+            ->select(
+                'id',
+                'consignee_name',
+                'consignee_company',
+                'consignee_address',
+                'consignee_pincode',
+                'consignee_state',
+                'consignee_city',
+                'zone',
+                'consignee_contact',
+                'gst_no'
+            )
+            ->get();
+
+        // Fetch consigners saved by this user
+        $consigners = DomesticShipment::where('consigner_save_to_address_book', 1)
+            ->where('user_id', $userId)
+            ->select(
+                'id',
+                'consigner_name',
+                'consigner_address',
+                'consigner_pincode',
+                'consigner_state',
+                'consigner_city',
+                'consigner_contact',
+                'coll_type',
+                'delivery_type'
+            )
+            ->get();
+
+        // Fetch states (no user filter needed)
+        $states = DB::table('cities')
+            ->select('city_state')
+            ->distinct()
+            ->orderBy('city_state')
+            ->get();
+
     //    public function create()
 // {
 //     $userId = auth()->id(); // current logged-in user
@@ -143,9 +188,31 @@ class DomesticShipmentController extends Controller
     // }
 
 
+        return view('shipment.create', compact('consignees', 'consigners', 'states', 'customers'));
+    }
+
 
     public function store(Request $request)
     {
+
+        $request->validate(
+            [
+                'airway_no' => 'required|unique:domestic_shipments,airway_no',
+            ],
+            [
+                'airway_no.required' => 'Airway Number is required.',
+                'airway_no.unique'   => 'This Airway Number already exists.',
+            ]
+        );
+
+        $data = $request->except(['invoices', 'charges']);
+
+        $data['user_id'] = auth()->id(); // <-- Add this line
+
+        if ($request->has('charges')) {
+            foreach ($request->charges as $key => $value) {
+                $data[$key] = $value;
+
         // dd($request->all());
         DB::beginTransaction();
 
@@ -171,6 +238,7 @@ class DomesticShipmentController extends Controller
                 $consignerId = $consigner->id;
             } else {
                 $consignerId = null; // optional, just in case
+
             }
 
             // 2️⃣ Handle Consignee
@@ -395,21 +463,28 @@ class DomesticShipmentController extends Controller
     }
 
 
-   public function getCities($state)
-{
-    // Optional: Basic validation
-    if (empty($state)) {
-        return response()->json([]);
+    public function getCities($state)
+    {
+        // Optional: Basic validation
+        if (empty($state)) {
+            return response()->json([]);
+        }
+        // Fetch cities matching the state
+        $cities = DB::table('cities')
+            ->where('city_state', $state)
+            ->select('city_name')
+            ->orderBy('city_name')
+            ->get();
+
+        return response()->json($cities);
     }
 
-    // Fetch cities matching the state
-    $cities = DB::table('cities')
-        ->where('city_state', $state)
-        ->select('city_name')
-        ->orderBy('city_name')
-        ->get();
+    public function show($id)
+    {
+        $shipment = DomesticShipment::with([
+            'invoices'
+        ])->findOrFail($id);
 
-    return response()->json($cities);
-}
-
+        return view('shipment.pod', compact('shipment'));
+    }
 }

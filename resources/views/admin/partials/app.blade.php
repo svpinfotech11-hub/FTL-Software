@@ -21,6 +21,12 @@
         defaultDate: new Date() // 👈 current date & time
     });
 </script>
+<script>
+    flatpickr(".datepicker", {
+        dateFormat: "Y-m-d"
+    });
+</script>
+
 
 
 
