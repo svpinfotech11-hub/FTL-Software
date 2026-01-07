@@ -72,7 +72,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/superadmin/login', [SuperAdminController::class, 'adminLogin'])->name('superadmin.login');
 });
 
-Route::middleware(['auth', 'role:superadmin'])->group(function () {
+Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboardpp'])
         ->name('superadmin.dashboard');
 });
