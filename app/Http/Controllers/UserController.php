@@ -86,4 +86,43 @@ class UserController extends Controller
         return redirect()->route('user.index')
             ->with('success', 'User deleted successfully.');
     }
+
+    public function edit()
+    {
+        $user = Auth::user();
+        return view('user.edit', compact('user'));
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email'   => 'required|email|unique:users,email,' . $user->id,
+            'address' => 'nullable|string',
+            'country' => 'nullable|string',
+            'state'   => 'nullable|string',
+            'city'    => 'nullable|string',
+            'password' => 'nullable',
+        ]);
+
+        $user->update([
+            'name'    => $request->name,
+            'phone' => $request->phone,
+            'email'   => $request->email,
+            'address' => $request->address,
+            'country' => $request->country,
+            'state'   => $request->state,
+            'city'    => $request->city,
+        ]);
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
+
+        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully');
+    }
 }

@@ -27,6 +27,44 @@
     });
 </script>
 
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+
+<script>
+    CKEDITOR.replace('invoice_terms', {
+        height: 250
+    });
+
+    CKEDITOR.replace('bank_terms', {
+        height: 250
+    });
+</script>
+
+<script>
+    CKEDITOR.replace('invoice_terms', {
+        height: 260,
+        toolbar: [{
+                name: 'basicstyles',
+                items: ['Bold', 'Italic', 'Underline']
+            },
+            {
+                name: 'paragraph',
+                items: ['NumberedList', 'BulletedList', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']
+            },
+            {
+                name: 'insert',
+                items: ['Table']
+            },
+            {
+                name: 'tools',
+                items: ['Maximize']
+            }
+        ]
+    });
+</script>
+
+
+
 
 
 

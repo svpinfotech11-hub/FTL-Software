@@ -4,7 +4,7 @@
 
         <div class="app-content-header">
             <div class="container-fluid">
-                <h3>Driver Expenses</h3>
+                <h3>All Expenses</h3>
             </div>
         </div>
 
