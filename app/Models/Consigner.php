@@ -17,7 +17,10 @@ class Consigner extends Model
         'contact_no',
         'type_of_doc',
         'gst_no',
-        'is_saved'
+        'is_saved',
+        'doc_number',
+        'coll_type',
+        'delivery_type'
     ];
 
     public function user()

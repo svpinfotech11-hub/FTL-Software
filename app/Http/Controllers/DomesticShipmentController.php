@@ -2,124 +2,80 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Driver;
 use App\Models\Customer;
 use App\Models\Consignee;
 use App\Models\Consigner;
+use App\Models\VehicleHire;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\DomesticShipment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class DomesticShipmentController extends Controller
 {
     public function index()
     {
-      $shipments = DomesticShipment::with([
+        $shipments = DomesticShipment::with([
             'consigner:id,name',
             'consignee:id,name,city,pincode',
             'user:id,name'
         ])
-        ->where('user_id', auth()->id()) // 🔑 filter by auth user
-        ->latest()
-        ->get();
+            ->where('user_id', auth()->id()) // 🔑 filter by auth user
+            ->latest()
+            ->get();
 
         return view('shipment.index', compact('shipments'));
     }
 
 
-    public function create()
-    {
-        $userId = auth()->id(); // current logged-in user
+    // public function create()
+    // {
+    //     $userId = auth()->id(); // current logged-in user
 
-        // Fetch consignees saved by this user
-        $consignees = DomesticShipment::where('consignee_save_to_address_book', 1)
-            ->where('user_id', $userId)
-            ->select(
-                'id',
-                'consignee_name',
-                'consignee_company',
-                'consignee_address',
-                'consignee_pincode',
-                'consignee_state',
-                'consignee_city',
-                'zone',
-                'consignee_contact',
-                'gst_no'
-            )
-            ->get();
+    //     // Fetch consignees saved by this user
+    //     $consignees = DomesticShipment::where('consignee_save_to_address_book', 1)
+    //         ->where('user_id', $userId)
+    //         ->select(
+    //             'id',
+    //             'consignee_name',
+    //             'consignee_company',
+    //             'consignee_address',
+    //             'consignee_pincode',
+    //             'consignee_state',
+    //             'consignee_city',
+    //             'zone',
+    //             'consignee_contact',
+    //             'gst_no'
+    //         )
+    //         ->get();
 
-        // Fetch consigners saved by this user
-        $consigners = DomesticShipment::where('consigner_save_to_address_book', 1)
-            ->where('user_id', $userId)
-            ->select(
-                'id',
-                'consigner_name',
-                'consigner_address',
-                'consigner_pincode',
-                'consigner_state',
-                'consigner_city',
-                'consigner_contact',
-                'coll_type',
-                'delivery_type'
-            )
-            ->get();
+    //     // Fetch consigners saved by this user
+    //     $consigners = DomesticShipment::where('consigner_save_to_address_book', 1)
+    //         ->where('user_id', $userId)
+    //         ->select(
+    //             'id',
+    //             'consigner_name',
+    //             'consigner_address',
+    //             'consigner_pincode',
+    //             'consigner_state',
+    //             'consigner_city',
+    //             'consigner_contact',
+    //             'coll_type',
+    //             'delivery_type'
+    //         )
+    //         ->get();
 
-        // Fetch states (no user filter needed)
-        $states = DB::table('cities')
-            ->select('city_state')
-            ->distinct()
-            ->orderBy('city_state')
-            ->get();
+    //     // Fetch states (no user filter needed)
+    //     $states = DB::table('cities')
+    //         ->select('city_state')
+    //         ->distinct()
+    //         ->orderBy('city_state')
+    //         ->get();
+    // }
 
-    //    public function create()
-// {
-//     $userId = auth()->id(); // current logged-in user
-
-//     // Fetch consignees saved by this user
-//     $consignees = DomesticShipment::where('consignee_save_to_address_book', 1)
-//         ->where('user_id', $userId)
-//         ->select(
-//             'id',
-//             'consignee_name',
-//             'consignee_company',
-//             'consignee_address',
-//             'consignee_pincode',
-//             'consignee_state',
-//             'consignee_city',
-//             'zone',
-//             'consignee_contact',
-//             'gst_no'
-//         )
-//         ->get();
-
-//     // Fetch consigners saved by this user
-//     $consigners = DomesticShipment::where('consigner_save_to_address_book', 1)
-//         ->where('user_id', $userId)
-//         ->select(
-//             'id',
-//             'consigner_name',
-//             'consigner_address',
-//             'consigner_pincode',
-//             'consigner_state',
-//             'consigner_city',
-//             'consigner_contact',
-//             'coll_type',
-//             'delivery_type'
-//         )
-//         ->get();
-
-//     // Fetch states (no user filter needed)
-//     $states = DB::table('cities')
-//         ->select('city_state')
-//         ->distinct()
-//         ->orderBy('city_state')
-//         ->get();
-
-//         $customers = Customer::all();
-
-//     return view('shipment.create', compact('consignees', 'consigners', 'states', 'customers'));
-// }
 
 
 
@@ -131,7 +87,7 @@ class DomesticShipmentController extends Controller
             ->where('is_saved', 1)
             ->get();
 
-            // dd($consigners);
+        // dd($consigners);
 
         $consignees = Consignee::where('user_id', $userId)
             ->where('is_saved', 1)
@@ -145,127 +101,206 @@ class DomesticShipmentController extends Controller
 
         $customers = Customer::where('user_id', $userId)->get();
 
+        $vehicleHires = VehicleHire::where('user_id', $userId)->get();
+
+         $drivers = Driver::all(); 
+
         return view('shipment.create', compact(
             'consigners',
             'consignees',
             'states',
-            'customers'
+            'customers',
+            'vehicleHires',
+            'drivers'
         ));
-    }
-
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate(
-    //         [
-    //             'airway_no' => 'required|unique:domestic_shipments,airway_no',
-    //         ],
-    //         [
-    //             'airway_no.required' => 'Airway Number is required.',
-    //             'airway_no.unique'   => 'This Airway Number already exists.',
-    //         ]
-    //     );
-
-    //     $data = $request->except(['invoices', 'charges']);
-
-    //         $data['user_id'] = auth()->id(); // <-- Add this line
-
-    //     if ($request->has('charges')) {
-    //         foreach ($request->charges as $key => $value) {
-    //             $data[$key] = $value;
-    //         }
-    //     }
-
-    //     $shipment = DomesticShipment::create($data);
-
-    //     if ($request->has('invoices')) {
-    //         foreach ($request->invoices as $invoice) {
-    //             $shipment->invoices()->create($invoice);
-    //         }
-    //     }
-
-    //     return redirect()->back()->with('success', 'Shipment Added Successfully');
-    // }
-
-
-        return view('shipment.create', compact('consignees', 'consigners', 'states', 'customers'));
     }
 
 
     public function store(Request $request)
     {
+        Log::info('🚚 Shipment store started', [
+            'user_id' => auth()->id(),
+            'payload' => $request->all(),
+        ]);
 
-        $request->validate(
-            [
-                'airway_no' => 'required|unique:domestic_shipments,airway_no',
-            ],
-            [
-                'airway_no.required' => 'Airway Number is required.',
-                'airway_no.unique'   => 'This Airway Number already exists.',
-            ]
-        );
+        // ✅ Basic validation
+        $request->validate([
+            'airway_no'     => 'required|unique:domestic_shipments,airway_no',
+            'customer_id'   => 'required',
+            'shipment_date' => 'required',
+            // OWN
+            'driver_name'   => 'required_if:vehicle_type,own',
+            'driver_number' => 'required_if:vehicle_type,own',
+            'vehicle_number'=> 'required_if:vehicle_type,own',
 
-        $data = $request->except(['invoices', 'charges']);
+            // RENTED
+            'vehicle_hire_id' => 'required_if:vehicle_type,rented|exists:vehicle_hires,id',
+        ]);
 
-        $data['user_id'] = auth()->id(); // <-- Add this line
-
-        if ($request->has('charges')) {
-            foreach ($request->charges as $key => $value) {
-                $data[$key] = $value;
-
-        // dd($request->all());
         DB::beginTransaction();
 
         try {
-            // 1️⃣ Handle Consigner
-            if ($request->consigner_id) {
-                $consignerId = $request->consigner_id; // existing consigner
-            } elseif ($request->save_consigner) {
-                // create new consigner
-                $consigner = Consigner::create([
-                    'user_id'     => auth()->id(),
-                    'customer_id' => $request->customer_id,
-                    'name'        => $request->consigner_name,
-                    'address'     => $request->consigner_address,
-                    'pincode'     => $request->consigner_pincode,
-                    'state'       => $request->consigner_state,
-                    'city'        => $request->consigner_city,
-                    'contact_no'  => $request->consigner_contact,
-                    'type_of_doc' => $request->consigner_type_of_doc,
-                    'gst_no'      => $request->consigner_type_of_doc,
-                    'is_saved'    => $request->save_consigner ? 1 : 0,
-                ]);
-                $consignerId = $consigner->id;
-            } else {
-                $consignerId = null; // optional, just in case
 
+            /* =======================
+            | 1️⃣ HANDLE CONSIGNER
+            =======================*/
+
+            $consignerId = null;
+
+            Log::info('📦 Consigner input', [
+                'consigner_id'   => $request->consigner_id,
+                'save_consigner' => $request->save_consigner,
+            ]);
+
+            // EXISTING CONSIGNER
+            if (!empty($request->consigner_id)) {
+                $consignerId = $request->consigner_id;
+
+                Log::info('✅ Existing consigner used', [
+                    'consigner_id' => $consignerId,
+                ]);
             }
 
-            // 2️⃣ Handle Consignee
-            if ($request->consignee_id) {
-                $consigneeId = $request->consignee_id; // existing consignee
-            } elseif ($request->save_consignee) {
-                // create new consignee
+            // NEW CONSIGNER (save OR temp)
+            if (empty($request->consigner_id)) {
+
+                $request->validate([
+                    'consigner_name'    => 'required',
+                    'consigner_address' => 'required',
+                    'consigner_pincode' => 'required',
+                    'consigner_state'   => 'required',
+                    'consigner_city'    => 'required',
+                    'consigner_contact' => 'required',
+                ]);
+
+                $consigner = Consigner::create([
+                    'user_id'       => auth()->id(),
+                    'customer_id'   => $request->customer_id,
+                    'name'          => $request->consigner_name,
+                    'address'       => $request->consigner_address,
+                    'pincode'       => $request->consigner_pincode,
+                    'state'         => $request->consigner_state,
+                    'city'          => $request->consigner_city,
+                    'contact_no'    => $request->consigner_contact,
+                    'type_of_doc'   => $request->consigner_type_of_doc,
+                    'doc_number'    => $request->consigner_doc_number,
+                    'gst_no'        => $request->consigner_doc_number,
+                    'coll_type'     => $request->coll_type,
+                    'delivery_type' => $request->delivery_type,
+                    'is_saved'      => $request->save_consigner ? 1 : 0,
+                ]);
+
+                $consignerId = $consigner->id;
+
+                Log::info('🆕 New consigner created', [
+                    'consigner_id' => $consignerId,
+                    'is_saved'     => $request->save_consigner ? 1 : 0,
+                ]);
+            }
+
+            /* =======================
+            | 2️⃣ HANDLE CONSIGNEE
+            =======================*/
+
+            $consigneeId = null;
+
+            Log::info('📦 Consignee input', [
+                'consignee_id'   => $request->consignee_id,
+                'save_consignee' => $request->save_consignee,
+            ]);
+
+            // EXISTING CONSIGNEE
+            if (!empty($request->consignee_id)) {
+                $consigneeId = $request->consignee_id;
+
+                Log::info('✅ Existing consignee used', [
+                    'consignee_id' => $consigneeId,
+                ]);
+            }
+
+            // NEW CONSIGNEE (save OR temp)
+            if (empty($request->consignee_id)) {
+
+                $request->validate([
+                    'consignee_name'    => 'required',
+                    'consignee_address' => 'required',
+                    'consignee_pincode' => 'required',
+                    'consignee_state'   => 'required',
+                    'consignee_city'    => 'required',
+                    'consignee_contact' => 'required',
+                ]);
+
                 $consignee = Consignee::create([
                     'user_id'    => auth()->id(),
                     'name'       => $request->consignee_name,
                     'company'    => $request->consignee_company,
                     'address'    => $request->consignee_address,
                     'pincode'    => $request->consignee_pincode,
-                    'state'      => $request->consigner_state ?? null,
+                    'state'      => $request->consignee_state,
                     'city'       => $request->consignee_city,
                     'zone'       => $request->zone,
                     'contact_no' => $request->consignee_contact,
                     'gst_no'     => $request->consignee_gst,
                     'is_saved'   => $request->save_consignee ? 1 : 0,
                 ]);
+
                 $consigneeId = $consignee->id;
-            } else {
-                $consigneeId = null;
+
+                Log::info('🆕 New consignee created', [
+                    'consignee_id' => $consigneeId,
+                    'is_saved'     => $request->save_consignee ? 1 : 0,
+                ]);
             }
 
-            // 3️⃣ Save Shipment
-            $shipment = DomesticShipment::create([
+            /* =======================
+            | 3️⃣ SAVE SHIPMENT
+            =======================*/
+
+            Log::info('🚛 Creating shipment', [
+                'user_id'      => auth()->id(),
+                'customer_id'  => $request->customer_id,
+                'consigner_id' => $consignerId,
+                'consignee_id' => $consigneeId,
+            ]);
+
+            /* =======================
+            | 3️⃣ VEHICLE TYPE LOGIC
+            =======================*/
+
+            Log::info('🚚 Vehicle type handling', [
+                'vehicle_type' => $request->vehicle_type,
+            ]);
+
+            $data = [
+                'vehicle_type' => $request->vehicle_type,
+            ];
+
+            if ($request->vehicle_type === 'own') {
+
+                $data['vehicle_hire_id'] = null;
+                $data['vehicle_number'] = $request->vehicle_number;
+                $data['driver_name']    = $request->driver_name;
+                $data['driver_number'] = $request->driver_number;
+
+                Log::info('🚗 Own vehicle selected', $data);
+            }
+
+            if ($request->vehicle_type === 'rented') {
+
+                $hire = VehicleHire::findOrFail($request->vehicle_hire_id);
+
+                $data['vehicle_hire_id'] = $hire->id;
+                $data['vehicle_number'] = $hire->vehicle_no;
+                $data['driver_name']    = $hire->driver_details;
+                $data['driver_number'] = null;
+
+                Log::info('🚛 Rented vehicle selected', [
+                    'hire_id' => $hire->id,
+                    'vehicle_no' => $hire->vehicle_no,
+                ]);
+            }
+
+            DomesticShipment::create([
                 'user_id'           => auth()->id(),
                 'customer_id'       => $request->customer_id,
                 'consigner_id'      => $consignerId,
@@ -292,14 +327,28 @@ class DomesticShipmentController extends Controller
 
             DB::commit();
 
-            return redirect()->route('domestic.shipment.index')
+            Log::info('✅ Shipment stored successfully');
+
+            return redirect()
+                ->route('domestic.shipment.index')
                 ->with('success', 'Shipment saved successfully!');
 
         } catch (\Exception $e) {
+
             DB::rollBack();
-            return redirect()->back()->withInput()->withErrors($e->getMessage());
+
+            Log::error('❌ Shipment store failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return back()
+                ->withInput()
+                ->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+
 
 
     public function edit($id)
@@ -317,14 +366,14 @@ class DomesticShipmentController extends Controller
             ->where('is_saved', 1)
             ->get();
 
-            // dd($consigners);
+        // dd($consigners);
 
         // Fetch saved consignees
         $consignees = Consignee::where('user_id', auth()->id())
             ->where('is_saved', 1)
             ->get();
 
-         $customers = Customer::where('user_id', $userId)->get();
+        $customers = Customer::where('user_id', $userId)->get();
 
         return view('shipment.edit', compact(
             'shipment',
@@ -336,118 +385,113 @@ class DomesticShipmentController extends Controller
 
     public function update(Request $request, $id)
     {
-    DB::beginTransaction();
+        DB::beginTransaction();
 
-    try {
+        try {
 
-        $shipment = DomesticShipment::findOrFail($id);
+            $shipment = DomesticShipment::findOrFail($id);
 
-        /* =====================================================
+            /* =====================================================
          | 1️⃣ HANDLE CONSIGNER
          ===================================================== */
 
-        if ($request->consigner_id) {
+            if ($request->consigner_id) {
 
-            // Existing consigner selected
-            $consignerId = $request->consigner_id;
+                // Existing consigner selected
+                $consignerId = $request->consigner_id;
+            } elseif ($request->save_consigner) {
 
-        } elseif ($request->save_consigner) {
+                // Create NEW consigner & save to address book
+                $consigner = Consigner::create([
+                    'user_id'     => auth()->id(),
+                    'customer_id' => $request->customer_id,
+                    'name'        => $request->consigner_name,
+                    'address'     => $request->consigner_address,
+                    'pincode'     => $request->consigner_pincode,
+                    'state'       => $request->consigner_state,
+                    'city'        => $request->consigner_city,
+                    'contact_no'  => $request->consigner_contact,
+                    'type_of_doc' => $request->consigner_type_of_doc,
+                    'gst_no'      => $request->consigner_type_of_doc,
+                    'is_saved'    => 1,
+                ]);
 
-            // Create NEW consigner & save to address book
-            $consigner = Consigner::create([
-                'user_id'     => auth()->id(),
-                'customer_id' => $request->customer_id,
-                'name'        => $request->consigner_name,
-                'address'     => $request->consigner_address,
-                'pincode'     => $request->consigner_pincode,
-                'state'       => $request->consigner_state,
-                'city'        => $request->consigner_city,
-                'contact_no'  => $request->consigner_contact,
-                'type_of_doc' => $request->consigner_type_of_doc,
-                'gst_no'      => $request->consigner_type_of_doc,
-                'is_saved'    => 1,
-            ]);
-
-            $consignerId = $consigner->id;
-
-        } else {
-            // Use existing linked consigner (no change)
-            $consignerId = $shipment->consigner_id;
-        }
+                $consignerId = $consigner->id;
+            } else {
+                // Use existing linked consigner (no change)
+                $consignerId = $shipment->consigner_id;
+            }
 
 
-        /* =====================================================
+            /* =====================================================
          | 2️⃣ HANDLE CONSIGNEE
          ===================================================== */
 
-        if ($request->consignee_id) {
+            if ($request->consignee_id) {
 
-            // Existing consignee selected
-            $consigneeId = $request->consignee_id;
+                // Existing consignee selected
+                $consigneeId = $request->consignee_id;
+            } elseif ($request->save_consignee) {
 
-        } elseif ($request->save_consignee) {
+                // Create NEW consignee & save to address book
+                $consignee = Consignee::create([
+                    'user_id'    => auth()->id(),
+                    'name'       => $request->consignee_name,
+                    'company'    => $request->consignee_company,
+                    'address'    => $request->consignee_address,
+                    'pincode'    => $request->consignee_pincode,
+                    'state'      => $request->consignee_state,
+                    'city'       => $request->consignee_city,
+                    'zone'       => $request->zone,
+                    'contact_no' => $request->consignee_contact,
+                    'gst_no'     => $request->consignee_gst,
+                    'is_saved'   => 1,
+                ]);
 
-            // Create NEW consignee & save to address book
-            $consignee = Consignee::create([
-                'user_id'    => auth()->id(),
-                'name'       => $request->consignee_name,
-                'company'    => $request->consignee_company,
-                'address'    => $request->consignee_address,
-                'pincode'    => $request->consignee_pincode,
-                'state'      => $request->consignee_state,
-                'city'       => $request->consignee_city,
-                'zone'       => $request->zone,
-                'contact_no' => $request->consignee_contact,
-                'gst_no'     => $request->consignee_gst,
-                'is_saved'   => 1,
-            ]);
-
-            $consigneeId = $consignee->id;
-
-        } else {
-            // Keep existing consignee
-            $consigneeId = $shipment->consignee_id;
-        }
+                $consigneeId = $consignee->id;
+            } else {
+                // Keep existing consignee
+                $consigneeId = $shipment->consignee_id;
+            }
 
 
-        /* =====================================================
+            /* =====================================================
          | 3️⃣ UPDATE SHIPMENT
          ===================================================== */
 
-        $shipment->update([
-            'customer_id'       => $request->customer_id,
-            'consigner_id'      => $consignerId,
-            'consignee_id'      => $consigneeId,
-            'shipment_date'     => $request->shipment_date,
-            'courier'           => $request->courier,
-            'airway_no'         => $request->airway_no,
-            'risk_type'         => $request->risk_type,
-            'bill_type'         => $request->bill_type,
-            'description'       => $request->description,
-            'vehicle_no'        => $request->vehicle_no,
-            'pkt'               => $request->pkt,
-            'qty'               => $request->qty,
-            'actual_weight'     => $request->actual_weight,
-            'chargeable_weight' => $request->chargeable_weight,
-            'sub_total'         => $request->sub_total,
-            'tax_type'          => $request->tax_type,
-            'tax'               => $request->tax,
-            'cgst'              => $request->cgst,
-            'sgst'              => $request->sgst,
-            'igst'              => $request->igst,
-            'grand_total'       => $request->grand_total,
-        ]);
+            $shipment->update([
+                'customer_id'       => $request->customer_id,
+                'consigner_id'      => $consignerId,
+                'consignee_id'      => $consigneeId,
+                'shipment_date'     => $request->shipment_date,
+                'courier'           => $request->courier,
+                'airway_no'         => $request->airway_no,
+                'risk_type'         => $request->risk_type,
+                'bill_type'         => $request->bill_type,
+                'description'       => $request->description,
+                'vehicle_no'        => $request->vehicle_no,
+                'pkt'               => $request->pkt,
+                'qty'               => $request->qty,
+                'actual_weight'     => $request->actual_weight,
+                'chargeable_weight' => $request->chargeable_weight,
+                'sub_total'         => $request->sub_total,
+                'tax_type'          => $request->tax_type,
+                'tax'               => $request->tax,
+                'cgst'              => $request->cgst,
+                'sgst'              => $request->sgst,
+                'igst'              => $request->igst,
+                'grand_total'       => $request->grand_total,
+            ]);
 
-        DB::commit();
+            DB::commit();
 
-        return redirect()
-            ->route('domestic.shipment.index')
-            ->with('success', 'Shipment updated successfully!');
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->withInput()->withErrors($e->getMessage());
-    }
+            return redirect()
+                ->route('domestic.shipment.index')
+                ->with('success', 'Shipment updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withInput()->withErrors($e->getMessage());
+        }
     }
 
 

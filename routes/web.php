@@ -27,6 +27,7 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\DomesticShipmentController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\VehicleHireController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -107,6 +108,16 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::put('/domestic-shipment/{id}', [DomesticShipmentController::class, 'update'])->name('domestic.shipment.update');
     Route::delete('/domestic-shipment/{id}', [DomesticShipmentController::class, 'destroy'])->name('domestic.shipment.destroy');
     Route::get('/new_pod/{id}', [DomesticShipmentController::class, 'show'])->name('domestic.shipment.pod');
+
+
+    Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
+    Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
+    Route::get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
+    Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
+    Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
+    Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
+
+
 });
 
 // User logout
