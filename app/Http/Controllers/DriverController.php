@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DriverController extends Controller
 {
     public function index()
     {
-        $drivers = Driver::latest()->get();
+        $userId = Auth::id();
+
+        $drivers = Driver::where('user_id', $userId)->latest()->get();
         return view('drivers.index', compact('drivers'));
     }
 
@@ -20,7 +23,12 @@ class DriverController extends Controller
 
     public function store(Request $request)
     {
-        Driver::create($request->all());
+        $userId = Auth::id();
+
+        $data = $request->all();
+        $data['user_id'] = $userId;
+
+        Driver::create($data);
 
         return redirect()->route('drivers.index')
             ->with('success', 'Driver added successfully');
@@ -28,14 +36,24 @@ class DriverController extends Controller
 
     public function edit($id)
     {
-        $driver = Driver::findOrFail($id);
+        $userId = Auth::id();
+
+        $driver = Driver::where('id', $id)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+
         return view('drivers.edit', compact('driver'));
     }
 
     public function update(Request $request, $id)
     {
-        $driver = Driver::findOrFail($id);
-        $driver->update($request->all());
+        $userId = Auth::id();
+
+        $driver = Driver::where('id', $id)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+
+        $driver->update($request->except('user_id'));
 
         return redirect()->route('drivers.index')
             ->with('success', 'Driver updated successfully');
@@ -43,7 +61,12 @@ class DriverController extends Controller
 
     public function destroy($id)
     {
-        Driver::findOrFail($id)->delete();
+        $userId = Auth::id();
+
+        Driver::where('id', $id)
+            ->where('user_id', $userId)
+            ->firstOrFail()
+            ->delete();
 
         return redirect()->route('drivers.index')
             ->with('success', 'Driver deleted successfully');

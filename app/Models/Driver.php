@@ -29,5 +29,13 @@ class Driver extends Model
         'joining_date',
         'leaving_date',
         'dob',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    protected $dates = ['deleted_at'];
 }
