@@ -21,7 +21,8 @@ class DomesticShipmentController extends Controller
         $shipments = DomesticShipment::with([
             'consigner:id,name',
             'consignee:id,name,city,pincode',
-            'user:id,name'
+            'user:id,name',
+            'vehicleHire:id,vendor_name'
         ])
             ->where('user_id', auth()->id()) // 🔑 filter by auth user
             ->latest()
@@ -123,19 +124,23 @@ class DomesticShipmentController extends Controller
             'payload' => $request->all(),
         ]);
 
-        // ✅ Basic validation
         $request->validate([
-            'airway_no'     => 'required|unique:domestic_shipments,airway_no',
-            'customer_id'   => 'required',
-            'shipment_date' => 'required',
-            // OWN
-            'driver_name'   => 'required_if:vehicle_type,own',
-            'driver_number' => 'required_if:vehicle_type,own',
-            'vehicle_number'=> 'required_if:vehicle_type,own',
-
-            // RENTED
-            'vehicle_hire_id' => 'required_if:vehicle_type,rented|exists:vehicle_hires,id',
+        'vehicle_type' => 'required|in:own,rented',
         ]);
+
+        if ($request->vehicle_type === 'own') {
+            $request->validate([
+                'vehicle_number' => 'required',
+                'driver_name'    => 'required',
+                'driver_number'  => 'required',
+            ]);
+        }
+
+        if ($request->vehicle_type === 'rented') {
+            $request->validate([
+                'vehicle_hire_id' => 'required|exists:vehicle_hires,id',
+            ]);
+        }
 
         DB::beginTransaction();
 
@@ -276,54 +281,72 @@ class DomesticShipmentController extends Controller
             ];
 
             if ($request->vehicle_type === 'own') {
-
-                $data['vehicle_hire_id'] = null;
                 $data['vehicle_number'] = $request->vehicle_number;
                 $data['driver_name']    = $request->driver_name;
-                $data['driver_number'] = $request->driver_number;
-
-                Log::info('🚗 Own vehicle selected', $data);
+                $data['driver_number']  = $request->driver_number;
+                $data['vehicle_hire_id'] = null;
             }
 
             if ($request->vehicle_type === 'rented') {
-
                 $hire = VehicleHire::findOrFail($request->vehicle_hire_id);
 
                 $data['vehicle_hire_id'] = $hire->id;
                 $data['vehicle_number'] = $hire->vehicle_no;
                 $data['driver_name']    = $hire->driver_details;
-                $data['driver_number'] = null;
-
-                Log::info('🚛 Rented vehicle selected', [
-                    'hire_id' => $hire->id,
-                    'vehicle_no' => $hire->vehicle_no,
-                ]);
+                $data['driver_number']  = null;
             }
 
-            DomesticShipment::create([
-                'user_id'           => auth()->id(),
-                'customer_id'       => $request->customer_id,
-                'consigner_id'      => $consignerId,
-                'consignee_id'      => $consigneeId,
-                'shipment_date'     => $request->shipment_date,
-                'courier'           => $request->courier,
-                'airway_no'         => $request->airway_no,
-                'risk_type'         => $request->risk_type,
-                'bill_type'         => $request->bill_type,
-                'description'       => $request->description,
-                'vehicle_no'        => $request->vehicle_no,
-                'pkt'               => $request->pkt,
-                'qty'               => $request->qty,
-                'actual_weight'     => $request->actual_weight,
-                'chargeable_weight' => $request->chargeable_weight,
-                'sub_total'         => $request->sub_total,
-                'tax_type'          => $request->tax_type,
-                'tax'               => $request->tax,
-                'cgst'              => $request->cgst,
-                'sgst'              => $request->sgst,
-                'igst'              => $request->igst,
-                'grand_total'       => $request->grand_total,
-            ]);
+            // DomesticShipment::create([
+            //     'user_id'           => auth()->id(),
+            //     'customer_id'       => $request->customer_id,
+            //     'consigner_id'      => $consignerId,
+            //     'consignee_id'      => $consigneeId,
+            //     'shipment_date'     => $request->shipment_date,
+            //     'courier'           => $request->courier,
+            //     'airway_no'         => $request->airway_no,
+            //     'risk_type'         => $request->risk_type,
+            //     'bill_type'         => $request->bill_type,
+            //     'driver_details'         => $request->driver_details,
+            //     'description'       => $request->description,
+            //     'vehicle_no'        => $request->vehicle_no,
+            //     'pkt'               => $request->pkt,
+            //     'qty'               => $request->qty,
+            //     'actual_weight'     => $request->actual_weight,
+            //     'chargeable_weight' => $request->chargeable_weight,
+            //     'sub_total'         => $request->sub_total,
+            //     'tax_type'          => $request->tax_type,
+            //     'tax'               => $request->tax,
+            //     'cgst'              => $request->cgst,
+            //     'sgst'              => $request->sgst,
+            //     'igst'              => $request->igst,
+            //     'grand_total'       => $request->grand_total,
+            // ]);
+
+           
+           DomesticShipment::create(array_merge([
+            'user_id'           => auth()->id(),
+            'customer_id'       => $request->customer_id,
+            'consigner_id'      => $consignerId,
+            'consignee_id'      => $consigneeId,
+            'shipment_date'     => $request->shipment_date,
+            'courier'           => $request->courier,
+            'airway_no'         => $request->airway_no,
+            'risk_type'         => $request->risk_type,
+            'bill_type'         => $request->bill_type,
+            'description'       => $request->description,
+            'pkt'               => $request->pkt,
+            'qty'               => $request->qty,
+            'actual_weight'     => $request->actual_weight,
+            'chargeable_weight' => $request->chargeable_weight,
+            'sub_total'         => $request->sub_total,
+            'tax_type'          => $request->tax_type,
+            'tax'               => $request->tax,
+            'cgst'              => $request->cgst,
+            'sgst'              => $request->sgst,
+            'igst'              => $request->igst,
+            'grand_total'       => $request->grand_total,
+        ], $data));
+
 
             DB::commit();
 
@@ -347,8 +370,6 @@ class DomesticShipmentController extends Controller
                 ->withErrors(['error' => $e->getMessage()]);
         }
     }
-
-
 
 
     public function edit($id)

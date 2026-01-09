@@ -101,6 +101,11 @@ class DomesticShipment extends Model
         'sgst',
         'igst',
         'grand_total',
+        'vehicle_type',
+        'vehicle_number',
+        'driver_name',
+        'driver_number',
+        'vehicle_hire_id'
     ];
     public function invoices()
     {
@@ -120,6 +125,11 @@ class DomesticShipment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function vehicleHire()
+    {
+        return $this->belongsTo(VehicleHire::class);
     }
 
 

@@ -147,12 +147,12 @@
                                             </div>
 
                                             <!-- Vehicle No -->
-                                            <div class="row mb-2 align-items-center">
+                                            <!-- <div class="row mb-2 align-items-center">
                                                 <label class="col-md-4 col-form-label">Vehicle No</label>
                                                 <div class="col-md-8">
                                                     <input type="text" class="form-control" name="vehicle_no">
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-md-4 col-form-label">
@@ -170,22 +170,26 @@
 
                                             <div id="ownFields" class="d-none">
 
-                                            <div class="row mb-2 align-items-center">
-                                                <label class="col-md-4 col-form-label">
-                                                    Vehicle Type<span class="text-danger">*</span>
-                                                </label>
-                                                <div class="col-md-8">
-                                                    <select name="driver_details" class="form-control">
-                                                    <option value="">Select Driver</option>
-                                                    @foreach($drivers as $driver)
-                                                        <option value="{{ $driver->name }}"
-                                                            {{ old('driver_details') == $driver->name ? 'selected' : '' }}>
-                                                            {{ $driver->name }} 
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                                <div class="row mb-2 align-items-center">
+                                                    <label class="col-md-4 col-form-label">Driver Name</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="driver_name">
+                                                    </div>
                                                 </div>
-                                            </div>
+
+                                                <div class="row mb-2 align-items-center">
+                                                    <label class="col-md-4 col-form-label">Driver Number</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="driver_number">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2 align-items-center">
+                                                    <label class="col-md-4 col-form-label">Vehicle Number</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" class="form-control" name="vehicle_number">
+                                                    </div>
+                                                </div>
 
                                             </div>
 
@@ -207,21 +211,6 @@
                                                         </select>
                                                     </div>
                                                 </div>
-
-                                                <div class="row mb-2 align-items-center">
-                                                    <label class="col-md-4 col-form-label">Driver Details</label>
-                                                    <div class="col-md-8">
-                                                <select name="driver_details" class="form-control">
-                                                    <option value="">Select Driver</option>
-                                                    @foreach($drivers as $driver)
-                                                        <option value="{{ $driver->name }}"
-                                                            {{ old('driver_details') == $driver->name ? 'selected' : '' }}>
-                                                            {{ $driver->name }} 
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                </div>
-                                            </div>
 
                                             </div>
 
@@ -832,34 +821,38 @@
 
 
 <script>
-    $('#vehicle_type').on('change', function() {
-        let type = $(this).val();
+$(document).ready(function () {
 
-        console.log("type", type)
+    function toggleVehicleFields(type) {
 
-        // Hide both first
-        $('#ownFields').addClass('d-none');
-        $('#rentedFields').addClass('d-none');
+        // Disable & hide both
+        $('#ownFields').addClass('d-none')
+            .find('input, select').prop('disabled', true);
 
-        // Show based on selection
+        $('#rentedFields').addClass('d-none')
+            .find('input, select').prop('disabled', true);
+
         if (type === 'own') {
-            $('#ownFields').removeClass('d-none');
+            $('#ownFields').removeClass('d-none')
+                .find('input, select').prop('disabled', false);
         }
 
         if (type === 'rented') {
-            $('#rentedFields').removeClass('d-none');
+            $('#rentedFields').removeClass('d-none')
+                .find('input, select').prop('disabled', false);
         }
+    }
+
+    // On change
+    $('#vehicle_type').on('change', function () {
+        toggleVehicleFields($(this).val());
     });
 
-
-    // Populate rented details
-    $('#vehicle_hire_id').on('change', function() {
-        let option = $(this).find('option:selected');
-
-        $('#rented_vehicle_number').val(option.data('vehicle') ?? '');
-        $('#rented_driver').val(option.data('driver') ?? '');
-    });
+    // 🔥 VERY IMPORTANT: trigger once on page load
+    toggleVehicleFields($('#vehicle_type').val());
+});
 </script>
+
 
 <script>
     $(document).ready(function() {
