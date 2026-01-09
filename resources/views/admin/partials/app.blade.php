@@ -62,11 +62,4 @@
         ]
     });
 </script>
-
-
-
-
-
-
-
 @include('admin.partials.footer')

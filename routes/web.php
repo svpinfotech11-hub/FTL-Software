@@ -59,6 +59,8 @@ Route::post('/auth/create', [UserController::class, 'store'])->name('admin.auth.
 Route::get('/auth/index', [UserController::class, 'index'])->name('admin.auth.index');
 Route::get('/auth/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
 Route::post('/auth/profile/update', [UserController::class, 'update'])->name('profile.update');
+Route::get('/auth/change-password', [UserController::class, 'changePassword'])->name('profile.password');
+Route::post('/auth/change-password', [UserController::class, 'updatePassword'])->name('profile.password.update');
 
 
 /* ================= USER ================= */

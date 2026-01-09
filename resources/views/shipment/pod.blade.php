@@ -68,23 +68,32 @@
     </style>
 </head>
 
+@php
+    $user = Auth::user();
+    $designation = match ($user->role) {
+        'superadmin' => 'Super Admin',
+        'admin' => 'Administrator',
+        default => 'User',
+    };
+@endphp
+
 <body>
     <div class="container">
         <table>
             <!-- HEADER -->
             <tr>
-                <td colspan="6" class="bold">GSTIN: 27AFOFS0431C1Z7</td>
+                <td colspan="6" class="bold">GSTIN: {{ $shipment->consigner->type_of_doc ?? '-' }}</td>
                 <td colspan="3" class="center bold">GR No. 3001</td>
-                <td colspan="3" class="bold right">PAN NO: AFOFS0421C</td>
+                <td colspan="3" class="bold right">PAN NO: {{ $shipment->user->pan ?? '-' }}</td>
             </tr>
 
             <tr>
-                <td colspan="2" class="bold">AT OWNER'S RISK</td>
+                <td colspan="2" class="bold">AT OWNER'S RISK {{ $designation }}</td>
                 <td colspan="2" class="bold">MODVAT COPY</td>
                 <td colspan="2" class="bold">BOOKING MODE</td>
-                <td colspan="2" class="bold">DATE</td>
-                <td colspan="2" class="bold">RATE</td>
-                <td colspan="2" class="bold">FREIGHT DETAILS</td>
+                <td colspan="2" class="bold">DATE {{ $shipment->shipment_date }}</td>
+                <td colspan="2" class="bold">RATE Delivery Type</td>
+                <td colspan="2" class="bold">FREIGHT DETAILS {{ $shipment->consigner->delivery_type }}</td>
             </tr>
 
             <tr>
@@ -100,20 +109,20 @@
             </tr>
 
             <tr class="height-60">
-                <td colspan="6"></td>
-                <td colspan="6"></td>
+                <td colspan="6">{{ $shipment->consigner->name ?? '-' }}</td>
+                <td colspan="6">{{ $shipment->consignee->name ?? '-' }}</td>
             </tr>
 
             <tr>
-                <td colspan="3">GST NO.</td>
-                <td colspan="3">Phone No.</td>
-                <td colspan="3">GST NO.</td>
-                <td colspan="3">Phone No.</td>
+                <td colspan="3">GST NO. {{ $shipment->consigner->gst_no ?? '-' }}</td>
+                <td colspan="3">Phone No. {{ $shipment->consigner->contact_no ?? '-' }}</td>
+                <td colspan="3">GST NO. {{ $shipment->consignee->gst_no ?? '-' }}</td>
+                <td colspan="3">Phone No. {{ $shipment->consignee->contact_no ?? '-' }}</td>
             </tr>
 
             <tr>
-                <td colspan="6"><b>FROM:</b></td>
-                <td colspan="6"><b>TO:</b></td>
+                <td colspan="6"><b>FROM: {{ $shipment->consigner->city ?? '-' }}</b></td>
+                <td colspan="6"><b>TO: {{ $shipment->consignee->city ?? '-' }}</b></td>
             </tr>
 
             <!-- CONSIGNMENT DETAILS -->
@@ -144,7 +153,7 @@
 
             <tr>
                 <td>Freight</td>
-                <td></td>
+                <td>{{ $shipment->freight }}</td>
                 <td></td>
             </tr>
 
@@ -236,7 +245,7 @@
             <tr>
                 <td colspan="9"></td>
                 <td>Hamali (Delivery)</td>
-                <td></td>
+                <td>{{ $shipment->hamali }}</td>
                 <td></td>
             </tr>
 
@@ -251,35 +260,35 @@
             <tr>
                 <td colspan="9"></td>
                 <td class="bold">TOTAL</td>
-                <td></td>
+                <td>{{ $shipment->sub_total }}</td>
                 <td></td>
             </tr>
 
             <tr>
                 <td colspan="9"></td>
                 <td>CGST @</td>
-                <td></td>
+                <td>{{ $shipment->cgst }}</td>
                 <td></td>
             </tr>
 
             <tr>
                 <td colspan="9"></td>
                 <td>SGST @</td>
-                <td></td>
+                <td>{{ $shipment->sgst }}</td>
                 <td></td>
             </tr>
 
             <tr>
                 <td colspan="9"></td>
                 <td>IGST @</td>
-                <td></td>
+                <td>{{ $shipment->igst }}</td>
                 <td></td>
             </tr>
 
             <tr>
                 <td colspan="9"></td>
                 <td class="bold">G. TOTAL</td>
-                <td></td>
+                <td>{{ $shipment->grand_total }}</td>
                 <td></td>
             </tr>
 

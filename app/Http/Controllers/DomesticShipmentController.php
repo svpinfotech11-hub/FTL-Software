@@ -104,7 +104,7 @@ class DomesticShipmentController extends Controller
 
         $vehicleHires = VehicleHire::where('user_id', $userId)->get();
 
-         $drivers = Driver::all(); 
+        $drivers = Driver::all();
 
         return view('shipment.create', compact(
             'consigners',
@@ -125,7 +125,7 @@ class DomesticShipmentController extends Controller
         ]);
 
         $request->validate([
-        'vehicle_type' => 'required|in:own,rented',
+            'vehicle_type' => 'required|in:own,rented',
         ]);
 
         if ($request->vehicle_type === 'own') {
@@ -188,10 +188,10 @@ class DomesticShipmentController extends Controller
                     'city'          => $request->consigner_city,
                     'contact_no'    => $request->consigner_contact,
                     'type_of_doc'   => $request->consigner_type_of_doc,
-                    'doc_number'    => $request->consigner_doc_number,
-                    'gst_no'        => $request->consigner_doc_number,
-                    'coll_type'     => $request->coll_type,
-                    'delivery_type' => $request->delivery_type,
+                    'consigner_doc_number'    => $request->consigner_doc_number,
+                    'gst_no'        => $request->gst_no,
+                    // 'coll_type'     => $request->coll_type,
+                    // 'delivery_type' => $request->delivery_type,
                     'is_saved'      => $request->save_consigner ? 1 : 0,
                 ]);
 
@@ -322,30 +322,30 @@ class DomesticShipmentController extends Controller
             //     'grand_total'       => $request->grand_total,
             // ]);
 
-           
-           DomesticShipment::create(array_merge([
-            'user_id'           => auth()->id(),
-            'customer_id'       => $request->customer_id,
-            'consigner_id'      => $consignerId,
-            'consignee_id'      => $consigneeId,
-            'shipment_date'     => $request->shipment_date,
-            'courier'           => $request->courier,
-            'airway_no'         => $request->airway_no,
-            'risk_type'         => $request->risk_type,
-            'bill_type'         => $request->bill_type,
-            'description'       => $request->description,
-            'pkt'               => $request->pkt,
-            'qty'               => $request->qty,
-            'actual_weight'     => $request->actual_weight,
-            'chargeable_weight' => $request->chargeable_weight,
-            'sub_total'         => $request->sub_total,
-            'tax_type'          => $request->tax_type,
-            'tax'               => $request->tax,
-            'cgst'              => $request->cgst,
-            'sgst'              => $request->sgst,
-            'igst'              => $request->igst,
-            'grand_total'       => $request->grand_total,
-        ], $data));
+
+            DomesticShipment::create(array_merge([
+                'user_id'           => auth()->id(),
+                'customer_id'       => $request->customer_id,
+                'consigner_id'      => $consignerId,
+                'consignee_id'      => $consigneeId,
+                'shipment_date'     => $request->shipment_date,
+                'courier'           => $request->courier,
+                'airway_no'         => $request->airway_no,
+                'risk_type'         => $request->risk_type,
+                'bill_type'         => $request->bill_type,
+                // 'description'       => $request->description,
+                'pkt'               => $request->pkt,
+                'qty'               => $request->qty,
+                'actual_weight'     => $request->actual_weight,
+                'chargeable_weight' => $request->chargeable_weight,
+                'sub_total'         => $request->sub_total,
+                // 'tax_type'          => $request->tax_type,
+                'tax'               => $request->tax,
+                'cgst'              => $request->cgst,
+                'sgst'              => $request->sgst,
+                'igst'              => $request->igst,
+                'grand_total'       => $request->grand_total,
+            ], $data));
 
 
             DB::commit();
@@ -355,7 +355,6 @@ class DomesticShipmentController extends Controller
             return redirect()
                 ->route('domestic.shipment.index')
                 ->with('success', 'Shipment saved successfully!');
-
         } catch (\Exception $e) {
 
             DB::rollBack();
@@ -547,7 +546,11 @@ class DomesticShipmentController extends Controller
     public function show($id)
     {
         $shipment = DomesticShipment::with([
-            'invoices'
+            'invoices',
+            'consigner',
+            'consignee',
+            'company',
+            'user'
         ])->findOrFail($id);
 
         return view('shipment.pod', compact('shipment'));
