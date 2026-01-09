@@ -117,43 +117,4 @@
     </main>
 @endsection
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-
-        document.querySelectorAll('.delete-btn').forEach(function(button) {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const form = this.closest('.delete-company-form');
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "This company will be permanently deleted!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-
-        @if (session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        @endif
-
-    });
-</script>
