@@ -36,7 +36,7 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                              
+
                                 <li class="nav-item">
                                     <a href="" class="nav-link">
                                         <i class="bi bi-circle"></i>
@@ -270,6 +270,32 @@
                                     <a href="{{ route('vehicle_hires.index') }}" class="nav-link">
                                         <i class="bi bi-circle"></i>
                                         <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-building"></i>
+                                <p>
+                                    Add Company
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('company.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('company.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Companies</p>
                                     </a>
                                 </li>
                             </ul>

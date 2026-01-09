@@ -15329,6 +15329,26 @@ html.maximized-card {
   width: 32px;
 }
 
+/* ==== FORCE ICONS IN COLORLIB NAVBAR ==== */
+
+.site-navbar .site-menu a i,
+.site-navbar .dropdown a i {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-family: "bootstrap-icons" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 14px;
+    color: #fff;
+}
+
+/* dropdown icon color */
+.site-navbar .dropdown a i {
+    color: #333;
+}
+
+
 /* ==========================================================================
    AdminLTE Accessibility Styles - WCAG 2.1 AA Compliance
    ========================================================================== */

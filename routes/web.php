@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\AddCompanyController;
 use App\Http\Controllers\AddExpenseController;
 
 
@@ -57,6 +57,8 @@ Route::post('/verify-email-otp', [AuthController::class, 'verifyEmailOtp']);
 Route::get('/auth/create', [UserController::class, 'create'])->name('admin.auth.create');
 Route::post('/auth/create', [UserController::class, 'store'])->name('admin.auth.store');
 Route::get('/auth/index', [UserController::class, 'index'])->name('admin.auth.index');
+Route::get('/auth/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
+Route::post('/auth/profile/update', [UserController::class, 'update'])->name('profile.update');
 
 
 /* ================= USER ================= */
@@ -116,8 +118,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
     Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
     Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
-
-
 });
 
 // User logout
@@ -162,6 +162,7 @@ Route::get('/get-location/{pincode}', function ($pincode) {
 Route::resource('vehicles', VehicleController::class);
 Route::resource('drivers', DriverController::class);
 Route::resource('add-expenses', AddExpenseController::class);
+Route::resource('company', AddCompanyController::class);
 
 Route::get(
     '/consigner/{id}',
