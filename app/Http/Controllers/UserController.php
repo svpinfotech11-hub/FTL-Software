@@ -105,7 +105,6 @@ class UserController extends Controller
             'country' => 'nullable|string',
             'state'   => 'nullable|string',
             'city'    => 'nullable|string',
-            'password' => 'nullable',
         ]);
 
         $user->update([
@@ -118,11 +117,27 @@ class UserController extends Controller
             'city'    => $request->city,
         ]);
 
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-            $user->save();
-        }
+        $user->save();
 
         return redirect()->route('profile.edit')->with('success', 'Profile updated successfully');
+    }
+
+    public function changePassword()
+    {
+        return view('user.change-password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate(
+            ['password' => 'required|confirmed'],
+            ['password.confirmed' => 'New Password and Confirm Password do not match']
+        );
+
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return back()->with('success', 'Password updated successfully');
     }
 }
