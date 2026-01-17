@@ -25,8 +25,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Hire Date</th>
-                                <th>Vendor / Owner</th>
-                                <th>Vehicle No</th>
+                                <th>Vendor Details</th>
+                                <th>Vehicle Details</th>
                                 <th>Driver Details</th>
                                 <th>Route</th>
                                 <th>LR / Manifest</th>
@@ -43,9 +43,25 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $hire->hire_date }}</td>
-                                <td>{{ $hire->vendor_name }}</td>
-                                <td>{{ $hire->vehicle_no }}</td>
-                                <td>{{ $hire->driver_details }}</td>
+                                <td>
+                                    <a href="javascript:void(0)" class="vendor-detail" data-id="{{ $hire->vendor_id }}">
+                                        {{ $hire->vendor ? $hire->vendor->vendor_name : '' }}
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a href="javascript:void(0)" class="vehicle-detail" data-id="{{ $hire->vehicle_id }}">
+                                        {{ $hire->vehicle ? $hire->vehicle->vehicle_number : '' }}
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a href="javascript:void(0)" class="driver-detail" data-id="{{ $hire->driver_id }}">
+                                        {{ $hire->driver ? $hire->driver->name : '' }}
+                                    </a>
+                                </td>
+
+
                                 <td>{{ $hire->route_from }} → {{ $hire->route_to }}</td>
                                 <td>{{ $hire->lr_manifest_no }}</td>
                                 <td>{{ number_format($hire->hire_rate, 2) }}</td>
@@ -89,5 +105,80 @@
 
         </div>
     </div>
+
+    <!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
+
 </main>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    // Vendor details
+    $('.vendor-detail').click(function() {
+        let id = $(this).data('id');
+        $.get('/vendor/' + id, function(data) {
+            $('#modalTitle').text('Vendor Details');
+            let html = `
+                <p><strong>Name:</strong> ${data.vendor_name}</p>
+                <p><strong>Contact:</strong> ${data.contact}</p>
+                <p><strong>Address:</strong> ${data.address}, ${data.city}, ${data.state} - ${data.pincode}</p>
+                <p><strong>Rate per kg:</strong> ${data.rate_per_kg}</p>
+            `;
+            $('#modalBody').html(html);
+            $('#detailsModal').modal('show');
+        });
+    });
+
+    // Vehicle details
+    $('.vehicle-detail').click(function() {
+        let id = $(this).data('id');
+        $.get('/vehicle/' + id, function(data) {
+            $('#modalTitle').text('Vehicle Details');
+            let html = `
+                <p><strong>Vehicle Number:</strong> ${data.vehicle_number}</p>
+                <p><strong>Model:</strong> ${data.vehicle_model}</p>
+                <p><strong>Capacity:</strong> ${data.vehicle_capacity}</p>
+                <p><strong>PUC Date:</strong> ${data.vehicle_puc_date}</p>
+                <p><strong>Insurance Expiry:</strong> ${data.vehicle_insurance_renew_date}</p>
+            `;
+            $('#modalBody').html(html);
+            $('#detailsModal').modal('show');
+        });
+    });
+
+    // Driver details
+    $('.driver-detail').click(function() {
+        let id = $(this).data('id');
+        $.get('/driver/' + id, function(data) {
+            $('#modalTitle').text('Driver Details');
+            let html = `
+                <p><strong>Name:</strong> ${data.name}</p>
+                <p><strong>Mobile:</strong> ${data.mobile}</p>
+                <p><strong>License:</strong> ${data.licence_no} (Exp: ${data.licence_exp})</p>
+                <p><strong>Address:</strong> ${data.address}, ${data.city}, ${data.state} - ${data.pincode}</p>
+            `;
+            $('#modalBody').html(html);
+            $('#detailsModal').modal('show');
+        });
+    });
+
+});
+</script>
+
+
 @endsection

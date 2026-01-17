@@ -4,7 +4,7 @@
 
     <div class="app-content-header">
         <div class="container-fluid">
-            <h3>Edit Driver</h3>
+            <h3>Edit Vehicle Hire</h3>
         </div>
     </div>
 
@@ -13,7 +13,7 @@
 
             <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <div class="card-title">Update Driver</div>
+                    <div class="card-title">Update Vehicle Hire</div>
                 </div>
 
                 <form method="POST"
@@ -33,25 +33,46 @@
                                     value="{{ old('hire_date', $vehicleHire->hire_date) }}">
                             </div>
 
+                            {{-- Vendor Dropdown --}}
                             <div class="col-md-4">
-                                <label class="form-label">Vendor / Truck Owner Name</label>
-                                <input type="text" name="vendor_name"
-                                    class="form-control"
-                                    value="{{ old('vendor_name', $vehicleHire->vendor_name) }}">
+                                <label class="form-label">Vendor / Truck Owner</label>
+                                <select name="vendor_id" id="vendor_id" class="form-control">
+                                    <option value="">Select Vendor</option>
+                                    @foreach($vendors as $vendor)
+                                        <option value="{{ $vendor->id }}"
+                                            {{ $vehicleHire->vendor_id == $vendor->id ? 'selected' : '' }}>
+                                            {{ $vendor->vendor_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
+                            {{-- Vehicle Dropdown --}}
                             <div class="col-md-4">
-                                <label class="form-label">Vehicle No</label>
-                                <input type="text" name="vehicle_no"
-                                    class="form-control"
-                                    value="{{ old('vehicle_no', $vehicleHire->vehicle_no) }}">
+                                <label class="form-label">Vehicle</label>
+                                <select name="vehicle_id" id="vehicle_id" class="form-control">
+                                    <option value="">Select Vehicle</option>
+                                    @foreach($vehicles as $vehicle)
+                                        <option value="{{ $vehicle->id }}"
+                                            {{ $vehicleHire->vehicle_id == $vehicle->id ? 'selected' : '' }}>
+                                            {{ $vehicle->vehicle_number }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
+                            {{-- Driver Dropdown --}}
                             <div class="col-md-4">
-                                <label class="form-label">Driver Details</label>
-                                <input type="text" name="driver_details"
-                                    class="form-control"
-                                    value="{{ old('driver_details', $vehicleHire->driver_details) }}">
+                                <label class="form-label">Driver</label>
+                                <select name="driver_id" id="driver_id" class="form-control">
+                                    <option value="">Select Driver</option>
+                                    @foreach($drivers as $driver)
+                                        <option value="{{ $driver->id }}"
+                                            {{ $vehicleHire->driver_id == $driver->id ? 'selected' : '' }}>
+                                            {{ $driver->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="col-md-4">
@@ -77,24 +98,21 @@
 
                             <div class="col-md-4">
                                 <label class="form-label">Hire Rate</label>
-                                <input type="number" step="0.01"
-                                    name="hire_rate"
+                                <input type="number" step="0.01" name="hire_rate"
                                     class="form-control"
                                     value="{{ old('hire_rate', $vehicleHire->hire_rate) }}">
                             </div>
 
                             <div class="col-md-4">
                                 <label class="form-label">Advance Paid</label>
-                                <input type="number" step="0.01"
-                                    name="advance_paid"
+                                <input type="number" step="0.01" name="advance_paid"
                                     class="form-control"
                                     value="{{ old('advance_paid', $vehicleHire->advance_paid) }}">
                             </div>
 
                             <div class="col-md-4">
                                 <label class="form-label">Balance Payable</label>
-                                <input type="number" step="0.01"
-                                    name="balance_payable"
+                                <input type="number" step="0.01" name="balance_payable"
                                     class="form-control"
                                     value="{{ old('balance_payable', $vehicleHire->balance_payable) }}">
                             </div>
@@ -149,8 +167,7 @@
                     </div>
 
                     <div class="card-footer text-end">
-                        <a href="{{ route('vehicle_hires.index') }}"
-                            class="btn btn-outline-secondary me-2">
+                        <a href="{{ route('vehicle_hires.index') }}" class="btn btn-outline-secondary me-2">
                             Back
                         </a>
                         <button class="btn btn-primary">Update Vehicle Hire</button>
@@ -161,4 +178,43 @@
         </div>
     </div>
 </main>
+
+{{-- JS for dynamic fetch on dropdown change --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+
+    // Vendor details on change
+    $('#vendor_id').change(function(){
+        let id = $(this).val();
+        if(id){
+            $.get('/vendor/' + id, function(data){
+                console.log(data); // You can populate fields if needed
+            });
+        }
+    });
+
+    // Vehicle details on change
+    $('#vehicle_id').change(function(){
+        let id = $(this).val();
+        if(id){
+            $.get('/vehicle/' + id, function(data){
+                console.log(data); // You can populate fields if needed
+            });
+        }
+    });
+
+    // Driver details on change
+    $('#driver_id').change(function(){
+        let id = $(this).val();
+        if(id){
+            $.get('/driver/' + id, function(data){
+                console.log(data); // You can populate fields if needed
+            });
+        }
+    });
+
+});
+</script>
+
 @endsection

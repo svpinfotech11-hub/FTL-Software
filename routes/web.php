@@ -184,3 +184,8 @@ Route::get('/customer/{id}', function ($id) {
         ->where('user_id', auth()->id())
         ->firstOrFail();
 });
+
+
+Route::get('/vendor/{id}', [VehicleHireController::class, 'getVendor'])->name('vendor.details');
+Route::get('/vehicle/{id}', [VehicleHireController::class, 'getVehicle'])->name('vehicle.details');
+Route::get('/driver/{id}', [VehicleHireController::class, 'getDriver'])->name('driver.details');

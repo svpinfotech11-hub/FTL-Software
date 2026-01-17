@@ -11,7 +11,9 @@ class VehicleHire extends Model
         'hire_date',
         'vendor_name',
         'vehicle_no',
-        'driver_details',
+        'driver_id',
+        'vendor_id',
+        'vehicle_id',
         'route_from',
         'route_to',
         'lr_manifest_no',
@@ -24,4 +26,19 @@ class VehicleHire extends Model
         'pan_document',
         'other_document',
     ];
+
+     public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
+
+    public function driver()
+    {
+        return $this->belongsTo(Driver::class);
+    }
 }

@@ -39,27 +39,45 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label class="form-label">Vendor / Truck Owner Name</label>
-                                <input type="text" name="vendor_name" value="{{ old('vendor_name') }}" class="form-control">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label">Vehicle No</label>
-                                <input type="text" name="vehicle_no" value="{{ old('vehicle_no') }}" class="form-control">
-                            </div>
-
-                            <div class="col-md-4">
-                            <label class="form-label">Driver Details</label>
-                            <select name="driver_details" class="form-control">
-                                <option value="">Select Driver</option>
-                                @foreach($drivers as $driver)
-                                    <option value="{{ $driver->name }}"
-                                        {{ old('driver_details') == $driver->name ? 'selected' : '' }}>
-                                        {{ $driver->name }} 
+                                <label class="form-label">Vendor Details</label>
+                                <select name="vendor_id" class="form-control">
+                                    <option value="">Select Vendor</option>
+                                    @foreach($vendors as $vendor)
+                                    <option value="{{ $vendor->id }}"
+                                        {{ old('vendor_id') == $vendor->id ? 'selected' : '' }}>
+                                        {{ $vendor->vendor_name }}
                                     </option>
-                                @endforeach
-                            </select>
-                        </div>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Vehicle Details</label>
+                                <select name="vehicle_id" class="form-control">
+                                    <option value="">Select Vehicle</option>
+                                    @foreach($vehicles as $vehicle)
+                                    <option value="{{ $vehicle->id }}"
+                                        {{ old('vehicle_id') == $vehicle->id ? 'selected' : '' }}>
+                                        {{ $vehicle->vehicle_number }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <label class="form-label">Driver Details</label>
+                                <select name="driver_id" class="form-control">
+                                    <option value="">Select Driver</option>
+                                    @foreach($drivers as $driver)
+                                    <option value="{{ $driver->id }}"
+                                        {{ old('driver_id') == $driver->id ? 'selected' : '' }}>
+                                        {{ $driver->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+
+                            </div>
 
 
                             <div class="col-md-4">
@@ -141,15 +159,15 @@
 
 
 <script>
-document.querySelector('form').addEventListener('submit', function (e) {
-    let hireRate = parseFloat(document.querySelector('[name="hire_rate"]').value || 0);
-    let advance  = parseFloat(document.querySelector('[name="advance_paid"]').value || 0);
+    document.querySelector('form').addEventListener('submit', function(e) {
+        let hireRate = parseFloat(document.querySelector('[name="hire_rate"]').value || 0);
+        let advance = parseFloat(document.querySelector('[name="advance_paid"]').value || 0);
 
-    if (advance > hireRate) {
-        alert('Advance Paid cannot be greater than Hire Rate');
-        e.preventDefault();
-    }
-});
+        if (advance > hireRate) {
+            alert('Advance Paid cannot be greater than Hire Rate');
+            e.preventDefault();
+        }
+    });
 </script>
 
 @endsection
