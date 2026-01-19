@@ -544,12 +544,21 @@ class DomesticShipmentController extends Controller
         return response()->json($cities);
     }
 
+    // public function show($id)
+    // {
+    //     $shipment = DomesticShipment::with([
+    //         'invoices'
+    //     ])->findOrFail($id);
+
+    //     return view('shipment.pod', compact('shipment'));
+    // }
+
     public function show($id)
     {
-        $shipment = DomesticShipment::with([
-            'invoices'
-        ])->findOrFail($id);
+        $shipment = DomesticShipment::with('invoices')->findOrFail($id);
 
-        return view('shipment.pod', compact('shipment'));
+        $company = Auth::user()->company; // 👈 fetch company of logged-in user
+
+        return view('shipment.pod', compact('shipment', 'company'));
     }
 }

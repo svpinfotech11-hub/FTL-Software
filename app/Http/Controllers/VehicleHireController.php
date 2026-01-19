@@ -126,8 +126,9 @@ $drivers = Driver::all();
     }
 
 
-    public function destroy(VehicleHire $vehicleHire)
+    public function destroy($id)
     {
+        $vehicleHire = VehicleHire::findOrFail($id);
         $vehicleHire->delete();
 
         return back()->with('success', 'Vehicle hire deleted.');

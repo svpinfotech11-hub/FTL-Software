@@ -52,11 +52,11 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">Company Logo</label>
-                                    <input type="file" name="logo" class="form-control">
+                                    <input type="file" name="logo" class="form-control" accept="image/png, image/jpeg, image/jpg">
 
                                     @if ($company->logo)
                                         <small class="d-block mt-1">
-                                            <a href="{{ asset('storage/' . $company->logo) }}" target="_blank">
+                                            <a href="{{ asset('uploads/company/logo/' . $company->logo) }}" target="_blank">
                                                 View Logo
                                             </a>
                                         </small>
@@ -65,11 +65,11 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">Company Stamp</label>
-                                    <input type="file" name="stamp" class="form-control">
+                                    <input type="file" name="stamp" class="form-control" accept="image/png, image/jpeg, image/jpg">
 
                                     @if ($company->stamp)
                                         <small class="d-block mt-1">
-                                            <a href="{{ asset('storage/' . $company->stamp) }}" target="_blank">
+                                            <a href="{{ asset('uploads/company/stamp/' . $company->stamp) }}" target="_blank">
                                                View Stamp
                                             </a>
                                         </small>

@@ -17,9 +17,24 @@ class VehicleController extends Controller
     }
 
     public function create()
-    {
-        return view('vehicles.create');
+{
+    // Get the last vehicle
+    $lastVehicle = Vehicle::orderBy('id', 'desc')->first();
+
+    if ($lastVehicle && $lastVehicle->vehicle_number) {
+        $lastNumber = intval(substr($lastVehicle->vehicle_number, 2));
+        $newNumber = $lastNumber + 1;
+    } else {
+        $newNumber = 1;
     }
+
+    // Format the number: VH0001, VH0002...
+    $vehicleNumber = 'VH' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+    // Pass it to the view
+    return view('vehicles.create', compact('vehicleNumber'));
+}
+
 
     public function store(Request $request)
     {
