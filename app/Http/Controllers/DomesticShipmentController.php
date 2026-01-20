@@ -11,26 +11,41 @@ use App\Models\VehicleHire;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\DomesticShipment;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class DomesticShipmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $shipments = DomesticShipment::with([
+        $query = DomesticShipment::with([
             'consigner:id,name',
             'consignee:id,name,city,pincode',
             'user:id,name',
             'vehicleHire:id,vendor_name'
         ])
-            ->where('user_id', auth()->id()) // 🔑 filter by auth user
-            ->latest()
-            ->get();
+            ->where('user_id', auth()->id());
 
-        return view('shipment.index', compact('shipments'));
+        if ($request->customer_id) {
+            $query->where('customer_id', $request->customer_id);
+        }
+
+        if ($request->from_date && $request->to_date) {
+            $query->whereBetween('shipment_date', [
+                $request->from_date,
+                $request->to_date
+            ]);
+        }
+
+        $shipments = $query->latest()->get();
+
+        $customers = Customer::get();
+
+        return view('shipment.index', compact('shipments', 'customers'));
     }
+
 
 
     // public function create()

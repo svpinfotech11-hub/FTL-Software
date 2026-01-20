@@ -25,7 +25,7 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label>Expense Date</label>
-                                <input type="date" name="expense_date" class="form-control"
+                                <input type="date" name="expense_date" id="from_date" placeholder="YYYY-MM-DD" class="form-control"
                                     value="{{ old('expense_date') }}">
                             </div>
 
@@ -108,7 +108,7 @@
                         {{-- Description --}}
                         <div class="mb-3">
                             <label>Description</label>
-                            <textarea name="description" class="form-control" rows="3"></textarea>
+                            <textarea name="description" class="form-control" rows="3">{{ old('description') }}</textarea>
                         </div>
 
                         {{-- Hidden Fields --}}
