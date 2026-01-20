@@ -105,7 +105,9 @@ class DomesticShipment extends Model
         'vehicle_number',
         'driver_name',
         'driver_number',
-        'vehicle_hire_id'
+        'vehicle_hire_id',
+        'mode',
+        'rate'
     ];
 
     protected $casts = [

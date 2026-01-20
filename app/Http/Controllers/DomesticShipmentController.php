@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Driver;
+use App\Models\Vendor;
 use App\Models\Customer;
 use App\Models\Consignee;
 use App\Models\Consigner;
@@ -104,6 +105,8 @@ class DomesticShipmentController extends Controller
 
         $vehicleHires = VehicleHire::where('user_id', $userId)->get();
 
+        $vendors = Vendor::where('user_id', '!=', $userId)->get();
+
         $drivers = Driver::all();
 
         return view('shipment.create', compact(
@@ -112,6 +115,7 @@ class DomesticShipmentController extends Controller
             'states',
             'customers',
             'vehicleHires',
+            'vendors',
             'drivers'
         ));
     }
@@ -190,8 +194,8 @@ class DomesticShipmentController extends Controller
                     'type_of_doc'   => $request->consigner_type_of_doc,
                     'consigner_doc_number'    => $request->consigner_doc_number,
                     'gst_no'        => $request->gst_no,
-                    // 'coll_type'     => $request->coll_type,
-                    // 'delivery_type' => $request->delivery_type,
+                    'coll_type'     => $request->coll_type,
+                    'delivery_type' => $request->delivery_type,
                     'is_saved'      => $request->save_consigner ? 1 : 0,
                 ]);
 
@@ -345,6 +349,8 @@ class DomesticShipmentController extends Controller
                 'sgst'              => $request->sgst,
                 'igst'              => $request->igst,
                 'grand_total'       => $request->grand_total,
+                'mode'              => $request->mode,
+                'rate'              => $request->rate,
             ], $data));
 
 
@@ -432,6 +438,8 @@ class DomesticShipmentController extends Controller
                     'city'        => $request->consigner_city,
                     'contact_no'  => $request->consigner_contact,
                     'type_of_doc' => $request->consigner_type_of_doc,
+                    'coll_type'     => $request->coll_type,
+                    'delivery_type' => $request->delivery_type,
                     'gst_no'      => $request->consigner_type_of_doc,
                     'is_saved'    => 1,
                 ]);
@@ -501,7 +509,20 @@ class DomesticShipmentController extends Controller
                 'sgst'              => $request->sgst,
                 'igst'              => $request->igst,
                 'grand_total'       => $request->grand_total,
+                'mode'              => $request->mode,
+                'rate'              => $request->rate,
             ]);
+
+            // Update consigner coll_type and delivery_type if consigner exists
+            if ($consignerId && ($request->coll_type || $request->delivery_type)) {
+                $consigner = Consigner::find($consignerId);
+                if ($consigner) {
+                    $consigner->update([
+                        'coll_type'     => $request->coll_type,
+                        'delivery_type' => $request->delivery_type,
+                    ]);
+                }
+            }
 
             DB::commit();
 

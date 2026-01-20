@@ -122,8 +122,8 @@
                 <td colspan="2" class="bold">MODVAT COPY</td>
                 <td colspan="2" class="bold">BOOKING MODE</td>
                 <td colspan="2" class="bold">DATE {{ $shipment->shipment_date }}</td>
-                <td colspan="2" class="bold">RATE Delivery Type</td>
-                <td colspan="2" class="bold">FREIGHT DETAILS {{ $shipment->consigner->delivery_type }}</td>
+                <td colspan="2" class="bold">Collection Type: {{ $shipment->consigner->coll_type ?? '-' }}</td>
+                <td colspan="2" class="bold">FREIGHT DETAILS {{ $shipment->consigner->delivery_type ?? '-' }}</td>
             </tr>
 
             <!-- CENTER CONTENT -->

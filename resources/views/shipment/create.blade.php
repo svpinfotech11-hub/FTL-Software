@@ -138,6 +138,29 @@
                                                 </div>
                                             </div>
 
+                                            <!-- Mode -->
+                                            <div class="row mb-2 align-items-center">
+                                                <label class="col-md-4 col-form-label">
+                                                    Mode<span class="text-danger">*</span>
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <select class="form-control form-select" name="mode">
+                                                        <option value="FTL">FTL</option>
+                                                        <option value="Road Transport">Road Transport</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Rate -->
+                                            <div class="row mb-2 align-items-center">
+                                                <label class="col-md-4 col-form-label">
+                                                    Rate<span class="text-danger">*</span>
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="number" step="0.01" class="form-control" name="rate" placeholder="Enter rate">
+                                                </div>
+                                            </div>
+
                                             <!-- Description -->
                                             <div class="row mb-2">
                                                 <label class="col-md-4 col-form-label">Description</label>
@@ -197,15 +220,28 @@
                                             <div id="rentedFields" class="d-none">
 
                                                 <div class="row mb-2 align-items-center">
+                                                    <label class="col-md-4 col-form-label">Vendor</label>
+                                                    <div class="col-md-8">
+                                                        <select class="form-control" name="vendor_id" id="vendor_id">
+                                                            <option value="">Select Vendor</option>
+                                                            @foreach ($vendors as $vendor)
+                                                            <option value="{{ $vendor->id }}">{{ $vendor->vendor_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2 align-items-center">
                                                     <label class="col-md-4 col-form-label">Hire Register</label>
                                                     <div class="col-md-8">
                                                         <select class="form-control" name="vehicle_hire_id" id="vehicle_hire_id">
-                                                            <option value="">Select Hire</option>
+                                                            <option value="">Select Hire Register</option>
                                                             @foreach ($vehicleHires as $hire)
                                                             <option value="{{ $hire->id }}"
+                                                                data-vendor="{{ $hire->vendor_id }}"
                                                                 data-vehicle="{{ $hire->vehicle_no }}"
                                                                 data-driver="{{ $hire->driver_details }}">
-                                                                {{ $hire->vendor_name }}
+                                                                {{ $hire->id }} - {{ $hire->vendor_name }}
                                                             </option>
                                                             @endforeach
                                                         </select>
@@ -853,6 +889,42 @@ $(document).ready(function () {
 });
 </script>
 
+<script>
+$(document).ready(function() {
+    // Handle vendor selection for filtering hire registers
+    $('#vendor_id').on('change', function() {
+        var selectedVendorId = $(this).val();
+        var hireSelect = $('#vehicle_hire_id');
+
+        // Clear current selection
+        hireSelect.val('');
+
+        if (selectedVendorId) {
+            // Show only hire registers for selected vendor
+            hireSelect.find('option').each(function() {
+                var vendorId = $(this).data('vendor');
+                if ($(this).val() === '' || vendorId == selectedVendorId) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        } else {
+            // Show all hire registers if no vendor selected
+            hireSelect.find('option').show();
+        }
+    });
+
+    // Reset vendor and hire register when vehicle type changes
+    $('#vehicle_type').on('change', function() {
+        if ($(this).val() !== 'rented') {
+            $('#vendor_id').val('');
+            $('#vehicle_hire_id').val('');
+            $('#vehicle_hire_id').find('option').show();
+        }
+    });
+});
+</script>
 
 <script>
     $(document).ready(function() {

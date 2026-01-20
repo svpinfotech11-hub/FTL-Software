@@ -79,6 +79,26 @@
                             </div>
 
                             <div class="row mb-2">
+                                <label class="col-md-4">Mode *</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" name="mode">
+                                        @foreach (['FTL', 'Road Transport'] as $m)
+                                            <option value="{{ $m }}"
+                                                {{ $shipment->mode == $m ? 'selected' : '' }}>{{ $m }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <label class="col-md-4">Rate *</label>
+                                <div class="col-md-8">
+                                    <input type="number" step="0.01" class="form-control" name="rate" value="{{ $shipment->rate }}" placeholder="Enter rate">
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
                                 <label class="col-md-4">Description</label>
                                 <div class="col-md-8">
                                     <textarea class="form-control" name="discretion">{{ $shipment->description }}</textarea>
@@ -195,6 +215,30 @@
                                         value="{{ $shipment->consigner->contact_no }}">
                                 </div>
                             </div>
+
+                            <!-- Coll Type -->
+                            <div class="row mb-2 align-items-center">
+                                <label class="col-md-4 col-form-label">Coll Type</label>
+                                <div class="col-md-8">
+                                    <select class="form-control form-select" name="coll_type" id="coll_type">
+                                        <option>-Select-</option>
+                                        <option {{ $shipment->consigner && $shipment->consigner->coll_type == 'DOOR COLLATION' ? 'selected' : '' }}>DOOR COLLATION</option>
+                                        <option {{ $shipment->consigner && $shipment->consigner->coll_type == 'GODOWN COLLATION' ? 'selected' : '' }}>GODOWN COLLATION</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        <!-- Delivery Type -->
+                        <div class="row mb-2 align-items-center">
+                            <label class="col-md-4 col-form-label">Delivery Type</label>
+                            <div class="col-md-8">
+                                <select class="form-control form-select" name="delivery_type" id="delivery_type">
+                                    <option>-Select-</option>
+                                    <option {{ $shipment->consigner && $shipment->consigner->delivery_type == 'DOOR DELIVERY' ? 'selected' : '' }}>DOOR DELIVERY</option>
+                                    <option {{ $shipment->consigner && $shipment->consigner->delivery_type == 'GODOWN DELIVERY' ? 'selected' : '' }}>GODOWN DELIVERY</option>
+                                </select>
+                            </div>
+                        </div>
 
                         </div>
                     </div>

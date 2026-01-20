@@ -160,11 +160,11 @@
                      default => 'logout',
                  };
              @endphp
-                  $logoutRoute = match ($user->role) {
+                  <!-- $logoutRoute = match ($user->role) {
                       'superadmin' => 'superadmin.logout',
                       'admin' => 'admin.logout',
                       default => 'logout',
-                  };
+                  }; -->
               @endphp
 
               <li class="nav-item dropdown user-menu">
