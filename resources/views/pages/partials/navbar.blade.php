@@ -85,8 +85,15 @@
                                             </li>
 
                                             <li>
-                                                <a href="{{ route('logout') }}"
-                                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                <a href="{{ route('profile.password') }}">
+                                                    <i class="bi bi-lock-fill"></i> Change Password
+                                                </a>
+                                            </li>
+
+                                            <li>
+
+                                            <li>
+                                                <a href="javascript:void(0);" onclick="confirmLogout()">
                                                     <i class="bi bi-box-arrow-right"></i> Logout
                                                 </a>
 
@@ -95,25 +102,27 @@
                                                     @csrf
                                                 </form>
                                             </li>
-                                        @endauth
 
-                                        @guest
-                                            <li>
-                                                <a href="{{ route('login') }}">
-                                                    <i class="bi bi-box-arrow-in-right"></i> Login
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('user.register') }}">
-                                                    <i class="bi bi-person-plus"></i> Register
-                                                </a>
-                                            </li>
-                                        @endguest
-                                    </ul>
-                                </li>
-                            @else
-                                <li><a href="{{ route('login') }}">Login</a></li>
-                            @endauth
+                                    </li>
+                                @endauth
+
+                                @guest
+                                    <li>
+                                        <a href="{{ route('login') }}">
+                                            <i class="bi bi-box-arrow-in-right"></i> Login
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('user.register') }}">
+                                            <i class="bi bi-person-plus"></i> Register
+                                        </a>
+                                    </li>
+                                @endguest
+                            </ul>
+                            </li>
+                        @else
+                            <li><a href="{{ route('login') }}">Login</a></li>
+                        @endauth
                         </ul>
                     </nav>
 

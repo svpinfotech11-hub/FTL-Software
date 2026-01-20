@@ -88,7 +88,17 @@
     </style>
 </head>
 
+@php
+    $user = Auth::user();
+    $designation = match ($user->role) {
+        'superadmin' => 'Super Admin',
+        'admin' => 'Administrator',
+        default => 'User',
+    };
+@endphp
+
 <body>
+
     <table width="1000" border="0">
         <tr>
 
@@ -98,6 +108,23 @@
                 <img src="{{ asset('uploads/company/logo/'.$company->logo) }}" style="max-width:170px;">
                 @endif
             </td>
+    <div class="container">
+        <table>
+            <!-- HEADER -->
+            <tr>
+                <td colspan="6" class="bold">GSTIN: {{ $shipment->consigner->type_of_doc ?? '-' }}</td>
+                <td colspan="3" class="center bold">GR No. 3001</td>
+                <td colspan="3" class="bold right">PAN NO: {{ $shipment->user->pan ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="bold">AT OWNER'S RISK {{ $designation }}</td>
+                <td colspan="2" class="bold">MODVAT COPY</td>
+                <td colspan="2" class="bold">BOOKING MODE</td>
+                <td colspan="2" class="bold">DATE {{ $shipment->shipment_date }}</td>
+                <td colspan="2" class="bold">RATE Delivery Type</td>
+                <td colspan="2" class="bold">FREIGHT DETAILS {{ $shipment->consigner->delivery_type }}</td>
+            </tr>
 
             <!-- CENTER CONTENT -->
             <td width="60%" class="center header-table" style="padding:10px 15px; border: none !important;">
@@ -117,6 +144,23 @@
                 <div class="address">
                     {{ Auth::user()->address }}
                 </div>
+            <tr class="height-60">
+                <td colspan="6">{{ $shipment->consigner->name ?? '-' }}</td>
+                <td colspan="6">{{ $shipment->consignee->name ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td colspan="3">GST NO. {{ $shipment->consigner->gst_no ?? '-' }}</td>
+                <td colspan="3">Phone No. {{ $shipment->consigner->contact_no ?? '-' }}</td>
+                <td colspan="3">GST NO. {{ $shipment->consignee->gst_no ?? '-' }}</td>
+                <td colspan="3">Phone No. {{ $shipment->consignee->contact_no ?? '-' }}</td>
+            </tr>
+
+            <tr>
+                <td colspan="6"><b>FROM: {{ $shipment->consigner->city ?? '-' }}</b></td>
+                <td colspan="6"><b>TO: {{ $shipment->consignee->city ?? '-' }}</b></td>
+            </tr>
+
 
                 <div class="address">
                     Dist-{{ Auth::user()->city }} &nbsp;&nbsp;&nbsp;
@@ -131,6 +175,13 @@
                 <div class="small bold" style="margin-bottom:10px;">
                     Mob. {{ Auth::user()->phone }}
                 </div>
+
+            <tr>
+                <td>Freight</td>
+                <td>{{ $shipment->freight }}</td>
+                <td></td>
+            </tr>
+
 
                 <div class="copy-box">
                     Consignor Copy
@@ -354,10 +405,19 @@
         </tr>
     </table>
 
+
     <p>&nbsp;</p>
+            <tr>
+                <td colspan="9"></td>
+                <td>Hamali (Delivery)</td>
+                <td>{{ $shipment->hamali }}</td>
+                <td></td>
+            </tr>
+
 
    <table width="1000" border="0">
         <tr>
+
 
             <!-- LOGO -->
             <td width="20%" align="left" class="header-table" style="border:none">
@@ -380,6 +440,43 @@
                 <!-- <div class="subheading">
         TRANSPORTATION & LOGISTICS SOLUTIONS
     </div> -->
+
+            <!-- TOTAL -->
+            <tr>
+                <td colspan="9"></td>
+                <td class="bold">TOTAL</td>
+                <td>{{ $shipment->sub_total }}</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td colspan="9"></td>
+                <td>CGST @</td>
+                <td>{{ $shipment->cgst }}</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td colspan="9"></td>
+                <td>SGST @</td>
+                <td>{{ $shipment->sgst }}</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td colspan="9"></td>
+                <td>IGST @</td>
+                <td>{{ $shipment->igst }}</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td colspan="9"></td>
+                <td class="bold">G. TOTAL</td>
+                <td>{{ $shipment->grand_total }}</td>
+                <td></td>
+            </tr>
+
 
                 <div class="address">
                     {{ Auth::user()->address }}

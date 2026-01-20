@@ -66,23 +66,8 @@
                                 </div>
                             </div>
 
-                            <hr>
+                           <br>
 
-                            <h5>Change Password</h5>
-                            <hr>
-
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>New Password</label>
-                                    <input type="password" name="password" class="form-control">
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label>Confirm Password</label>
-                                    <input type="password" name="password_confirmation" class="form-control">
-                                </div>
-                            </div>
-                            <br>
                             <div class="card-footer text-end">
                                 <button class="btn btn-primary">Update Profile</button>
                             </div>

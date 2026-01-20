@@ -113,7 +113,7 @@ class DomesticShipment extends Model
     ];
     public function invoices()
     {
-        return $this->hasMany(ShipmentInvoice::class);
+        return $this->hasMany(ShipmentInvoice::class, 'domestic_shipment_id');
     }
 
     public function consigner()
@@ -136,7 +136,10 @@ class DomesticShipment extends Model
         return $this->belongsTo(VehicleHire::class);
     }
 
+    public function company()
+    {
+        return $this->belongsTo(AddCompany::class, 'company_id');
+    }
 
-      protected $dates = ['deleted_at'];
-
+    protected $dates = ['deleted_at'];
 }
