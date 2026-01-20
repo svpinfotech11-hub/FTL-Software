@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Otp;
+use App\Models\Role;
 use App\Models\User;
 use App\Mail\OtpMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -19,7 +21,10 @@ class AuthController extends Controller
     {
         $request->validate(['phone' => 'required|string']);
 
+        Log::info('Send Phone OTP request', ['phone' => $request->phone]);
+
         if (User::where('phone', $request->phone)->exists()) {
+            Log::info('Phone already exists', ['phone' => $request->phone]);
             return response()->json([
                 'status' => false,
                 'type' => 'exists',
@@ -28,19 +33,30 @@ class AuthController extends Controller
         }
 
         $otp = rand(100000, 999999);
+        Log::info('Generated OTP', ['otp' => $otp]);
 
         // Save OTP in DB
-        \App\Models\Otp::create([
-            'type' => 'phone',
-            'value' => $request->phone,
-            'otp' => $otp,
-            'expires_at' => now()->addMinutes(10), // OTP valid for 10 mins
-        ]);
+        try {
+            $otpRecord = \App\Models\Otp::create([
+                'type' => 'phone',
+                'value' => $request->phone,
+                'otp' => $otp,
+                'expires_at' => now()->addMinutes(10), // OTP valid for 10 mins
+            ]);
+            Log::info('OTP saved to DB', ['id' => $otpRecord->id]);
+        } catch (\Exception $e) {
+            Log::error('Failed to save OTP', ['error' => $e->getMessage()]);
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to save OTP'
+            ]);
+        }
 
         // Optional: also save in session
         session(['phone' => $request->phone, 'phone_otp' => $otp]);
 
         $smsResult = $this->sendOtpphone($request->phone, $otp);
+        Log::info('SMS result', $smsResult);
 
         if (!$smsResult['success']) {
             return response()->json([
@@ -55,6 +71,16 @@ class AuthController extends Controller
     // Helper function to send SMS using Cell24x7
     private function sendOtpphone(string $number, int $otp)
     {
+        // For testing purposes, skip actual SMS sending
+        Log::info('SMS sending skipped for testing', ['number' => $number, 'otp' => $otp]);
+
+        return [
+            'success' => true,
+            'response' => 'SMS sent (testing mode)'
+        ];
+
+        // Uncomment below for actual SMS sending
+        /*
         $templateId = 1107172845189433045;
         $message = "Hi, Your Verification {$otp} code, NOKA";
         $encodedMessage = urlencode($message);
@@ -68,6 +94,8 @@ class AuthController extends Controller
             . "&mt=0"
             . "&tempId={$templateId}";
 
+        Log::info('SMS URL', ['url' => $url]);
+
         $ch = curl_init();
 
         curl_setopt_array($ch, [
@@ -78,9 +106,11 @@ class AuthController extends Controller
         ]);
 
         $response = curl_exec($ch);
+        Log::info('SMS response', ['response' => $response]);
 
         if (curl_errno($ch)) {
             $error = curl_error($ch);
+            Log::error('Curl error', ['error' => $error]);
             curl_close($ch);
             return [
                 'success' => false,
@@ -94,6 +124,7 @@ class AuthController extends Controller
             'success' => true,
             'response' => $response
         ];
+        */
     }
 
     // STEP 2: Verify OTP
@@ -122,21 +153,48 @@ class AuthController extends Controller
     {
         $request->validate(['email' => 'required|email|unique:users']);
 
+        Log::info('Send Email OTP request', ['email' => $request->email]);
+
         $otp = rand(100000, 999999);
 
-        \App\Models\Otp::create([
-            'type' => 'email',
-            'value' => $request->email,
-            'otp' => $otp,
-            'expires_at' => now()->addMinutes(10),
-        ]);
+        try {
+            \App\Models\Otp::create([
+                'type' => 'email',
+                'value' => $request->email,
+                'otp' => $otp,
+                'expires_at' => now()->addMinutes(10),
+            ]);
+            Log::info('Email OTP saved to DB', ['otp' => $otp]);
+        } catch (\Exception $e) {
+            Log::error('Failed to save email OTP', ['error' => $e->getMessage()]);
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to save OTP'
+            ]);
+        }
 
         Session::put('email', $request->email);
         Session::put('email_otp', $otp);
 
-        Mail::to($request->email)->send(new OtpMail($otp));
+        // For testing, skip actual email sending
+        Log::info('Email sending skipped for testing', ['otp' => $otp]);
+        return response()->json(['status' => true, 'message' => 'OTP sent to email (testing mode)']);
+
+        // Uncomment below for actual email sending
+        /*
+        try {
+            Mail::to($request->email)->send(new OtpMail($otp));
+            Log::info('Email sent successfully');
+        } catch (\Exception $e) {
+            Log::error('Failed to send email', ['error' => $e->getMessage()]);
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to send email'
+            ]);
+        }
 
         return response()->json(['status' => true, 'message' => 'OTP sent to email']);
+        */
     }
 
 
@@ -192,8 +250,18 @@ class AuthController extends Controller
             'state' => $request->state,
             'city' => $request->city,
             'address' => $request->address,
-            'role' => 'user',  
+            'role' => 'admin',  // Set to admin since new users become tenant admins
+            'phone_verified' => session('phone_verified', false),
+            'email_verified' => Session::get('email_verified', false),
         ]);
+
+        // Assign tenant owner role 'admin' in custom roles table
+        try {
+            Role::firstOrCreate(['name' => 'admin']);
+            $user->assignRole('admin');
+        } catch (\Throwable $e) {
+            // ignore failures
+        }
 
         auth()->login($user);
 
@@ -204,6 +272,7 @@ class AuthController extends Controller
     {
         return view('user.login');
     }
+
     // public function userLogin(Request $request)
     // {
     //     $request->validate([
@@ -253,8 +322,6 @@ class AuthController extends Controller
     //         'message' => 'OTP sent successfully'
     //     ]);
     // }
-
-
 
         public function userLogin(Request $request)
     {
@@ -365,22 +432,24 @@ class AuthController extends Controller
 
     //     return redirect()->route('login');
     // }
+
+
     public function logout(Request $request)
-{
-    // Capture role BEFORE logout
-    $role = Auth::check() ? Auth::user()->role : null;
+    {
+        // Capture role BEFORE logout
+        $role = Auth::check() ? Auth::user()->role : null;
 
-    Auth::logout();
+        Auth::logout();
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    // Redirect based on role
-    if ($role === 'super_admin') {
-        return redirect()->route('superadmin.login');
+        // Redirect based on role
+        if ($role === 'super_admin') {
+            return redirect()->route('superadmin.login');
+        }
+
+        return redirect()->route('login');
     }
-
-    return redirect()->route('login');
-}
 
 }

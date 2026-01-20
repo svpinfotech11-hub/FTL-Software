@@ -150,7 +150,6 @@
 
                  $logoutRoute = match ($user->role) {
                      'superadmin' => 'superadmin.logout',
-                     'admin' => 'admin.logout',
                      default => 'logout',
                  };
              @endphp

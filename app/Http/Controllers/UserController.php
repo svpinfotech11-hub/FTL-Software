@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -40,7 +41,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|max:20',
-            'role' => 'required|in:super_admin,branch_manager,booking_executive,accounts_user,fleet_manager,vendor_manager,viewer',
+            'branch_id' => 'required|exists:branches,id',
             'status' => 'required',
         ]);
 
@@ -52,7 +53,7 @@ class UserController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
-            'role' => $validated['role'],
+            'branch_id' => $validated['branch_id'],
             'status' => $validated['status'],
             'password' => Hash::make($password),
             // Optional nullable fields can be null
@@ -66,6 +67,9 @@ class UserController extends Controller
             'email_verified' => $request->email_verified ?? false,
             'created_by'     => auth()->id(), // ✅ track who created
         ]);
+
+        // User created successfully with branch assignment
+        // Role assignment removed - now using branch-based access control
 
         return redirect()->route('user.index')
             ->with('success', 'User created successfully.');

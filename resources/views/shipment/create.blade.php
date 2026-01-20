@@ -917,7 +917,7 @@ $(document).ready(function () {
             if (pincode.length === 6) {
                 $.get('/get-location/' + pincode, function(res) {
 
-                    // ✅ Set consigner state & city
+                    // ✅ Set consignee state & city
                     $('#consignee_state').val(res.state);
                     $('#consignee_city').val(res.city);
 
@@ -928,6 +928,38 @@ $(document).ready(function () {
         });
 
     });
+</script>
+<script>
+    function addInvoiceRow() {
+        const tableBody = document.querySelector('#invoiceTable tbody');
+        const rowCount = tableBody.rows.length;
+        const newRow = tableBody.insertRow();
+
+        newRow.innerHTML = `
+            <td><input type="text" class="form-control" name="invoices[${rowCount}][invoice_no]" required></td>
+            <td><input type="number" step="0.01" class="form-control" name="invoices[${rowCount}][invoice_value]" required></td>
+            <td><input type="date" class="form-control" name="invoices[${rowCount}][invoice_date]" required></td>
+            <td><input type="number" class="form-control" name="invoices[${rowCount}][quantity]" required></td>
+            <td><input type="text" class="form-control" name="invoices[${rowCount}][type_of_parcel]" required></td>
+            <td><input type="text" class="form-control" name="invoices[${rowCount}][eway_no]"></td>
+            <td><input type="date" class="form-control" name="invoices[${rowCount}][eway_expiry_date]"></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeInvoiceRow(this)">Remove</button></td>
+        `;
+    }
+
+    function removeInvoiceRow(button) {
+        const row = button.closest('tr');
+        row.remove();
+        // Re-index remaining rows
+        const rows = document.querySelectorAll('#invoiceTable tbody tr');
+        rows.forEach((row, index) => {
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(input => {
+                const name = input.name.replace(/\[\d+\]/, `[${index}]`);
+                input.name = name;
+            });
+        });
+    }
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

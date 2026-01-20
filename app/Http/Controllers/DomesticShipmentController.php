@@ -555,10 +555,11 @@ class DomesticShipmentController extends Controller
 
     public function show($id)
     {
-        $shipment = DomesticShipment::with('invoices')->findOrFail($id);
+        $shipment = DomesticShipment::with(['invoices', 'consigner', 'consignee'])->findOrFail($id);
 
-        $company = Auth::user()->company; // 👈 fetch company of logged-in user
+        $company = Auth::user()->company;
 
+        // dd($company);
         return view('shipment.pod', compact('shipment', 'company'));
     }
 }

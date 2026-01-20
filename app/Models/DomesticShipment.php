@@ -107,6 +107,10 @@ class DomesticShipment extends Model
         'driver_number',
         'vehicle_hire_id'
     ];
+
+    protected $casts = [
+        'shipment_date' => 'date',
+    ];
     public function invoices()
     {
         return $this->hasMany(ShipmentInvoice::class);

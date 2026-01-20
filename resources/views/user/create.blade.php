@@ -102,18 +102,14 @@
 
                                  <div class="row g-3 mt-3">
 
-                                     <!-- Role -->
+                                     <!-- Branch -->
                                      <div class="col-md-4">
-                                         <label class="form-label">User Role</label>
-                                         <select name="role" class="form-select" required>
-                                             <option value="">Select Role</option>
-                                             <option value="super_admin">Super Admin</option>
-                                             <option value="branch_manager">Branch Manager</option>
-                                             <option value="booking_executive">Booking Executive</option>
-                                             <option value="accounts_user">Accounts User</option>
-                                             <option value="fleet_manager">Fleet Manager</option>
-                                             <option value="vendor_manager">Vendor Manager</option>
-                                             <option value="viewer">Viewer / Reports Only</option>
+                                         <label class="form-label">Branch</label>
+                                         <select name="branch_id" class="form-select" required>
+                                             <option value="">Select Branch</option>
+                                             @foreach(\App\Models\Branch::all() as $branch)
+                                                 <option value="{{ $branch->id }}">{{ $branch->branch_name }} ({{ $branch->branch_code }})</option>
+                                             @endforeach
                                          </select>
                                      </div>
 

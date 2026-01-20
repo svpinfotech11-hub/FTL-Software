@@ -141,129 +141,9 @@
       </div>
     </div>
     <!--end::Row-->
-    <!--begin::Roles & Permissions Row-->
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="bi bi-shield-lock me-2"></i>
-              Roles & Permissions Management
-            </h3>
-            <div class="card-tools">
-              <a href="{{ route('roles.index') }}" class="btn btn-primary btn-sm">
-                <i class="bi bi-gear"></i> Manage Roles
-              </a>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-3">
-                <div class="info-box">
-                  <span class="info-box-icon text-primary">
-                    <i class="bi bi-people-fill"></i>
-                  </span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">Total Users</span>
-                    <span class="info-box-number">{{ \App\Models\User::where('created_by', Auth::id())->count() }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="info-box">
-                  <span class="info-box-icon text-success">
-                    <i class="bi bi-person-badge"></i>
-                  </span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">Roles Created</span>
-                    <span class="info-box-number">{{ \App\Models\Role::where('user_id', Auth::id())->count() }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="info-box">
-                  <span class="info-box-icon text-warning">
-                    <i class="bi bi-key"></i>
-                  </span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">Permissions</span>
-                    <span class="info-box-number">{{ \App\Models\Permission::where('user_id', Auth::id())->count() }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="info-box">
-                  <span class="info-box-icon text-info">
-                    <i class="bi bi-person-check"></i>
-                  </span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">Users with Roles</span>
-                    <span class="info-box-number">{{ \App\Models\User::where('created_by', Auth::id())->whereNotNull('role')->count() }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row mt-3">
-              <div class="col-md-6">
-                <div class="card border-primary">
-                  <div class="card-header bg-primary text-white">
-                    <h6 class="card-title mb-0">
-                      <i class="bi bi-person-badge me-1"></i>
-                      Recent Roles
-                    </h6>
-                  </div>
-                  <div class="card-body">
-                    @php
-                    $recentRoles = \App\Models\Role::where('user_id', Auth::id())->latest()->take(3)->get();
-                    @endphp
-                    @if($recentRoles->count() > 0)
-                    @foreach($recentRoles as $role)
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <span>{{ $role->name }}</span>
-                      <small class="text-muted">{{ $role->created_at->diffForHumans() }}</small>
-                    </div>
-                    @endforeach
-                    @else
-                    <p class="text-muted mb-0">No roles created yet</p>
-                    @endif
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card border-success">
-                  <div class="card-header bg-success text-white">
-                    <h6 class="card-title mb-0">
-                      <i class="bi bi-key me-1"></i>
-                      Recent Permissions
-                    </h6>
-                  </div>
-                  <div class="card-body">
-                    @php
-                    $recentPermissions = \App\Models\Permission::where('user_id', Auth::id())->latest()->take(3)->get();
-                    @endphp
-                    @if($recentPermissions->count() > 0)
-                    @foreach($recentPermissions as $perm)
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <span>{{ $perm->name }}</span>
-                      <small class="text-muted">{{ $perm->created_at->diffForHumans() }}</small>
-                    </div>
-                    @endforeach
-                    @else
-                    <p class="text-muted mb-0">No permissions created yet</p>
-                    @endif
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--end::Roles & Permissions Row-->
   </div>
   <!--end::Container-->
-
+</div>
 <!--end::App Content-->
 
 @else
@@ -375,7 +255,6 @@
         </div>
       </div>
 
-      @hasPermission('view-shipment')
       <div class="col-md-4 mb-4">
         <div class="card h-100">
           <div class="card-header bg-success text-white">
@@ -393,9 +272,7 @@
           </div>
         </div>
       </div>
-      @endhasPermission
 
-      @hasPermission('manage vendors')
       <div class="col-md-4 mb-4">
         <div class="card h-100">
           <div class="card-header bg-info text-white">
@@ -419,16 +296,148 @@
           </div>
         </div>
       </div>
-      @endhasPermission
     </div>
-    </div>
-
     <!--end::Row-->
   </div>
   <!--end::Container-->
-</div>
+
 <!--end::App Content-->
 @endif
+<!--end::Col-->
 
+<!--end::Row-->
+
+@if(Auth::user()->role === 'admin')
+<!--begin::Roles & Permissions Row-->
+<div class="row">
+  <div class="col-10">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="bi bi-shield-lock me-2"></i>
+          Roles & Permissions Management
+        </h3>
+        <div class="card-tools">
+          <a href="{{ route('roles.index') }}" class="btn btn-primary btn-sm">
+            <i class="bi bi-gear"></i> Manage Roles
+          </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon text-primary">
+                <i class="bi bi-people-fill"></i>
+              </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Total Users</span>
+                <span class="info-box-number">{{ \App\Models\User::where('created_by', Auth::id())->count() }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon text-success">
+                <i class="bi bi-person-badge"></i>
+              </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Roles Created</span>
+                <span class="info-box-number">{{ \App\Models\Role::where('user_id', Auth::id())->count() }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon text-warning">
+                <i class="bi bi-key"></i>
+              </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Permissions</span>
+                <span class="info-box-number">{{ \App\Models\Permission::where('user_id', Auth::id())->count() }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon text-info">
+                <i class="bi bi-person-check"></i>
+              </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Users with Roles</span>
+                <span class="info-box-number">{{ \App\Models\User::where('created_by', Auth::id())->whereNotNull('role')->count() }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <div class="card border-primary">
+              <div class="card-header bg-primary text-white">
+                <h6 class="card-title mb-0">
+                  <i class="bi bi-person-badge me-1"></i>
+                  Recent Roles
+                </h6>
+              </div>
+              <div class="card-body">
+                @php
+                $recentRoles = \App\Models\Role::where('user_id', Auth::id())->latest()->take(3)->get();
+                @endphp
+                @if($recentRoles->count() > 0)
+                @foreach($recentRoles as $role)
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>{{ $role->name }}</span>
+                  <small class="text-muted">{{ $role->created_at->diffForHumans() }}</small>
+                </div>
+                @endforeach
+                @else
+                <p class="text-muted mb-0">No roles created yet</p>
+                @endif
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success">
+              <div class="card-header bg-success text-white">
+                <h6 class="card-title mb-0">
+                  <i class="bi bi-key me-1"></i>
+                  Recent Permissions
+                </h6>
+              </div>
+              <div class="card-body">
+                @php
+                $recentPermissions = \App\Models\Permission::where('user_id', Auth::id())->latest()->take(3)->get();
+                @endphp
+                @if($recentPermissions->count() > 0)
+                @foreach($recentPermissions as $perm)
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>{{ $perm->name }}</span>
+                  <small class="text-muted">{{ $perm->created_at->diffForHumans() }}</small>
+                </div>
+                @endforeach
+                @else
+                <p class="text-muted mb-0">No permissions created yet</p>
+                @endif
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!--end::Roles & Permissions Row-->
+@endif
+
+<!--begin::Row-->
+
+<!-- /.row (main row) -->
+</div>
+<!--end::Container-->
+</div>
+<!--end::App Content-->
 
 @endsection

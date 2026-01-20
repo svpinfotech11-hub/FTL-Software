@@ -48,12 +48,12 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">Company Logo</label>
-                                    <input type="file" name="logo" class="form-control">
+                                    <input type="file" name="logo" class="form-control" accept="image/*">
                                 </div>
 
                                 <div class="col-md-4">
                                     <label class="form-label">Company Stamp</label>
-                                    <input type="file" name="stamp" class="form-control">
+                                    <input type="file" name="stamp" class="form-control" accept="image/*">
                                 </div>
 
                                 <div class="col-md-4">

@@ -45,7 +45,7 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
-                                            <th>Role</th>
+                                            <th>Branch</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th style="width: 120px">Actions</th> <!-- new column -->
@@ -58,7 +58,7 @@
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->phone }}</td>
-                                            <td>{{ ucfirst(str_replace('_', ' ', $user->role)) }}</td>
+                                            <td>{{ $user->branch ? $user->branch->branch_name . ' (' . $user->branch->branch_code . ')' : 'No Branch Assigned' }}</td>
                                             <td>
                                                 @if($user->status === 'active')
                                                 <span class="badge text-bg-success">Active</span>
@@ -82,7 +82,7 @@
 
                                         @if($users->isEmpty())
                                         <tr>
-                                            <td colspan="7" class="text-center">No users found.</td>
+                                            <td colspan="8" class="text-center">No users found.</td>
                                         </tr>
                                         @endif
                                     </tbody>

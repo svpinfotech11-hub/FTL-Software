@@ -15,14 +15,28 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, $role)
     {
+        // Accept multiple roles separated by | or ,
+        $roles = preg_split('/[\|,]/', $role);
+
         if (!Auth::check()) {
-            // Not logged in → redirect to login based on role
-            return $this->redirectByRole($role);
+            // Not logged in → redirect to login based on first role
+            return $this->redirectByRole($roles[0] ?? 'user');
         }
 
-        if (Auth::user()->role !== $role) {
+        // If user has Spatie roles available, use hasAnyRole; otherwise fall back to string compare
+        $user = Auth::user();
+
+        $hasRole = false;
+        if (method_exists($user, 'hasAnyRole')) {
+            $hasRole = $user->hasAnyRole($roles);
+        } else {
+            $hasRole = in_array($user->role, $roles, true);
+        }
+
+        if (! $hasRole) {
             // Logged in but wrong role → redirect to their dashboard
-            return $this->redirectToDashboard(Auth::user()->role);
+            $currentRole = method_exists($user, 'getRoleNames') ? ($user->getRoleNames()->first() ?? $user->role) : $user->role;
+            return $this->redirectToDashboard($currentRole);
         }
 
         return $next($request);

@@ -20,7 +20,8 @@ class Consigner extends Model
         'is_saved',
         'doc_number',
         'coll_type',
-        'delivery_type'
+        'delivery_type',
+        'doc_type'
     ];
 
     public function user()
