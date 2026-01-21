@@ -33,6 +33,11 @@
                     <div class="card-body">
                         <div class="row g-3">
 
+                         <div class="col-md-4">
+                                <label class="form-label">Hire Register ID</label>
+                                <input type="text" class="form-control bg-light" value="{{ $nextHireRegisterId ?? 'HR001' }}" readonly>
+                            </div>
+
                             <div class="col-md-4">
                                 <label class="form-label">Hire Date</label>
                                 <input type="date" name="hire_date" value="{{ old('hire_date') }}" class="form-control">
@@ -90,10 +95,10 @@
                                 <input type="text" name="route_to" class="form-control" value="{{ old('route_to') }}">
                             </div>
 
-                            <div class="col-md-4">
+                            <!-- <div class="col-md-4">
                                 <label class="form-label">LR / Manifest No</label>
                                 <input type="text" name="lr_manifest_no" class="form-control" value="{{ old('lr_manifest_no') }}">
-                            </div>
+                            </div> -->
 
                             <div class="col-md-4">
                                 <label class="form-label">Hire Rate</label>

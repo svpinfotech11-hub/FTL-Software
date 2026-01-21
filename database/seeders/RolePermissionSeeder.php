@@ -31,8 +31,25 @@ class RolePermissionSeeder extends Seeder
         // Example permissions (expand as needed)
         $perms = [
             'manage users',
-            'manage shipments',
-            'view reports'
+            'view shipments',
+            'create shipments',
+            'edit shipments',
+            'delete shipments',
+            'view reports',
+            'create vendors',
+            'view vendors',
+            'create customers',
+            'view customers',
+            'create vehicles',
+            'create companies',
+            'manage vehicle hires',
+            'manage expenses',
+            'manage vehicles',
+            'manage drivers',
+            'manage branches',
+            'manage roles',
+            'manage permissions',
+            'manage companies'
         ];
 
         foreach ($perms as $p) {

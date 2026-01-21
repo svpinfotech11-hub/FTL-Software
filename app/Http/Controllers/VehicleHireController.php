@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class VehicleHireController extends Controller
 {
+    private function generateHireRegisterId()
+    {
+        $lastHire = VehicleHire::orderBy('id', 'desc')->first();
+        $nextNumber = $lastHire ? intval(substr($lastHire->hire_register_id, 2)) + 1 : 1;
+        return 'HR' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+    }
     public function index()
     {
      $vehicleHires = VehicleHire::with(['vendor', 'vehicle', 'driver'])->get();
@@ -22,7 +28,8 @@ class VehicleHireController extends Controller
         $drivers = Driver::all();
         $vehicles = Vehicle::all();
         $vendors = Vendor::all();
-        return view('vehicle_hires.create', compact('drivers', 'vehicles', 'vendors'));
+        $nextHireRegisterId = $this->generateHireRegisterId();
+        return view('vehicle_hires.create', compact('drivers', 'vehicles', 'vendors', 'nextHireRegisterId'));
     }
 
     public function store(Request $request)
@@ -45,14 +52,21 @@ class VehicleHireController extends Controller
             'payment_status'   => 'nullable|in:Pending,Partial,Paid',
         ]);
 
+        // Fetch vendor and vehicle details
+        $vendor = $request->vendor_id ? Vendor::find($request->vendor_id) : null;
+        $vehicle = $request->vehicle_id ? Vehicle::find($request->vehicle_id) : null;
+        $driver = $request->driver_id ? Driver::find($request->driver_id) : null;
+
         VehicleHire::create([
             'user_id'          => auth()->id(),
+            'hire_register_id' => $this->generateHireRegisterId(),
             'hire_date'        => $request->hire_date,
-            'vendor_name'      => $request->vendor_name,
-            'vehicle_no'       => $request->vehicle_no,
+            'vendor_name'      => $vendor ? $vendor->vendor_name : $request->vendor_name,
+            'vehicle_no'       => $vehicle ? $vehicle->vehicle_number : $request->vehicle_no,
             'vendor_id' => $request->vendor_id,
             'vehicle_id' => $request->vehicle_id,
-            'driver_id' => $request->driver_id, // 
+            'driver_id' => $request->driver_id,
+            'driver_details'   => $driver ? $driver->name . ' (' . $driver->contact_no . ')' : null,
             'route_from'       => $request->route_from,
             'route_to'         => $request->route_to,
             'lr_manifest_no'   => $request->lr_manifest_no,
@@ -103,13 +117,19 @@ $drivers = Driver::all();
 
         $vehicleHire = VehicleHire::findOrFail($id);
 
+        // Fetch vendor and vehicle details
+        $vendor = $request->vendor_id ? Vendor::find($request->vendor_id) : null;
+        $vehicle = $request->vehicle_id ? Vehicle::find($request->vehicle_id) : null;
+        $driver = $request->driver_id ? Driver::find($request->driver_id) : null;
+
         $vehicleHire->update([
             'hire_date'         => $request->hire_date,
-            'vendor_name'       => $request->vendor_name,
-            'vehicle_no'        => $request->vehicle_no,
-             'vendor_id' => $request->vendor_id,
+            'vendor_name'       => $vendor ? $vendor->vendor_name : $request->vendor_name,
+            'vehicle_no'        => $vehicle ? $vehicle->vehicle_number : $request->vehicle_no,
+            'vendor_id' => $request->vendor_id,
             'vehicle_id' => $request->vehicle_id,
-            'driver_id' => $request->driver_id, // 
+            'driver_id' => $request->driver_id,
+            'driver_details'    => $driver ? $driver->name . ' (' . $driver->contact_no . ')' : null,
             'route_from'        => $request->route_from,
             'route_to'          => $request->route_to,
             'lr_manifest_no'    => $request->lr_manifest_no,

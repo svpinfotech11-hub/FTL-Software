@@ -27,6 +27,11 @@
                         <div class="row g-3">
 
                             <div class="col-md-4">
+                                <label class="form-label">Hire Register ID</label>
+                                <input type="text" class="form-control bg-light" value="{{ $vehicleHire->hire_register_id }}" readonly>
+                            </div>
+
+                            <div class="col-md-4">
                                 <label class="form-label">Hire Date</label>
                                 <input type="date" name="hire_date"
                                     class="form-control"
@@ -89,12 +94,12 @@
                                     value="{{ old('route_to', $vehicleHire->route_to) }}">
                             </div>
 
-                            <div class="col-md-4">
+                            <!-- <div class="col-md-4">
                                 <label class="form-label">LR / Manifest No</label>
                                 <input type="text" name="lr_manifest_no"
                                     class="form-control"
                                     value="{{ old('lr_manifest_no', $vehicleHire->lr_manifest_no) }}">
-                            </div>
+                            </div> -->
 
                             <div class="col-md-4">
                                 <label class="form-label">Hire Rate</label>

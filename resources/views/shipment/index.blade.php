@@ -137,7 +137,7 @@
                             {{-- Hire Register --}}
                             <td>
                                 @if($row->vehicle_type === 'rented')
-                                    {{ $row->vehicleHire?->vendor_name ?? '-' }}
+                                    {{ $row->vehicleHire?->hire_register_id ?? '-' }}
                                 @else
                                     OWN
                                 @endif
