@@ -42,12 +42,12 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label">Vehicle Registration</label>
-                                        <input type="text" name="vehicle_registration" class="form-control">
+                                        <input type="text" name="vehicle_registration" value="{{ old('vehicle_registration') }}" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label">Vehicle Chassis</label>
-                                        <input type="text" name="vehicle_chesis" class="form-control">
+                                        <input type="text" name="vehicle_chesis" value="{{ old('vehicle_chesis') }}" class="form-control">
                                     </div>
 
                                 </div>
@@ -56,20 +56,20 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label">Vehicle Model</label>
-                                        <input type="text" name="vehicle_model" class="form-control">
+                                        <input type="text" name="vehicle_model" value="{{ old('vehicle_model') }}" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label">PUC Date</label>
                                         <div class="input-group">
-                                            <input type="text" name="vehicle_puc_date" class="form-control datepicker" placeholder="YYYY-MM-DD">
+                                            <input type="text" name="vehicle_puc_date" value="{{ old('vehicle_puc_date') }}" class="form-control datepicker" placeholder="YYYY-MM-DD">
                                         </div>
                                     </div>
 
 
                                     <div class="col-md-4">
                                         <label class="form-label">Fitness Exp Date</label>
-                                        <input type="date" name="vehicle_fitness_exp_date" class="form-control datepicker" placeholder="YYYY-MM-DD">
+                                        <input type="date" name="vehicle_fitness_exp_date" value="{{ old('vehicle_fitness_exp_date') }}" class="form-control datepicker" placeholder="YYYY-MM-DD">
                                     </div>
 
                                 </div>
@@ -78,17 +78,19 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label">Permit Renewal Date</label>
-                                        <input type="date" name="vehicle_permit_renewal_date" class="form-control datepicker" placeholder="YYYY-MM-DD">
+                                        <input type="date" name="vehicle_permit_renewal_date" value="{{ old('vehicle_permit_renewal_date') }}" class="form-control datepicker" placeholder="YYYY-MM-DD">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label">Insurance Renewal Date</label>
-                                        <input type="date" name="vehicle_insurance_renew_date" class="form-control datepicker" placeholder="YYYY-MM-DD">
+                                        <input type="date" name="vehicle_insurance_renew_date"
+                                        <input type="date" name="vehicle_permit_renewal_date" value="{{ old('vehicle_insurance_renew_date') }}" class="form-control datepicker" placeholder="YYYY-MM-DD">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label">Vehicle Capacity</label>
-                                        <input type="text" name="vehicle_capacity" class="form-control"
+                                        <input type="text" name="vehicle_capacity"
+                                        <input type="date" name="vehicle_permit_renewal_date" value="{{ old('vehicle_capacity') }}" class="form-control"
                                             placeholder="e.g. 10 TON">
                                     </div>
 

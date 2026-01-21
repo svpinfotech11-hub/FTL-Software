@@ -134,12 +134,34 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     });
 
+
+    Route::middleware(['permission:vehicle-create'])->group(function () {
     Route::middleware(['permission:view customers'])->get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
     Route::middleware(['permission:create vehicles'])->group(function () {
+
         Route::resource('vehicles', VehicleController::class);
     });
     Route::middleware(['permission:view shipments'])->get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
     Route::resource('drivers', DriverController::class);
+    Route::resource('add-expenses', AddExpenseController::class);
+
+    Route::middleware(['permission:company-create'])->group(function () {
+        Route::resource('company', AddCompanyController::class);
+    });
+
+    Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
+    Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
+    Route::get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
+    Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
+    Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
+    Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
+
+    Route::post('/domestic/print', [DomesticShipmentController::class, 'print'])
+        ->name('domestic.shipment.print');
+
+    Route::get('/domestic/report', [DomesticShipmentController::class, 'report'])
+        ->name('domestic.shipment.report');
+});
 
     Route::middleware(['permission:manage expenses'])->group(function () {
         Route::resource('add-expenses', AddExpenseController::class);
@@ -158,7 +180,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
     });
 });
-
 
 // Role & Permission management (super admin and tenant owner)
 Route::middleware(['auth', 'role:super_admin|admin'])->group(function () {
