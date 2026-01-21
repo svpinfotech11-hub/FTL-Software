@@ -8,13 +8,15 @@ use App\Models\Customer;
 use App\Models\Consignee;
 use App\Models\Consigner;
 use App\Models\VehicleHire;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request;;
 use Illuminate\Validation\Rule;
 use App\Models\DomesticShipment;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\DomesticShipmentReportExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DomesticShipmentController extends Controller
 {
@@ -118,9 +120,14 @@ class DomesticShipmentController extends Controller
 
         $customers = Customer::where('user_id', $userId)->get();
 
-        $vehicleHires = VehicleHire::where('user_id', $userId)->get();
-
-        $vendors = Vendor::where('user_id', '!=', $userId)->get();
+        // Get vehicle hires that are not already assigned to any shipment
+        $usedVehicleHireIds = DomesticShipment::whereNotNull('vehicle_hire_id')->pluck('vehicle_hire_id')->toArray();
+        $vehicleHires = VehicleHire::with(['vendor', 'vehicle', 'driver'])
+            ->where('user_id', $userId)
+            ->whereNotIn('id', $usedVehicleHireIds)
+            ->get();
+        // dd($vehicleHires);
+        $vendors = Vendor::where('user_id', '=', $userId)->get();
 
         $drivers = Driver::all();
 
@@ -357,6 +364,7 @@ class DomesticShipmentController extends Controller
                 'qty'               => $request->qty,
                 'actual_weight'     => $request->actual_weight,
                 'chargeable_weight' => $request->chargeable_weight,
+                'freight'           => $request->charges['freight'] ?? 0,
                 'sub_total'         => $request->sub_total,
                 // 'tax_type'          => $request->tax_type,
                 'tax'               => $request->tax,
@@ -398,7 +406,8 @@ class DomesticShipmentController extends Controller
         $shipment = DomesticShipment::with([
             'invoices',
             'consigner',
-            'consignee'
+            'consignee',
+            'vehicleHire'
         ])->findOrFail($id);
 
         // dd($shipment);
@@ -416,16 +425,52 @@ class DomesticShipmentController extends Controller
 
         $customers = Customer::where('user_id', $userId)->get();
 
+        // Get vehicle hires that are not already assigned to any shipment, or the one currently assigned to this shipment
+        $usedVehicleHireIds = DomesticShipment::whereNotNull('vehicle_hire_id')
+            ->where('id', '!=', $id) // Exclude current shipment
+            ->pluck('vehicle_hire_id')
+            ->toArray();
+        
+        $vehicleHires = VehicleHire::with(['vendor', 'vehicle', 'driver'])
+            ->where('user_id', $userId)
+            ->where(function($query) use ($usedVehicleHireIds, $shipment) {
+                $query->whereNotIn('id', $usedVehicleHireIds)
+                      ->orWhere('id', $shipment->vehicle_hire_id); // Include currently assigned hire
+            })
+            ->get();
+
+        $vendors = Vendor::where('user_id', '!=', $userId)->get();
+
         return view('shipment.edit', compact(
             'shipment',
             'consigners',
             'consignees',
-            'customers'
+            'customers',
+            'vehicleHires',
+            'vendors'
         ));
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'vehicle_type' => 'required|in:own,rented',
+        ]);
+
+        if ($request->vehicle_type === 'own') {
+            $request->validate([
+                'vehicle_number' => 'required',
+                'driver_name'    => 'required',
+                'driver_number'  => 'required',
+            ]);
+        }
+
+        if ($request->vehicle_type === 'rented') {
+            $request->validate([
+                'vehicle_hire_id' => 'required|exists:vehicle_hires,id',
+            ]);
+        }
+
         DB::beginTransaction();
 
         try {
@@ -502,7 +547,11 @@ class DomesticShipmentController extends Controller
          | 3️⃣ UPDATE SHIPMENT
          ===================================================== */
 
-            $shipment->update([
+            /* =======================
+            | VEHICLE TYPE LOGIC
+            =======================*/
+
+            $updateData = [
                 'customer_id'       => $request->customer_id,
                 'consigner_id'      => $consignerId,
                 'consignee_id'      => $consigneeId,
@@ -512,11 +561,11 @@ class DomesticShipmentController extends Controller
                 'risk_type'         => $request->risk_type,
                 'bill_type'         => $request->bill_type,
                 'description'       => $request->description,
-                'vehicle_no'        => $request->vehicle_no,
                 'pkt'               => $request->pkt,
                 'qty'               => $request->qty,
                 'actual_weight'     => $request->actual_weight,
                 'chargeable_weight' => $request->chargeable_weight,
+                'freight'           => $request->charges['freight'] ?? 0,
                 'sub_total'         => $request->sub_total,
                 'tax_type'          => $request->tax_type,
                 'tax'               => $request->tax,
@@ -526,7 +575,26 @@ class DomesticShipmentController extends Controller
                 'grand_total'       => $request->grand_total,
                 'mode'              => $request->mode,
                 'rate'              => $request->rate,
-            ]);
+                'vehicle_type'      => $request->vehicle_type,
+            ];
+
+            if ($request->vehicle_type === 'own') {
+                $updateData['vehicle_number'] = $request->vehicle_number;
+                $updateData['driver_name']    = $request->driver_name;
+                $updateData['driver_number']  = $request->driver_number;
+                $updateData['vehicle_hire_id'] = null;
+            }
+
+            if ($request->vehicle_type === 'rented') {
+                $hire = VehicleHire::findOrFail($request->vehicle_hire_id);
+
+                $updateData['vehicle_hire_id'] = $hire->id;
+                $updateData['vehicle_number'] = $hire->vehicle_no;
+                $updateData['driver_name']    = $hire->driver_details;
+                $updateData['driver_number']  = null;
+            }
+
+            $shipment->update($updateData);
 
             // Update consigner coll_type and delivery_type if consigner exists
             if ($consignerId && ($request->coll_type || $request->delivery_type)) {
@@ -607,4 +675,114 @@ class DomesticShipmentController extends Controller
         // dd($company);
         return view('shipment.pod', compact('shipment', 'company'));
     }
+
+    // public function reports()
+    // {
+    //     $shipments = DomesticShipment::with([
+    //         'consigner:id,name',
+    //         'consignee:id,name,city',
+    //         'user:id,name',
+    //         'vehicleHire:id,hire_register_id,vendor_name,hire_rate,advance_paid,balance_payable'
+    //     ])
+    //     ->where('user_id', auth()->id())
+    //     ->latest()
+    //     ->get();
+
+    //     // Calculate profit/loss for each shipment
+    //     $shipments->transform(function ($shipment) {
+    //         $purchaseCost = 0;
+            
+    //         // Add vehicle hire costs if rented (this is the purchase cost)
+    //         if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
+    //             $hire = $shipment->vehicleHire;
+    //             $purchaseCost += $hire->hire_rate; // Full hire rate as purchase cost
+    //         }
+            
+    //         $shipment->sales_value = $shipment->grand_total; // Grand total is sales value
+    //         $shipment->purchase_value = $purchaseCost; // Hire costs are purchase value
+    //         $shipment->profit_loss = $shipment->sales_value - $shipment->purchase_value;
+    //         $shipment->is_profit = $shipment->profit_loss >= 0;
+            
+    //         return $shipment;
+    //     });
+
+    //     return view('shipment.report', compact('shipments'));
+    // }
+
+    public function reports(Request $request)
+{
+
+    $customers = Customer::where('user_id', auth()->id())
+        ->select('id', 'customer_name')
+        ->orderBy('customer_name')
+        ->get();
+
+    $consigners = Consigner::where('user_id', auth()->id())
+        ->select('id', 'name')
+        ->orderBy('name')
+        ->get();
+
+    $consignees = Consignee::where('user_id', auth()->id())
+        ->select('id', 'name')
+        ->orderBy('name')
+        ->get();
+    $query = DomesticShipment::with([
+        'consigner:id,name',
+        'consignee:id,name,city',
+        'user:id,name',
+        'vehicleHire:id,hire_register_id,vendor_name,hire_rate,advance_paid,balance_payable'
+    ])->where('user_id', auth()->id());
+
+    // 🔹 Customer filter
+    if ($request->filled('customer_id')) {
+        $query->where('customer_id', $request->customer_id);
+    }
+
+    // 🔹 Consigner filter
+    if ($request->filled('consigner_id')) {
+        $query->where('consigner_id', $request->consigner_id);
+    }
+
+    // 🔹 Consignee filter
+    if ($request->filled('consignee_id')) {
+        $query->where('consignee_id', $request->consignee_id);
+    }
+
+    // 🔹 Date range filter
+    if ($request->filled('start_date') && $request->filled('end_date')) {
+        $query->whereBetween('shipment_date', [
+            $request->start_date,
+            $request->end_date
+        ]);
+    }
+
+    $shipments = $query->latest()->get();
+
+    // 🔹 Profit/Loss calculation
+    $shipments->transform(function ($shipment) {
+        $purchaseCost = 0;
+
+        if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
+            $purchaseCost += $shipment->vehicleHire->hire_rate;
+        }
+
+        $shipment->sales_value = $shipment->grand_total;
+        $shipment->purchase_value = $purchaseCost;
+        $shipment->profit_loss = $shipment->sales_value - $shipment->purchase_value;
+        $shipment->is_profit = $shipment->profit_loss >= 0;
+
+        return $shipment;
+    });
+
+    return view('shipment.report', compact('shipments', 'customers', 'consigners', 'consignees'));
+}
+
+    public function exportExcel(Request $request)
+    {
+        return Excel::download(
+            new DomesticShipmentReportExport($request),
+            'domestic_shipment_report.xlsx'
+        );
+    }
+
 }

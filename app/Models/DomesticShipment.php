@@ -94,6 +94,7 @@ class DomesticShipment extends Model
         'qty',
         'actual_weight',
         'chargeable_weight',
+        'freight',
         'sub_total',
         'tax_type',
         'tax',

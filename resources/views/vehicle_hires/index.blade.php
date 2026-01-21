@@ -24,12 +24,13 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Hire Register ID</th>
                                 <th>Hire Date</th>
                                 <th>Vendor Details</th>
                                 <th>Vehicle Details</th>
                                 <th>Driver Details</th>
                                 <th>Route</th>
-                                <th>LR / Manifest</th>
+                                <!-- <th>LR / Manifest</th> -->
                                 <th>Hire Rate</th>
                                 <th>Advance Paid</th>
                                 <th>Balance</th>
@@ -42,6 +43,7 @@
                             @forelse ($vehicleHires as $key => $hire)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
+                                <td><strong>{{ $hire->hire_register_id }}</strong></td>
                                 <td>{{ $hire->hire_date }}</td>
                                 <td>
                                     <a href="javascript:void(0)" class="vendor-detail" data-id="{{ $hire->vendor_id }}">
@@ -63,7 +65,7 @@
 
 
                                 <td>{{ $hire->route_from }} → {{ $hire->route_to }}</td>
-                                <td>{{ $hire->lr_manifest_no }}</td>
+                                <!-- <td>{{ $hire->lr_manifest_no }}</td> -->
                                 <td>{{ number_format($hire->hire_rate, 2) }}</td>
                                 <td>{{ number_format($hire->advance_paid, 2) }}</td>
                                 <td>{{ number_format($hire->balance_payable, 2) }}</td>
@@ -95,7 +97,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="12" class="text-center">No Vehicle Hire Records Found</td>
+                                <td colspan="13" class="text-center">No Vehicle Hire Records Found</td>
                             </tr>
                             @endforelse
                         </tbody>

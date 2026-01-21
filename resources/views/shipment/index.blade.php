@@ -251,5 +251,185 @@
                 </div>
             </div>
         </div>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th><input type="checkbox" id="checkAll"></th>
+                        <th>Sr.No</th>
+                        <th>AWB No</th>
+                        <th>Sender</th>
+                        <th>Receiver</th>
+                        <th>Receiver City</th>
+                        <th>Pincode</th>
+                        <th>Driver</th>
+                        <th>Vehicle No</th>
+                        <th>Hire Register</th>
+                        <th>Forwarder</th>
+                        <th>Booking Date</th>
+                        <th>Mode</th>
+                        <th>Pay Mode</th>
+                        <th>Amount</th>
+                        <th>Weight</th>
+                        <th>QTY</th>
+                        <th>PKT</th>
+                        <th>Branch</th>
+                        <th>User</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @forelse($shipments as $key => $row)
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="ids[]" value="{{ $row->id }}">
+                            </td>
+
+                            <td>{{ $key + 1 }}</td>
+
+                            <td>
+                                <span class="badge bg-primary">
+                                    {{ $row->airway_no }}
+                                </span>
+                            </td>
+
+                            {{-- Sender (Consigner) --}}
+                            <td>
+                                {{ $row->consigner?->name ?? '-' }}
+                            </td>
+
+                            {{-- Receiver (Consignee) --}}
+                            <td>
+                                {{ $row->consignee?->name ?? '-' }}
+                            </td>
+
+                            {{-- Receiver City --}}
+                            <td>
+                                {{ $row->consignee?->city ?? '-' }}
+                            </td>
+
+                            {{-- Pincode --}}
+                            <td>
+                                {{ $row->consignee?->pincode ?? '-' }}
+                            </td>
+
+                            {{-- Driver --}}
+                            <td>
+                                {{ $row->driver_name ?? '-' }}
+                            </td>
+
+                            {{-- Vehicle Number --}}
+                            <td>
+                                {{ $row->vehicle_number ?? '-' }}
+                            </td>
+
+                            {{-- Hire Register --}}
+                            <td>
+                                @if($row->vehicle_type === 'rented')
+                                    {{ $row->vehicleHire?->hire_register_id ?? '-' }}
+                                @else
+                                    OWN
+                                @endif
+                            </td>
+
+                            {{-- Forwarder --}}
+                            <td>
+                                {{ $row->courier ?? 'SELF' }}
+                            </td>
+
+                            {{-- Booking Date --}}
+                            <td>
+                                {{ \Carbon\Carbon::parse($row->shipment_date)->format('d-m-Y') }}
+                            </td>
+
+                            {{-- Mode --}}
+                            <td>
+                                {{ $row->risk_type ?? '-' }}
+                            </td>
+
+                            {{-- Pay Mode --}}
+                            <td>
+                                {{ $row->bill_type }}
+                            </td>
+
+                            {{-- Amount --}}
+                            <td>
+                                {{ number_format($row->grand_total, 2) }}
+                            </td>
+
+                            {{-- Weight --}}
+                            <td>
+                                {{ $row->chargeable_weight ?? '-' }}
+                            </td>
+
+                            {{-- QTY --}}
+                            <td>
+                                {{ $row->qty }}
+                            </td>
+
+                            {{-- PKT --}}
+                            <td>
+                                {{ $row->pkt }}
+                            </td>
+
+                            {{-- Branch --}}
+                            <td>
+                                {{ $row->branch_name ?? 'BHIWANDI HO' }}
+                            </td>
+
+                            {{-- User --}}
+                            <td>
+                                {{ optional($row->user)->name ?? 'Admin' }}
+                            </td>
+
+                            {{-- Action --}}
+                            <td>
+                                <div class="btn-group-vertical">
+                                    <a href="{{ route('domestic.shipment.edit', $row->id) }}"
+                                    class="btn btn-sm btn-warning" title="Edit">
+                                        ✏️
+                                    </a>
+
+                                    <form action="{{ route('domestic.shipment.destroy', $row->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete this shipment?')">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
+                                                title="Delete">
+                                            🗑️
+                                        </button>
+                                    </form>
+
+                                    <a href="{{ route('domestic.shipment.pod', $row->id) }}"
+                                    target="_blank"
+                                    class="btn btn-sm btn-secondary"
+                                    title="View POD">
+                                        📄
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="18" class="text-center text-muted">
+                                No records found
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+               </table>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
     </main>
 @endsection

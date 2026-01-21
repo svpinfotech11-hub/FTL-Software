@@ -127,6 +127,7 @@
                                                     </div>
                                                 </div>
 
+
                                                 <!-- Bill Type -->
                                                 <div class="row mb-2 align-items-center">
                                                     <label class="col-md-4 col-form-label">
@@ -152,6 +153,11 @@
                                                             <option value="Road Transport">Road Transport</option>
                                                         </select>
                                                     </div>
+                                            <!-- Description -->
+                                            <div class="row mb-2">
+                                                <label class="col-md-4 col-form-label">Description</label>
+                                                <div class="col-md-8">
+                                                    <textarea class="form-control" name="description" rows="2"></textarea>
                                                 </div>
 
                                                 <!-- Rate -->
@@ -297,9 +303,20 @@
                                                         Select Consigner<span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-md-8">
+
                                                         <select name="consigner_id" class="form-control form-select"
                                                             id="consignerSelect">
                                                             <option value="" id="newConsignerOption">➕ New Consigner
+
+                                                        <select class="form-control" name="vehicle_hire_id" id="vehicle_hire_id">
+                                                            <option value="">Select Hire Register</option>
+                                                            @foreach ($vehicleHires as $hire)
+                                                            <option value="{{ $hire->id }}"
+                                                                data-vendor="{{ $hire->vendor_id }}"
+                                                                data-vehicle="{{ $hire->vehicle_no }}"
+                                                                data-driver="{{ $hire->driver_details }}">
+                                                                {{ $hire->id }} - {{ $hire->vendor->vendor_name }} - {{ $hire->vehicle_no }}
+
                                                             </option>
 
                                                             @foreach ($consigners as $c)
@@ -659,7 +676,20 @@
                                                     </div>
                                                 </div>
 
+
                                             </div>
+
+                                             <!-- Rate -->
+                                            <div class="row mb-2 align-items-center">
+                                                <label class="col-md-4 col-form-label">
+                                                    Rate<span class="text-danger">*</span>
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="number" step="0.01" class="form-control" name="rate" placeholder="Enter rate">
+                                                </div>
+                                            </div>
+
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -1100,12 +1130,44 @@
 
             function calculateCharges() {
 
+
                 let total = 0;
                 document.querySelectorAll('.charge-input').forEach(input => {
                     total += parseFloat(input.value) || 0;
                 });
 
                 document.getElementById('charges_total').value = total.toFixed(2);
+            // Calculate freight = chargeable_weight * rate
+            const chargeableWeight = parseFloat(document.querySelector('input[name="chargeable_weight"]').value) || 0;
+            const rate = parseFloat(document.querySelector('input[name="rate"]').value) || 0;
+            const freight = chargeableWeight * rate;
+            console.log("freight", freight);
+           let val = document.querySelector('input[name="charges[freight]"]').value = freight.toFixed(2);
+console.log("freight value", val);
+        function calculateCharges() {
+
+            // Calculate freight = chargeable_weight * rate
+            const chargeableWeight = parseFloat(document.querySelector('input[name="chargeable_weight"]').value) || 0;
+            const rate = parseFloat(document.querySelector('input[name="rate"]').value) || 0;
+            const freight = chargeableWeight * rate;
+            console.log("freight", freight);
+           let val = document.querySelector('input[name="charges[freight]"]').value = freight.toFixed(2);
+console.log("freight value", val);
+
+            let total = 0;
+
+            // Sum all charge inputs except freight (since we just calculated it)
+            document.querySelectorAll('.charge-input').forEach(input => {
+                if (input.name !== 'charges[freight]') {
+                    total += parseFloat(input.value) || 0;
+                }
+            });
+
+            // Add the calculated freight to the total
+            total += freight;
+
+            document.getElementById('charges_total').value = total.toFixed(2);
+
 
                 let tax = parseFloat(taxPercent.value) || 0;
 
