@@ -534,15 +534,16 @@
                                 'eway_charge' => 'Eway Ch.',
                                 'fuel_surcharge' => 'Fuel Surcharge',
                             ] as $name => $label)
-                                        <div class="row mb-2 align-items-center">
-                                            <label class="col-md-6 col-form-label">{{ $label }}</label>
-                                            <div class="col-md-6">
-                                                <input type="number" step="0.01" class="form-control charge-input"
-                                                    name="{{ $name }}"
-                                                    value="{{ old($name, $shipment->$name) }}">
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                        
+                            <div class="row mb-2 align-items-center">
+                                    <label class="col-md-6 col-form-label">{{ $label }}</label>
+                                    <div class="col-md-6">
+                                        <input type="number" step="0.01" class="form-control charge-input"
+                                            name="{{ $name }}"
+                                            value="{{ old($name, $shipment->$name) }}">
+                                    </div>
+                                </div>
+                            @endforeach
                                 </div>
 
                                 <div class="col-md-6">
