@@ -286,6 +286,32 @@
       const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
       sparkline3.render();
   </script>
+
+  <!-- jQuery FIRST -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- DataTables -->
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+  <script>
+      $(document).ready(function() {
+          $('.datatable').each(function() {
+              if (!$.fn.DataTable.isDataTable(this)) {
+                  $(this).DataTable({
+                      pageLength: 10,
+                      lengthMenu: [10, 25, 50, 100],
+                      ordering: true,
+                      searching: true,
+                      responsive: true
+                  });
+              }
+          });
+      });
+  </script>
+
+
+
   <!--end::Script-->
   </body>
   <!--end::Body-->

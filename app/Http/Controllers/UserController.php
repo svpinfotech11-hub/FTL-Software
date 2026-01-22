@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddCompany;
 use App\Models\User;
 use App\Models\UserDelete;
 use Illuminate\Support\Str;
@@ -9,24 +10,60 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
+use App\Models\Company;
+use App\Models\Vendor;
+use App\Models\Branch;
+use App\Models\Customer;
+use App\Models\Vehicle;
+use App\Models\Driver;
+use App\Models\AddExpense;
+use App\Models\HireRegister;
+use App\Models\DomesticShipment;
+use App\Models\Report;
+use App\Models\VehicleHire;
 
 class UserController extends Controller
 {
+    // public function dashboard()
+    // {
+    //     $userId = auth()->id();
+    //     return view('user.dashboard', compact('userId'));
+    // }
+
     public function dashboard()
     {
         $userId = auth()->id();
-        return view('user.dashboard', compact('userId'));
+        $user = auth()->user();
+
+        $data = [
+            'usersCount'        => User::where('created_by', $userId)->count(),
+            'companiesCount'    => AddCompany::where('user_id', $userId)->count(),
+            'vendorsCount'      => Vendor::where('user_id', $userId)->count(),
+            'branchesCount'     => Branch::where('user_id', $userId)->count(),
+            'customersCount'    => Customer::where('user_id', $userId)->count(),
+            'vehiclesCount'     => Vehicle::where('user_id', $userId)->count(),
+            'driversCount'      => Driver::where('user_id', $userId)->count(),
+            'expenseCount'      => AddExpense::where('user_id', $userId)->sum('amount'),
+            'hireCount'         => VehicleHire::where('user_id', $userId)->count(),
+            'shipmentsCount'    => DomesticShipment::where('user_id', $userId)->count(),
+            'reportsCount'      => DomesticShipment::where('user_id', $userId)->count(),
+        ];
+
+        if ($user->role === 'admin') {
+            $data['adminUsers'] = User::where('role', 'admin')->get();
+        }
+
+        return view('user.dashboard', $data);
     }
 
     public function index()
     {
         $users = User::where('created_by', auth()->id())
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->get();
 
         return view('user.index', compact('users'));
     }
-
 
     public function create()
     {
@@ -143,5 +180,17 @@ class UserController extends Controller
         $user->save();
 
         return back()->with('success', 'Password updated successfully');
+    }
+
+    public function delete($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->role === 'admin') {
+            $user->delete();
+            return redirect()->back()->with('success', 'Admin deleted successfully!');
+        }
+
+        return redirect()->back()->with('error', 'You cannot delete this user!');
     }
 }
