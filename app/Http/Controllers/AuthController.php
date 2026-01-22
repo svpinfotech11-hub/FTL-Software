@@ -71,17 +71,8 @@ class AuthController extends Controller
     // Helper function to send SMS using Cell24x7
     private function sendOtpphone(string $number, int $otp)
     {
-        // For testing purposes, skip actual SMS sending
-        Log::info('SMS sending skipped for testing', ['number' => $number, 'otp' => $otp]);
-
-        return [
-            'success' => true,
-            'response' => 'SMS sent (testing mode)'
-        ];
-
-        // Uncomment below for actual SMS sending
-        /*
         $templateId = 1107172845189433045;
+
         $message = "Hi, Your Verification {$otp} code, NOKA";
         $encodedMessage = urlencode($message);
 
@@ -94,24 +85,29 @@ class AuthController extends Controller
             . "&mt=0"
             . "&tempId={$templateId}";
 
-        Log::info('SMS URL', ['url' => $url]);
+        Log::info('Sending SMS OTP', [
+            'number' => $number,
+            'otp' => $otp,
+            'url' => $url
+        ]);
 
         $ch = curl_init();
 
         curl_setopt_array($ch, [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
         ]);
 
         $response = curl_exec($ch);
-        Log::info('SMS response', ['response' => $response]);
 
         if (curl_errno($ch)) {
             $error = curl_error($ch);
-            Log::error('Curl error', ['error' => $error]);
+            Log::error('SMS Curl error', ['error' => $error]);
             curl_close($ch);
+
             return [
                 'success' => false,
                 'message' => $error
@@ -120,12 +116,14 @@ class AuthController extends Controller
 
         curl_close($ch);
 
+        Log::info('SMS sent successfully', ['response' => $response]);
+
         return [
             'success' => true,
             'response' => $response
         ];
-        */
     }
+
 
     // STEP 2: Verify OTP
     public function verifyPhoneOtp(Request $request)
@@ -150,52 +148,53 @@ class AuthController extends Controller
 
     // STEP 2: Email OTP
     public function sendEmailOtp(Request $request)
-    {
-        $request->validate(['email' => 'required|email|unique:users']);
+{
+    $request->validate([
+        'email' => 'required|email|unique:users,email'
+    ]);
 
-        Log::info('Send Email OTP request', ['email' => $request->email]);
+    Log::info('Send Email OTP request', ['email' => $request->email]);
 
-        $otp = rand(100000, 999999);
+    $otp = rand(100000, 999999);
 
-        try {
-            \App\Models\Otp::create([
-                'type' => 'email',
-                'value' => $request->email,
-                'otp' => $otp,
-                'expires_at' => now()->addMinutes(10),
-            ]);
-            Log::info('Email OTP saved to DB', ['otp' => $otp]);
-        } catch (\Exception $e) {
-            Log::error('Failed to save email OTP', ['error' => $e->getMessage()]);
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to save OTP'
-            ]);
-        }
+    try {
+        \App\Models\Otp::create([
+            'type' => 'email',
+            'value' => $request->email,
+            'otp' => $otp,
+            'expires_at' => now()->addMinutes(10),
+        ]);
 
-        Session::put('email', $request->email);
-        Session::put('email_otp', $otp);
+        Log::info('Email OTP saved to DB', ['otp' => $otp]);
 
-        // For testing, skip actual email sending
-        Log::info('Email sending skipped for testing', ['otp' => $otp]);
-        return response()->json(['status' => true, 'message' => 'OTP sent to email (testing mode)']);
-
-        // Uncomment below for actual email sending
-        /*
-        try {
-            Mail::to($request->email)->send(new OtpMail($otp));
-            Log::info('Email sent successfully');
-        } catch (\Exception $e) {
-            Log::error('Failed to send email', ['error' => $e->getMessage()]);
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to send email'
-            ]);
-        }
-
-        return response()->json(['status' => true, 'message' => 'OTP sent to email']);
-        */
+    } catch (\Exception $e) {
+        Log::error('Failed to save email OTP', ['error' => $e->getMessage()]);
+        return response()->json([
+            'status' => false,
+            'message' => 'Failed to save OTP'
+        ], 500);
     }
+
+    Session::put('email', $request->email);
+    Session::put('email_otp', $otp);
+
+    try {
+        Mail::to($request->email)->send(new OtpMail($otp));
+        Log::info('Email sent successfully', ['email' => $request->email]);
+    } catch (\Exception $e) {
+        Log::error('Failed to send email', ['error' => $e->getMessage()]);
+        return response()->json([
+            'status' => false,
+            'message' => 'Failed to send email'
+        ], 500);
+    }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'OTP sent to email'
+    ]);
+}
+
 
 
     public function verifyEmailOtp(Request $request)

@@ -23,496 +23,509 @@
 
                 @auth
 
-                    {{-- SUPER ADMIN MENU --}}
-                    @if (Auth::user()->role === 'super_admin')
-                        {{-- Add Super Admin menus here --}}
+                {{-- SUPER ADMIN MENU --}}
+                @if (Auth::user()->role === 'super_admin')
+                {{-- Add Super Admin menus here --}}
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people"></i>
+                        <p>
+                            All Customers
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-people"></i>
-                                <p>
-                                    All Customers
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
                             </a>
-                            <ul class="nav nav-treeview">
-
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
-                    @endif
+                    </ul>
+                </li>
+                @endif
 
-                    {{-- ADMIN MENU (Customer Admins) --}}
-                    @if (Auth::user()->roles->contains('name', 'admin'))
-                        {{-- Roles & Permissions --}}
+                {{-- ADMIN MENU (Customer Admins) --}}
+                @if (Auth::user()->role === 'admin')
+                {{-- Roles & Permissions --}}
+                <li class="nav-item">
+                    <a href="{{ route('roles.index') }}" class="nav-link" target="_blank">
+                        <i class="nav-icon bi bi-shield-lock"></i>
+                        <p>Roles & Permissions</p>
+                    </a>
+                </li>
+
+                {{-- Users --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people"></i>
+                        <p>
+                            Users
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('roles.index') }}" class="nav-link" target="_blank">
-                                <i class="nav-icon bi bi-shield-lock"></i>
-                                <p>Roles & Permissions</p>
+                            <a href="{{ route('user.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
                             </a>
                         </li>
-
-                        {{-- Users --}}
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-people"></i>
-                                <p>
-                                    Users
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('user.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('user.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('user.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
+                    </ul>
+                </li>
 
-                        {{-- Company --}}
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-building"></i>
+                        <p>
+                            Add Company
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
-                                <p>
-                                    Add Company
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('company.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('company.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('company.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Companies</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
-                        {{-- Vendors --}}
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-truck"></i>
-                                <p>
-                                    Vendors
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('company.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Companies</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('vendors.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('vendors.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
+                    </ul>
+                </li>
 
-                        {{-- Domestic --}}
+                {{-- Vendors --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-truck"></i>
+                        <p>
+                            Vendors
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box"></i>
-                                <p>
-                                    Domestic
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('vendors.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('domestic.shipment.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('domestic.shipment.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
-
-                        {{-- Vehicle Hires --}}
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-car-front"></i>
-                                <p>
-                                    Vehicle Hires
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('vendors.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('vehicle_hires.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('vehicle_hires.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
+                    </ul>
+                </li>
 
-                        {{-- Branches --}}
+                {{-- Domestic --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-box"></i>
+                        <p>
+                            Domestic
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-diagram-3-fill"></i>
-                                <p>
-                                    Branches
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('domestic.shipment.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('branches.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('branches.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
-
-                        {{-- Customers --}}
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa fa-users"></i>
-                                <p>
-                                    Customer Master
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('domestic.shipment.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('customers.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('customers.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
+                    </ul>
+                </li>
 
-                        {{-- Vehicles --}}
+                {{-- Branches --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-diagram-3-fill"></i>
+                        <p>
+                            Branches
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('branches.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('branches.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- Customers --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa fa-users"></i>
+                        <p>
+                            Customer Master
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('customers.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('customers.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-truck"></i>
+                        <p>
+                            Vehicles
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('vehicles.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('vehicles.index') }}" class="nav-link">
-                                <i class="nav-icon bi bi-car-front"></i>
-                                <p>Vehicles</p>
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
 
-                        {{-- Drivers --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-person-badge"></i>
+                        <p>
+                            Drivers
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('drivers.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('drivers.index') }}" class="nav-link">
-                                <i class="nav-icon bi bi-person"></i>
-                                <p>Drivers</p>
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-cash-stack"></i>
+                        <p>
+                            Add Expense
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('add-expenses.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
                             </a>
                         </li>
 
-                        {{-- Expenses --}}
+                        <li class="nav-item">
+                            <a href="{{ route('add-expenses.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-cash-stack"></i>
+                        <p>
+                            Add Hire Register
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('vehicle_hires.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('vehicle_hires.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                 <li class="nav-item">
+                    <a href="{{ route('domestic.shipment.reports') }}" class="nav-link">
+                        <i class="nav-icon bi bi-cash-stack"></i>
+                        <p>
+                            Reports
+                            <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->
+                        </p>
+                    </a>
+                </li>
+
+
+                @endif
+
+                {{-- USER MENU --}}
+                @if (Auth::user()->role === 'user')
+
+                {{-- Vendors --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-truck"></i>
+                        <p>
+                            Vendors
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('vendors.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('vendors.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- Domestic --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-box"></i>
+                        <p>
+                            Domestic
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('domestic.shipment.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('domestic.shipment.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- Branches --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-diagram-3-fill"></i>
+                        <p>
+                            Branches
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('branches.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('branches.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- Customers --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa fa-users"></i>
+                        <p>
+                            Customer Master
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('customers.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('customers.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-truck"></i>
+                        <p>
+                            Vehicles
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('vehicles.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('vehicles.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-person-badge"></i>
+                        <p>
+                            Drivers
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('drivers.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('drivers.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-cash-stack"></i>
+                        <p>
+                            Add Expense
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('add-expenses.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="{{ route('add-expenses.index') }}" class="nav-link">
-                                <i class="nav-icon bi bi-cash"></i>
-                                <p>Add Expenses</p>
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
                             </a>
                         </li>
-                    @endif
+                    </ul>
+                </li>
 
 
-                    {{-- USER MENU --}}
-                    @if (Auth::user()->role === 'user')
-                        {{-- Users --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-cash-stack"></i>
+                        <p>
+                            Add Hire Register
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-people"></i>
-                                <p>
-                                    Users
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('vehicle_hires.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('user.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('user.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
-                                <p>
-                                    Add Company
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('company.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{{ route('company.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Companies</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        {{-- Vendors --}}
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-truck"></i>
-                                <p>
-                                    Vendors
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('vendors.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('vendors.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        {{-- Domestic --}}
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box"></i>
-                                <p>
-                                    Domestic
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('domestic.shipment.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('domestic.shipment.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        {{-- Branches --}}
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-diagram-3-fill"></i>
-                                <p>
-                                    Branches
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('branches.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('branches.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        {{-- Customers --}}
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa fa-users"></i>
-                                <p>
-                                    Customer Master
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('customers.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('customers.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-truck"></i>
-                                <p>
-                                    Vehicles
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                            <a href="{{ route('vehicle_hires.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('vehicles.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('vehicles.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
+                    </ul>
+                </li>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-person-badge"></i>
-                                <p>
-                                    Drivers
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('drivers.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('drivers.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-cash-stack"></i>
-                                <p>
-                                    Add Expense
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('add-expenses.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{{ route('add-expenses.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-cash-stack"></i>
-                                <p>
-                                    Add Hire Register
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('vehicle_hires.create') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>Add New</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{{ route('vehicle_hires.index') }}" class="nav-link">
-                                        <i class="bi bi-circle"></i>
-                                        <p>All Record</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                    @endif
+                @endif
 
                 @endauth
 

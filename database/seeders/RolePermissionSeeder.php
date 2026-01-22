@@ -29,10 +29,83 @@ class RolePermissionSeeder extends Seeder
         }
 
         // Example permissions (expand as needed)
+        // $perms = [
+        //     'manage users',
+        //     'view shipments',
+        //     'create shipments',
+        //     'edit shipments',
+        //     'delete shipments',
+        //     'view reports',
+        //     'create vendors',
+        //     'view vendors',
+        //     'create customers',
+        //     'view customers',
+        //     'create vehicles',
+        //     'create companies',
+        //     'manage vehicle hires',
+        //     'manage expenses',
+        //     'manage vehicles',
+        //     'manage drivers',
+        //     'manage branches',
+        //     'manage roles',
+        //     'manage permissions',
+        //     'manage companies'
+        // ];
+
         $perms = [
-            'manage users',
-            'manage shipments',
-            'view reports'
+            // User Management
+            'user.create',
+            'user.store',
+            'user.view',
+            'user.edit',
+            'user.delete',
+
+            // Shipments (Domestic)
+            'shipment.create',
+            'shipment.view',
+            'shipment.edit',
+            'shipment.delete',
+            'shipment.report',
+            'shipment.print',
+
+            // Vendors
+            'vendor.create',
+            'vendor.view',
+            'vendor.edit',
+            'vendor.delete',
+
+            // Customers
+            'customer.create',
+            'customer.view',
+            'customer.edit',
+            'customer.delete',
+
+            // Vehicles
+            'vehicle.create',
+            'vehicle.view',
+            'vehicle.edit',
+            'vehicle.delete',
+
+            // Branches
+            'branch.manage', // create, edit, delete, view
+
+            // Drivers
+            'driver.manage', // create, edit, delete, view
+
+            // Companies
+            'company.create',
+            'company.view',
+            'company.edit',
+            'company.delete',
+
+            // Vehicle Hires
+            'vehicle_hire.manage', // create, edit, delete, view
+
+            // Expenses
+            'expense.manage', // create, edit, delete, view
+
+            // Reports (general)
+            'report.view', // view any kind of reports
         ];
 
         foreach ($perms as $p) {

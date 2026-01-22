@@ -91,12 +91,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-2">
-                                <label class="col-md-4">Rate *</label>
-                                <div class="col-md-8">
-                                    <input type="number" step="0.01" class="form-control" name="rate" value="{{ $shipment->rate }}" placeholder="Enter rate">
-                                </div>
-                            </div>
+                           
 
                             <div class="row mb-2">
                                 <label class="col-md-4">Description</label>
@@ -105,10 +100,71 @@
                                 </div>
                             </div>
 
+                          
+
                             <div class="row mb-2">
-                                <label class="col-md-4">Vehicle No</label>
+                                <label class="col-md-4">Vehicle Type *</label>
                                 <div class="col-md-8">
-                                    <input class="form-control" name="vehicle_no" value="{{ $shipment->vehicle_no }}">
+                                    <select class="form-control form-select" name="vehicle_type" id="vehicle_type">
+                                        <option value="">Select Value</option>
+                                        <option value="own" {{ $shipment->vehicle_type == 'own' ? 'selected' : '' }}>Own</option>
+                                        <option value="rented" {{ $shipment->vehicle_type == 'rented' ? 'selected' : '' }}>Rented</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="ownFields" class="{{ $shipment->vehicle_type != 'own' ? 'd-none' : '' }}">
+                                <div class="row mb-2">
+                                    <label class="col-md-4">Driver Name</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" name="driver_name" value="{{ $shipment->driver_name }}">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <label class="col-md-4">Driver Number</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" name="driver_number" value="{{ $shipment->driver_number }}">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <label class="col-md-4">Vehicle Number</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" name="vehicle_number" value="{{ $shipment->vehicle_number }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="rentedFields" class="{{ $shipment->vehicle_type != 'rented' ? 'd-none' : '' }}">
+                                <div class="row mb-2">
+                                    <label class="col-md-4">Vendor</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" name="vendor_id" id="vendor_id">
+                                            <option value="">Select Vendor</option>
+                                            @foreach ($vendors as $vendor)
+                                            <option value="{{ $vendor->id }}" {{ $shipment->vehicleHire && $shipment->vehicleHire->vendor_id == $vendor->id ? 'selected' : '' }}>{{ $vendor->vendor_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <label class="col-md-4">Hire Register</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" name="vehicle_hire_id" id="vehicle_hire_id">
+                                            <option value="">Select Hire Register</option>
+                                            @foreach ($vehicleHires as $hire)
+                                            <option value="{{ $hire->id }}"
+                                                {{ $shipment->vehicle_hire_id == $hire->id ? 'selected' : '' }}
+                                                data-vendor="{{ $hire->vendor_id }}"
+                                                data-vehicle="{{ $hire->vehicle_no }}"
+                                                data-driver="{{ $hire->driver_details }}">
+                                                {{ $hire->hire_register_id }} - {{ $hire->vendor_name }} - {{ $hire->vehicle_no }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
@@ -445,6 +501,17 @@
                                 </div>
                             </div>
 
+                            <!-- Rate -->
+                            <div class="row mb-2 align-items-center">
+                                <label class="col-md-4 col-form-label">
+                                    Rate<span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-8">
+                                    <input type="number" step="0.01" class="form-control" name="rate" placeholder="Enter rate"
+                                        value="{{ old('rate', $shipment->rate) }}">
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -458,36 +525,37 @@
 
                                 <div class="col-md-6">
                                     @foreach ([
-            'freight' => 'Freight',
-            'door_collection' => 'Door Coll',
-            'insurance' => 'Insurance',
-            'awb_charge' => 'AWB Ch.',
-            'hamali' => 'Hamali',
-            'godown_collection' => 'Godown Coll Ch',
-            'eway_charge' => 'Eway Ch.',
-            'fuel_surcharge' => 'Fuel Surcharge',
-        ] as $name => $label)
-                                        <div class="row mb-2 align-items-center">
-                                            <label class="col-md-6 col-form-label">{{ $label }}</label>
-                                            <div class="col-md-6">
-                                                <input type="number" step="0.01" class="form-control charge-input"
-                                                    name="{{ $name }}"
-                                                    value="{{ old($name, $shipment->$name) }}">
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                'freight' => 'Freight',
+                                'door_collection' => 'Door Coll',
+                                'insurance' => 'Insurance',
+                                'awb_charge' => 'AWB Ch.',
+                                'hamali' => 'Hamali',
+                                'godown_collection' => 'Godown Coll Ch',
+                                'eway_charge' => 'Eway Ch.',
+                                'fuel_surcharge' => 'Fuel Surcharge',
+                            ] as $name => $label)
+                                        
+                            <div class="row mb-2 align-items-center">
+                                    <label class="col-md-6 col-form-label">{{ $label }}</label>
+                                    <div class="col-md-6">
+                                        <input type="number" step="0.01" class="form-control charge-input"
+                                            name="{{ $name }}"
+                                            value="{{ old($name, $shipment->$name) }}">
+                                    </div>
+                                </div>
+                            @endforeach
                                 </div>
 
                                 <div class="col-md-6">
                                     @foreach ([
-            'handling_charge' => 'Handling Charge',
-            'door_delivery' => 'Door Delivery',
-            'cod' => 'COD',
-            'other_charge' => 'Other Ch.',
-            'appt_charge' => 'Appt Ch.',
-            'godown_delivery' => 'Godown Del Ch',
-            'fov_charge' => 'Fov Charges',
-        ] as $name => $label)
+                                        'handling_charge' => 'Handling Charge',
+                                        'door_delivery' => 'Door Delivery',
+                                        'cod' => 'COD',
+                                        'other_charge' => 'Other Ch.',
+                                        'appt_charge' => 'Appt Ch.',
+                                        'godown_delivery' => 'Godown Del Ch',
+                                        'fov_charge' => 'Fov Charges',
+                                    ] as $name => $label)
                                         <div class="row mb-2 align-items-center">
                                             <label class="col-md-6 col-form-label">{{ $label }}</label>
                                             <div class="col-md-6">
@@ -584,6 +652,18 @@
         const taxPercent = document.getElementById('tax');
 
         function calculateCharges() {
+            // Calculate freight = chargeable_weight * rate
+            const chargeableWeight = parseFloat(document.querySelector('input[name="chargeable_weight"]').value) || 0;
+            const rate = parseInt(document.querySelector('input[name="rate"]').value) || 0;
+            const freight = chargeableWeight * rate;
+            console.log('Chargeable Weight:', chargeableWeight);
+            console.log('Rate:', rate);
+            console.log('Calculated Freight:', freight);
+            const freightInput = document.querySelector('input[name="freight"]');
+            if (freightInput) {
+                freightInput.value = freight.toFixed(2);
+            }
+
             let total = 0;
 
             document.querySelectorAll('.charge-input').forEach(el => {
@@ -674,5 +754,51 @@ $(document).ready(function () {
 });
 </script>
 
-
+<script>
+$(document).ready(function() {
+    // Vehicle Type Toggle
+    $("#vehicle_type").on("change", function() {
+        var vehicleType = $(this).val();
+        
+        if (vehicleType === "own") {
+            $("#ownFields").removeClass("d-none");
+            $("#rentedFields").addClass("d-none");
+        } else if (vehicleType === "rented") {
+            $("#rentedFields").removeClass("d-none");
+            $("#ownFields").addClass("d-none");
+        } else {
+            $("#ownFields").addClass("d-none");
+            $("#rentedFields").addClass("d-none");
+        }
+    });
+    
+    // Vendor Change - Filter Hire Register
+    $("#vendor_id").on("change", function() {
+        var selectedVendorId = $(this).val();
+        var hireSelect = $("#vehicle_hire_id");
+        
+        if (selectedVendorId) {
+            hireSelect.find("option").each(function() {
+                var vendorId = $(this).data("vendor");
+                if ($(this).val() === "" || vendorId == selectedVendorId) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            hireSelect.val("");
+        } else {
+            hireSelect.find("option").show();
+            hireSelect.val("");
+        }
+    });
+    
+    // Hire Register Change - Update Fields
+    $("#vehicle_hire_id").on("change", function() {
+        var selectedOption = $(this).find("option:selected");
+        var vendorId = selectedOption.data("vendor");
+        $("#vendor_id").val(vendorId);
+    });
+});
+</script>
 

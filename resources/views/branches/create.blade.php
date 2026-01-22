@@ -50,13 +50,13 @@
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">Name</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="name" class="form-control"
+                                            <input type="text" name="name" value="{{ old('name') }}" class="form-control"
                                                 placeholder="Enter Name">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Email</label>
                                         <div class="col-md-4">
-                                            <input type="email" name="email" class="form-control"
+                                            <input type="email" name="email" value="{{ old('email') }}" class="form-control"
                                                 placeholder="Enter Email">
                                         </div>
                                     </div>
@@ -64,7 +64,7 @@
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">Address</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="address" class="form-control"
+                                            <input type="text" name="address" value="{{ old('address') }}" class="form-control"
                                                 placeholder="Enter Address">
                                         </div>
 
@@ -91,7 +91,7 @@
 
                                         <label class="col-md-2 col-form-label">Pincode</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="pincode" class="form-control"
+                                            <input type="text" name="pincode" value="{{ old('pincode') }}" class="form-control"
                                                 placeholder="Enter Pincode">
                                         </div>
                                     </div>
@@ -99,13 +99,13 @@
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">GST Number</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="gst_number" class="form-control"
+                                            <input type="text" name="gst_number" value="{{ old('gst_number') }}" class="form-control"
                                                 placeholder="Enter GST No">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Contact No</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="contact_no" class="form-control"
+                                            <input type="text" name="contact_no" value="{{ old('contact_no') }}" class="form-control"
                                                 placeholder="Enter Contact No">
                                         </div>
                                     </div>
@@ -113,13 +113,13 @@
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">Contact Person</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="contact_person" class="form-control"
+                                            <input type="text" name="contact_person" value="{{ old('contact_person') }}" class="form-control"
                                                 placeholder="Enter Contact Person">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Branch Code</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="branch_code" class="form-control"
+                                            <input type="text" name="branch_code" value="{{ old('branch_code') }}" class="form-control"
                                                 placeholder="Branch Code">
                                         </div>
                                     </div>
@@ -127,72 +127,72 @@
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">Account Name</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="account_name" class="form-control">
+                                            <input type="text" name="account_name" value="{{ old('account_name') }}" class="form-control">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Account Number</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="account_number" class="form-control">
+                                            <input type="text" name="account_number" value="{{ old('account_number') }}" class="form-control">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">IFSC</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="ifsc" class="form-control">
+                                            <input type="text" name="ifsc" value="{{ old('ifsc') }}" class="form-control">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Branch Name</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="branch_name" class="form-control">
+                                            <input type="text" name="branch_name" value="{{ old('branch_name') }}" class="form-control">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">Warehouse Branch</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="warehouse_branch_name" class="form-control">
+                                            <input type="text" name="warehouse_branch_name" value="{{ old('warehouse_branch_name') }}" class="form-control">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Bank Name</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="account_bank_name" class="form-control">
+                                            <input type="text" name="account_bank_name" value="{{ old('account_bank_name') }}" class="form-control">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">PAN</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="pan" class="form-control">
+                                            <input type="text" name="pan" value="{{ old('pan') }}" class="form-control">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Export Invoice Series</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="export_invoice_series" class="form-control">
+                                            <input type="text" name="export_invoice_series" value="{{ old('export_invoice_series') }}" class="form-control">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">Import Invoice Series</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="import_invoice_series" class="form-control">
+                                            <input type="text" name="import_invoice_series" value="{{ old('import_invoice_series') }}" class="form-control">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Domestic Invoice Series</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="domestic_invoice_series" class="form-control">
+                                            <input type="text" name="domestic_invoice_series" value="{{ old('domestic_invoice_series') }}" class="form-control">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3 align-items-center">
                                         <label class="col-md-2 col-form-label">Domestic Booking Series</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="domestic_booking_series" class="form-control">
+                                            <input type="text" name="domestic_booking_series" value="{{ old('domestic_booking_series') }}" class="form-control">
                                         </div>
 
                                         <label class="col-md-2 col-form-label">Domestic POD Series</label>
                                         <div class="col-md-4">
-                                            <input type="text" name="domestic_pod_series" class="form-control">
+                                            <input type="text" name="domestic_pod_series" value="{{ old('domestic_pod_series') }}" class="form-control">
                                         </div>
                                     </div>
 

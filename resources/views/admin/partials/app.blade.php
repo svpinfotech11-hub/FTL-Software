@@ -22,6 +22,12 @@
     });
 </script>
 <script>
+    flatpickr("#from_date", {
+        dateFormat: "Y-m-d",
+        time_24hr: true,
+    });
+</script>
+<script>
     flatpickr(".datepicker", {
         dateFormat: "Y-m-d"
     });

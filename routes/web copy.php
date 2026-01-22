@@ -26,37 +26,46 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
 Route::get('/', [HomeController::class, 'home'])->name('pages.home');
-Route::get('/login', [AuthController::class, 'userLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'userLogin'])->name('user.login.store');
+// Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
+
+Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/', [HomeController::class, 'home'])->name('pages.home');
+// Route::get('/dashboard', [UserController::class, 'dashboard'])->name('admin.dashboard');
+
+// User management routes (only for admins)
+Route::middleware(['auth', 'role:super_admin|admin'])->group(function () {
+    Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
+    Route::post('/user/create', [UserController::class, 'store'])->name('user.store.submit');
+    Route::get('/user/index', [UserController::class, 'index'])->name('user.index');
+    Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+});
+
+
 Route::post('/send-phone-otp', [AuthController::class, 'sendPhoneOtp']);
 Route::post('/verify-phone-otp', [AuthController::class, 'verifyPhoneOtp']);
-Route::post('/send-email-otp', [AuthController::class, 'sendEmailOtp']);
-Route::post('/verify-email-otp', [AuthController::class, 'verifyEmailOtp']);
 Route::get('/register', [AuthController::class, 'register'])->name('user.register');
 Route::post('/register', [AuthController::class, 'registerStore'])->name('user.register.storeppppp');
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+
+Route::post('/send-email-otp', [AuthController::class, 'sendEmailOtp']);
+Route::post('/verify-email-otp', [AuthController::class, 'verifyEmailOtp']);
 
 
-    Route::middleware(['role:super_admin|admin'])->group(function () {
-    Route::middleware(['permission:user.create'])->get('/user/create', [UserController::class, 'create'])->name('user.create');
-    Route::middleware(['permission:user.store'])->post('/user/create', [UserController::class, 'store'])->name('user.store.submit');
-    Route::middleware(['permission:user.view'])->get('/user/index', [UserController::class, 'index'])->name('user.index');
-    Route::middleware(['permission:user.delete'])->delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-    });
-    
-    // Profile Routes
-    Route::get('/auth/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
-    Route::post('/auth/profile/update', [UserController::class, 'update'])->name('profile.update');
-    Route::get('/auth/change-password', [UserController::class, 'changePassword'])->name('profile.password');
-    Route::post('/auth/change-password', [UserController::class, 'updatePassword'])->name('profile.password.update');
+Route::get('/auth/create', [UserController::class, 'create'])->name('admin.auth.create');
+Route::post('/auth/create', [UserController::class, 'store'])->name('admin.auth.store');
+Route::get('/auth/index', [UserController::class, 'index'])->name('admin.auth.index');
+Route::get('/auth/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
+Route::post('/auth/profile/update', [UserController::class, 'update'])->name('profile.update');
+Route::get('/auth/change-password', [UserController::class, 'changePassword'])->name('profile.password');
+Route::post('/auth/change-password', [UserController::class, 'updatePassword'])->name('profile.password.update');
 
-});
+
+/* ================= USER ================= */
+// Route::middleware('guest')->group(function () {
+Route::get('/login', [AuthController::class, 'userLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'userLogin'])->name('user.login.store');
+// });
 
 // Route::middleware(['auth','role:user'])->group(function () {
 Route::get('/dashboard', [UserController::class, 'dashboard'])

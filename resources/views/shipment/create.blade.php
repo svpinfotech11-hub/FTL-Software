@@ -151,16 +151,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Rate -->
-                                            <div class="row mb-2 align-items-center">
-                                                <label class="col-md-4 col-form-label">
-                                                    Rate<span class="text-danger">*</span>
-                                                </label>
-                                                <div class="col-md-8">
-                                                    <input type="number" step="0.01" class="form-control" name="rate" placeholder="Enter rate">
-                                                </div>
-                                            </div>
-
                                             <!-- Description -->
                                             <div class="row mb-2">
                                                 <label class="col-md-4 col-form-label">Description</label>
@@ -632,6 +622,17 @@
                                                 </div>
                                             </div>
 
+                                             <!-- Rate -->
+                                            <div class="row mb-2 align-items-center">
+                                                <label class="col-md-4 col-form-label">
+                                                    Rate<span class="text-danger">*</span>
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <input type="number" step="0.01" class="form-control" id="rate" name="rate" placeholder="Enter rate"
+                                                        value="">
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -651,13 +652,20 @@
                                                     'eway_charge' => 'Eway Ch.',
                                                     'fuel_surcharge' => 'Fuel Surcharge',
                                                     ] as $name => $label)
-                                                    <div class="row mb-2 align-items-center">
+                                                    <!-- <div class="row mb-2 align-items-center">
                                                         <label class="col-md-6 col-form-label">{{ $label }}</label>
                                                         <div class="col-md-6">
                                                             <input type="number" step="0.01" class="form-control charge-input"
                                                                 name="charges[{{ $name }}]" value="0">
                                                         </div>
-                                                    </div>
+                                                    </div> -->
+                                                    <div class="row mb-2 align-items-center">
+                                    <label class="col-md-6 col-form-label">{{ $label }}</label>
+                                    <div class="col-md-6">
+                                        <input type="number" step="0.01" class="form-control charge-input"
+                                            name="{{ $name }}">
+                                    </div>
+                                </div>
                                                     @endforeach
                                                 </div>
                                                 <div class="col-md-6">
@@ -771,6 +779,68 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const taxType = document.getElementById('tax_type');
+        const taxPercent = document.getElementById('tax');
+
+        function calculateCharges() {
+            // Calculate freight = chargeable_weight * rate
+            const chargeableWeight = parseFloat(document.querySelector('input[name="chargeable_weight"]').value) || 0;
+            const rate = parseInt(document.querySelector('input[name="rate"]').value) || 0;
+            const freight = chargeableWeight * rate;
+            console.log('Chargeable Weight:', chargeableWeight);
+            console.log('Rate:', rate);
+            console.log('Calculated Freight:', freight);
+            const freightInput = document.querySelector('input[name="freight"]');
+            if (freightInput) {
+                freightInput.value = freight.toFixed(2);
+            }
+
+            let total = 0;
+
+            document.querySelectorAll('.charge-input').forEach(el => {
+                total += parseFloat(el.value) || 0;
+            });
+
+            document.getElementById('charges_total').value = total.toFixed(2);
+
+            let tax = parseFloat(taxPercent.value) || 0;
+            let cgst = 0,
+                sgst = 0,
+                igst = 0;
+
+            if (taxType.value === 'gst') {
+                cgst = total * (tax / 2) / 100;
+                sgst = total * (tax / 2) / 100;
+                document.querySelector('.gst-field').style.display = 'flex';
+                document.querySelector('.igst-field').style.display = 'none';
+            }
+
+            if (taxType.value === 'igst') {
+                igst = total * tax / 100;
+                document.querySelector('.igst-field').style.display = 'flex';
+                document.querySelector('.gst-field').style.display = 'none';
+            }
+
+            document.getElementById('cgst').value = cgst.toFixed(2);
+            document.getElementById('sgst').value = sgst.toFixed(2);
+            document.getElementById('igst').value = igst.toFixed(2);
+
+            document.getElementById('grand_total').value =
+                (total + cgst + sgst + igst).toFixed(2);
+        }
+
+        document.addEventListener('input', calculateCharges);
+        taxType.addEventListener('change', calculateCharges);
+        taxPercent.addEventListener('change', calculateCharges);
+
+        calculateCharges();
+    });
+</script>
+
+
+<script>
     $('#consignerSelect').on('change', function() {
 
         let option = $(this).find('option:selected');
@@ -846,12 +916,6 @@
         $('#consignerSelect').change(function() {
             $('#is_existing_consigner').val(1);
         });
-
-
-
-        // $('#consignerSelect').change(function () {
-        // $('#customerSelect').prop('disabled', true);
-        // });
     });
 </script>
 
@@ -1094,6 +1158,57 @@ $(document).ready(function() {
         }
     });
 </script>
+
+
+<script>
+$(document).ready(function() {
+    // Vehicle Type Toggle
+    $("#vehicle_type").on("change", function() {
+        var vehicleType = $(this).val();
+        
+        if (vehicleType === "own") {
+            $("#ownFields").removeClass("d-none");
+            $("#rentedFields").addClass("d-none");
+        } else if (vehicleType === "rented") {
+            $("#rentedFields").removeClass("d-none");
+            $("#ownFields").addClass("d-none");
+        } else {
+            $("#ownFields").addClass("d-none");
+            $("#rentedFields").addClass("d-none");
+        }
+    });
+    
+    // Vendor Change - Filter Hire Register
+    $("#vendor_id").on("change", function() {
+        var selectedVendorId = $(this).val();
+        var hireSelect = $("#vehicle_hire_id");
+        
+        if (selectedVendorId) {
+            hireSelect.find("option").each(function() {
+                var vendorId = $(this).data("vendor");
+                if ($(this).val() === "" || vendorId == selectedVendorId) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            hireSelect.val("");
+        } else {
+            hireSelect.find("option").show();
+            hireSelect.val("");
+        }
+    });
+    
+    // Hire Register Change - Update Fields
+    $("#vehicle_hire_id").on("change", function() {
+        var selectedOption = $(this).find("option:selected");
+        var vendorId = selectedOption.data("vendor");
+        $("#vendor_id").val(vendorId);
+    });
+});
+</script>
+
+
 
 
 @endsection
