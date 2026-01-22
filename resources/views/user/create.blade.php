@@ -131,8 +131,6 @@
 
                                  <!--end::Footer-->
                              </form>
-
-
                              <!--end::Form-->
                          </div>
                          <!--end::Quick Example-->

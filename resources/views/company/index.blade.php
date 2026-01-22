@@ -85,7 +85,6 @@
                                                             class="btn btn-sm btn-primary">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
-
                                                         <form action="{{ route('company.destroy', $company->id) }}"
                                                             method="POST" class="d-inline delete-company-form">
                                                             @csrf
@@ -116,5 +115,31 @@
 
     </main>
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
 
+        document.querySelectorAll('.delete-btn').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                let form = this.closest('.delete-company-form');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This company will be deleted!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+    });
+</script>
