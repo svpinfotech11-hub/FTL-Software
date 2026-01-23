@@ -75,13 +75,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
-                                @if ($drivers->isEmpty())
-                                    <tr>
-                                        <td colspan="15" class="text-center">No Drivers Found</td>
-                                    </tr>
-                                @endif
-
                             </tbody>
                         </table>
                     </div>

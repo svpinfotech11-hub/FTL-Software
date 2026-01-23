@@ -87,7 +87,7 @@ class VendorController extends Controller
             ->firstOrFail();
 
         $vendor->delete();
-
-        return response()->json(['message' => 'Vendor deleted successfully']);
+        return redirect()->route('vendors.index')
+            ->with('success', 'Vendor deleted Successfully!');
     }
 }

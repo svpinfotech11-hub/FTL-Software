@@ -82,19 +82,9 @@
 
                                                 </tr>
                                             @endforeach
-
-                                            @if ($vendors->isEmpty())
-                                                <tr>
-                                                    <td colspan="10" class="text-center">No vendors found.</td>
-                                                </tr>
-                                            @endif
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-
-                            <div class="card-footer clearfix">
-                                {{ $vendors->links('pagination::bootstrap-5') }}
                             </div>
                         </div>
 

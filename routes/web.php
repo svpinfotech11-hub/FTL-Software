@@ -42,10 +42,10 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::middleware(['role:super_admin|admin'])->group(function () {
-    Route::middleware(['permission:user.create'])->get('/user/create', [UserController::class, 'create'])->name('user.create');
-    Route::middleware(['permission:user.store'])->post('/user/create', [UserController::class, 'store'])->name('user.store.submit');
-    Route::middleware(['permission:user.view'])->get('/user/index', [UserController::class, 'index'])->name('user.index');
-    Route::middleware(['permission:user.delete'])->delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+        Route::middleware(['permission:user.create'])->get('/user/create', [UserController::class, 'create'])->name('user.create');
+        Route::middleware(['permission:user.store'])->post('/user/create', [UserController::class, 'store'])->name('user.store.submit');
+        Route::middleware(['permission:user.view'])->get('/user/index', [UserController::class, 'index'])->name('user.index');
+        Route::middleware(['permission:user.delete'])->delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
     });
 
     // Profile Routes
@@ -53,7 +53,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/auth/profile/update', [UserController::class, 'update'])->name('profile.update');
     Route::get('/auth/change-password', [UserController::class, 'changePassword'])->name('profile.password');
     Route::post('/auth/change-password', [UserController::class, 'updatePassword'])->name('profile.password.update');
-
 });
 
 // Route::middleware(['auth','role:user'])->group(function () {
@@ -72,18 +71,24 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboardpp'])
         ->name('superadmin.dashboard');
+    Route::get('/admin-users/index', [SuperAdminController::class, 'index'])
+        ->name('admin.users.index');
+    Route::delete('/admin-users/{id}', [SuperAdminController::class, 'destroy'])
+        ->name('admin.users.destroy');
+    Route::get('/admin-users/export/excel', [SuperAdminController::class, 'exportExcel'])->name('users.export.excel');
+    Route::get('/admin-users/export/pdf', [SuperAdminController::class, 'exportPDF'])->name('users.export.pdf');
 });
 
 
 // Allow either a legacy 'user' role or new 'admin' tenant owner role
 Route::middleware(['auth'])->group(function () {
 
-Route::get('/vendor-payment-report', [VehicleHireController::class, 'vendorPaymentReport'])->name('vendor.payment.report');
+    Route::get('/vendor-payment-report', [VehicleHireController::class, 'vendorPaymentReport'])->name('vendor.payment.report');
 
-Route::get(
-    '/vendor-payment-report/export',
-    [VehicleHireController::class, 'exportVendorPayment']
-)->name('vendor.payment.export');
+    Route::get(
+        '/vendor-payment-report/export',
+        [VehicleHireController::class, 'exportVendorPayment']
+    )->name('vendor.payment.export');
 
 
     // View-only routes (require basic authentication)
@@ -116,7 +121,7 @@ Route::get(
         Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendors.store');
         Route::get('/vendors/{id}/edit', [VendorController::class, 'edit'])->name('vendors.edit');
         Route::put('/vendors/{id}', [VendorController::class, 'update'])->name('vendors.update');
-        Route::delete('/vendors/destroy', [VendorController::class, 'destroy'])->name('vendors.destroy');
+        Route::delete('/vendors/{id}', [VendorController::class, 'destroy'])->name('vendors.destroy');
     });
     Route::middleware(['permission:view vendors'])->get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
 
@@ -284,7 +289,4 @@ Route::get('/vehicle/{id}', [VehicleHireController::class, 'getVehicle'])->name(
 Route::get('/driver/{id}', [VehicleHireController::class, 'getDriver'])->name('driver.details');
 
 
-Route::delete('/users/{id}', [UserController::class, 'delete'])->name('users.delete');
-
-
-
+Route::delete('/users/{id}', [SuperAdminController::class, 'delete'])->name('users.delete');

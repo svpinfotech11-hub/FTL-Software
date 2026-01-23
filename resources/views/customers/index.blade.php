@@ -94,12 +94,6 @@
                                             </td>
                                         </tr>
                                         @endforeach
-
-                                        @if($customers->isEmpty())
-                                        <tr>
-                                            <td colspan="16" class="text-center">No customers found.</td>
-                                        </tr>
-                                        @endif
                                     </tbody>
                                 </table>
 

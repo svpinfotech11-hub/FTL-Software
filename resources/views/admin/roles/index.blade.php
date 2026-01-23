@@ -190,20 +190,9 @@
                                 <p class="text-muted mb-0">No permissions available. Create some permissions first.</p>
                             @endif
                         </div>
-                        <div class="form-text">
-                            Select one or more permissions to assign to the selected role.
-                        </div>
+
                     </div>
-                    <div class="mb-3">
-                        <button type="button" class="btn btn-outline-secondary btn-sm me-2" onclick="selectAllPermissions()">
-                            <i class="bi bi-check-all me-1"></i>
-                            Select All
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearAllPermissions()">
-                            <i class="bi bi-x-circle me-1"></i>
-                            Clear All
-                        </button>
-                    </div>
+                    
                     <button type="submit" class="btn btn-info">
                         <i class="bi bi-link me-2"></i>
                         Assign Permissions

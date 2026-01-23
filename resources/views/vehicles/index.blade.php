@@ -72,12 +72,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
-                                @if ($vehicles->isEmpty())
-                                    <tr>
-                                        <td colspan="9" class="text-center">No vehicles found</td>
-                                    </tr>
-                                @endif
                             </tbody>
                         </table>
                     </div>
