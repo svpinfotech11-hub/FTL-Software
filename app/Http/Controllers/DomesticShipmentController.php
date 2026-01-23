@@ -48,56 +48,6 @@ class DomesticShipmentController extends Controller
         return view('shipment.index', compact('shipments', 'customers'));
     }
 
-
-
-    // public function create()
-    // {
-    //     $userId = auth()->id(); // current logged-in user
-
-    //     // Fetch consignees saved by this user
-    //     $consignees = DomesticShipment::where('consignee_save_to_address_book', 1)
-    //         ->where('user_id', $userId)
-    //         ->select(
-    //             'id',
-    //             'consignee_name',
-    //             'consignee_company',
-    //             'consignee_address',
-    //             'consignee_pincode',
-    //             'consignee_state',
-    //             'consignee_city',
-    //             'zone',
-    //             'consignee_contact',
-    //             'gst_no'
-    //         )
-    //         ->get();
-
-    //     // Fetch consigners saved by this user
-    //     $consigners = DomesticShipment::where('consigner_save_to_address_book', 1)
-    //         ->where('user_id', $userId)
-    //         ->select(
-    //             'id',
-    //             'consigner_name',
-    //             'consigner_address',
-    //             'consigner_pincode',
-    //             'consigner_state',
-    //             'consigner_city',
-    //             'consigner_contact',
-    //             'coll_type',
-    //             'delivery_type'
-    //         )
-    //         ->get();
-
-    //     // Fetch states (no user filter needed)
-    //     $states = DB::table('cities')
-    //         ->select('city_state')
-    //         ->distinct()
-    //         ->orderBy('city_state')
-    //         ->get();
-    // }
-
-
-
-
     public function create()
     {
         $userId = auth()->id();
@@ -322,31 +272,7 @@ class DomesticShipmentController extends Controller
                 $data['driver_number']  = null;
             }
 
-            // DomesticShipment::create([
-            //     'user_id'           => auth()->id(),
-            //     'customer_id'       => $request->customer_id,
-            //     'consigner_id'      => $consignerId,
-            //     'consignee_id'      => $consigneeId,
-            //     'shipment_date'     => $request->shipment_date,
-            //     'courier'           => $request->courier,
-            //     'airway_no'         => $request->airway_no,
-            //     'risk_type'         => $request->risk_type,
-            //     'bill_type'         => $request->bill_type,
-            //     'driver_details'         => $request->driver_details,
-            //     'description'       => $request->description,
-            //     'vehicle_no'        => $request->vehicle_no,
-            //     'pkt'               => $request->pkt,
-            //     'qty'               => $request->qty,
-            //     'actual_weight'     => $request->actual_weight,
-            //     'chargeable_weight' => $request->chargeable_weight,
-            //     'sub_total'         => $request->sub_total,
-            //     'tax_type'          => $request->tax_type,
-            //     'tax'               => $request->tax,
-            //     'cgst'              => $request->cgst,
-            //     'sgst'              => $request->sgst,
-            //     'igst'              => $request->igst,
-            //     'grand_total'       => $request->grand_total,
-            // ]);
+
 
 
             DomesticShipment::create(array_merge([
@@ -726,13 +652,15 @@ class DomesticShipmentController extends Controller
         ->select('id', 'name')
         ->orderBy('name')
         ->get();
+
+
     $query = DomesticShipment::with([
         'consigner:id,name',
         'consignee:id,name,city',
         'user:id,name',
-        'vehicleHire:id,hire_register_id,vendor_name,hire_rate,advance_paid,balance_payable'
+        'vehicleHire:id,hire_register_id,vendor_name,hire_rate,advance_paid,balance_payable',
+        'expenses:id,lr_no,amount,description'
     ])->where('user_id', auth()->id());
-
     // 🔹 Customer filter
     if ($request->filled('customer_id')) {
         $query->where('customer_id', $request->customer_id);
@@ -759,20 +687,44 @@ class DomesticShipmentController extends Controller
     $shipments = $query->latest()->get();
 
     // 🔹 Profit/Loss calculation
+    // $shipments->transform(function ($shipment) {
+    //     $purchaseCost = 0;
+
+    //     if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
+    //         $purchaseCost += $shipment->vehicleHire->hire_rate;
+    //     }
+
+    //     $shipment->sales_value = $shipment->grand_total;
+    //     $shipment->purchase_value = $purchaseCost;
+    //     $shipment->profit_loss = $shipment->sales_value - $shipment->purchase_value;
+    //     $shipment->is_profit = $shipment->profit_loss >= 0;
+
+    //     return $shipment;
+    // });
+
     $shipments->transform(function ($shipment) {
-        $purchaseCost = 0;
 
-        if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
-            $purchaseCost += $shipment->vehicleHire->hire_rate;
-        }
+    // 1️⃣ Hire cost
+    $hireCost = 0;
+    if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
+        $hireCost = $shipment->vehicleHire->hire_rate;
+    }
 
-        $shipment->sales_value = $shipment->grand_total;
-        $shipment->purchase_value = $purchaseCost;
-        $shipment->profit_loss = $shipment->sales_value - $shipment->purchase_value;
-        $shipment->is_profit = $shipment->profit_loss >= 0;
+    // 2️⃣ Expense cost (MATCHING lr_no)
+    $expenseCost = $shipment->expenses->sum('amount');
 
-        return $shipment;
-    });
+    // 3️⃣ Total cost
+    $totalCost = $hireCost + $expenseCost;
+
+    // 4️⃣ Profit/Loss
+    $shipment->total_cost = $totalCost;
+    $shipment->profit_loss = $shipment->grand_total - $totalCost;
+    $shipment->is_profit = $shipment->profit_loss >= 0;
+
+    return $shipment;
+});
+
+    
 
     return view('shipment.report', compact('shipments', 'customers', 'consigners', 'consignees'));
 }

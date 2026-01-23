@@ -50,33 +50,41 @@ class VendorController extends Controller
     public function show($id)
     {
         $vendor = Vendor::where('id', $id)
-                        ->where('user_id', auth()->id())
-                        ->firstOrFail();
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
         return $vendor;
     }
+
+    public function edit($id)
+    {
+        $vendor = Vendor::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        return view('vendors.edit', compact('vendor'));
+    }
+
 
     // Update vendor (only if belongs to user)
     public function update(Request $request, $id)
     {
         $vendor = Vendor::where('id', $id)
-                        ->where('user_id', auth()->id())
-                        ->firstOrFail();
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
         $vendor->update($request->all());
 
-        return response()->json([
-            'message' => 'Vendor updated successfully',
-            'vendor' => $vendor
-        ]);
+        return redirect()->route('vendors.index')
+            ->with('success', 'Vendor Updated Successfully!');
     }
 
     // Delete vendor (only if belongs to user)
     public function destroy($id)
     {
         $vendor = Vendor::where('id', $id)
-                        ->where('user_id', auth()->id())
-                        ->firstOrFail();
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
         $vendor->delete();
 

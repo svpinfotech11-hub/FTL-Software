@@ -72,16 +72,15 @@
                                                             class="btn btn-sm btn-warning">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
-
                                                         <form action="{{ route('branches.destroy', $branch->id) }}"
                                                             method="POST" class="d-inline delete-branch-form">
                                                             @csrf
                                                             @method('DELETE')
+
                                                             <button type="button" class="btn btn-sm btn-danger delete-btn">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>
-                                                    </td>
                                                 </tr>
                                             @empty
                                                 <tr>
@@ -104,5 +103,29 @@
 
     </main>
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.delete-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
 
+                let form = this.closest('.delete-branch-form');
 
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This branch will be permanently deleted!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>

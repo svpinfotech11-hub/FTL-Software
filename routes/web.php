@@ -26,8 +26,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
 Route::get('/', [HomeController::class, 'home'])->name('pages.home');
 Route::get('/login', [AuthController::class, 'userLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'userLogin'])->name('user.login.store');
@@ -80,6 +78,14 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
 // Allow either a legacy 'user' role or new 'admin' tenant owner role
 Route::middleware(['auth'])->group(function () {
 
+Route::get('/vendor-payment-report', [VehicleHireController::class, 'vendorPaymentReport'])->name('vendor.payment.report');
+
+Route::get(
+    '/vendor-payment-report/export',
+    [VehicleHireController::class, 'exportVendorPayment']
+)->name('vendor.payment.export');
+
+
     // View-only routes (require basic authentication)
     Route::middleware(['permission:view shipments'])->get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
     Route::get('/new_pod/{id}', [DomesticShipmentController::class, 'show'])->name('domestic.shipment.pod');
@@ -108,6 +114,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['permission:create vendors'])->group(function () {
         Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
         Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendors.store');
+        Route::get('/vendors/{id}/edit', [VendorController::class, 'edit'])->name('vendors.edit');
+        Route::put('/vendors/{id}', [VendorController::class, 'update'])->name('vendors.update');
+        Route::delete('/vendors/destroy', [VendorController::class, 'destroy'])->name('vendors.destroy');
     });
     Route::middleware(['permission:view vendors'])->get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
 
@@ -127,37 +136,37 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::middleware(['permission:vehicle-create'])->group(function () {
-    Route::middleware(['permission:view customers'])->get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
-    Route::middleware(['permission:create vehicles'])->group(function () {
+        Route::middleware(['permission:view customers'])->get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
+        Route::middleware(['permission:create vehicles'])->group(function () {
 
-        Route::resource('vehicles', VehicleController::class);
+            Route::resource('vehicles', VehicleController::class);
+        });
+        Route::middleware(['permission:view shipments'])->get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
+        Route::resource('drivers', DriverController::class);
+        Route::resource('add-expenses', AddExpenseController::class);
+
+        Route::middleware(['permission:company-create'])->group(function () {
+            Route::resource('company', AddCompanyController::class);
+        });
+
+        Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
+        Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
+        Route::get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
+        Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
+        Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
+        Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
+
+        Route::post('/domestic/print', [DomesticShipmentController::class, 'print'])
+            ->name('domestic.shipment.print');
+
+        Route::get('/domestic/report', [DomesticShipmentController::class, 'report'])
+            ->name('domestic.shipment.report');
     });
-    Route::middleware(['permission:view shipments'])->get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
-    Route::resource('drivers', DriverController::class);
-    Route::resource('add-expenses', AddExpenseController::class);
-
-    Route::middleware(['permission:company-create'])->group(function () {
-        Route::resource('company', AddCompanyController::class);
-    });
-
-    Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
-    Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
-    Route::get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
-    Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
-    Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
-    Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
-
-    Route::post('/domestic/print', [DomesticShipmentController::class, 'print'])
-        ->name('domestic.shipment.print');
-
-    Route::get('/domestic/report', [DomesticShipmentController::class, 'report'])
-        ->name('domestic.shipment.report');
-});
 
     Route::middleware(['permission:manage expenses'])->group(function () {
         Route::resource('add-expenses', AddExpenseController::class);
     });
-    
+
     Route::middleware(['permission:create companies'])->group(function () {
         Route::resource('company', AddCompanyController::class);
     });
@@ -196,11 +205,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['permission:view report'])->group(function () {
         Route::get('/domestic/shipments/reports', [DomesticShipmentController::class, 'reports'])
-    ->name('domestic.shipment.reports');
+            ->name('domestic.shipment.reports');
     });
 
-    Route::get('/domestic/shipments/reports/export', 
-    [DomesticShipmentController::class, 'exportExcel'])->name('domestic.shipment.reports.export');
+    Route::get(
+        '/domestic/shipments/reports/export',
+        [DomesticShipmentController::class, 'exportExcel']
+    )->name('domestic.shipment.reports.export');
 
 
     // Route::middleware(['permission:view reports'])->group(function () {
@@ -271,3 +282,5 @@ Route::get('/customer/{id}', function ($id) {
 Route::get('/vendor/{id}', [VehicleHireController::class, 'getVendor'])->name('vendor.details');
 Route::get('/vehicle/{id}', [VehicleHireController::class, 'getVehicle'])->name('vehicle.details');
 Route::get('/driver/{id}', [VehicleHireController::class, 'getDriver'])->name('driver.details');
+
+

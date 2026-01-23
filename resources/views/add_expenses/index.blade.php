@@ -23,8 +23,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Date</th>
-                                    <th>Driver</th>
-                                    <th>Vehicle</th>
+                                    <th>Lr no</th>
                                     <th>Expense Type</th>
                                     <th>Amount</th>
                                     <th width="120">Action</th>
@@ -36,8 +35,7 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $expense->expense_date }}</td>
-                                        <td>{{ $expense->driver->name }}</td>
-                                        <td>{{ $expense->vehicle_no }}</td>
+                                        <td>{{ $expense->lr_no }}</td>
                                         <td>{{ $expense->expense_type }}</td>
                                         <td>{{ $expense->amount }}</td>
                                         <td>
@@ -67,4 +65,30 @@
         </div>
     </main>
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+
+                let form = this.closest('.delete-form');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This expense will be permanently deleted!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
