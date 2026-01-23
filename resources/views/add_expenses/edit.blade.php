@@ -31,20 +31,6 @@
                                     value="{{ $expense->expense_date }}" required>
                             </div>
 
-                            {{-- Driver --}}
-                            <div class="col-md-4">
-                                <label>Driver Name</label>
-                                <select name="driver_id" class="form-control">
-                                    <option value="">-- Select Driver --</option>
-                                    @foreach ($drivers as $driver)
-                                    <option value="{{ $driver->id }}"
-                                        {{ $expense->driver_id == $driver->id ? 'selected' : '' }}>
-                                        {{ $driver->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
                             {{-- Expense Type --}}
                             <div class="col-md-4">
                                 <label>Expense Type</label>
@@ -68,29 +54,21 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            {{-- Vehicle --}}
+                            {{-- LR No (readonly) --}}
                             <div class="col-md-4">
-                                <label>Vehicle</label>
-                                <select name="vehicle_id" class="form-control form-select">
-                                    <option value="">-- Select Vehicle --</option>
-                                    @foreach ($vehicles as $vehicle)
-                                    <option value="{{ $vehicle->id }}"
-                                        {{ $expense->vehicle_id == $vehicle->id ? 'selected' : '' }}>
-                                        {{ $vehicle->vehicle_number }}
+                                <label>LR No</label>
+                                <select name="lr_no" class="form-control form-select">
+                                    <option value="">-- Select LR No --</option>
+                                    @foreach ($airwayNos as $id => $lr_no)
+                                    <option value="{{ $id }}"
+                                        {{ (isset($expense) && $expense->lr_no == $id) ? 'selected' : '' }}>
+                                        {{ $lr_no }}
                                     </option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            {{-- LR No (readonly) --}}
-                            <div class="col-md-4">
-                                <label>LR No</label>
-                                <input type="text" name="lr_no" class="form-control"
-                                    value="{{ $expense->lr_no }}" readonly>
-                            </div>
 
                             {{-- Amount --}}
                             <div class="col-md-4">

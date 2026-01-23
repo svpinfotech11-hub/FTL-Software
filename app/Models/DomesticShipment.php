@@ -144,5 +144,12 @@ class DomesticShipment extends Model
         return $this->belongsTo(AddCompany::class, 'company_id');
     }
 
+    // Link expense by airway_no
+    public function expenses()
+    {
+        return $this->hasMany(AddExpense::class, 'lr_no', 'id'); 
+    }
+    
+
     protected $dates = ['deleted_at'];
 }

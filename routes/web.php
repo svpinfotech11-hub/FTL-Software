@@ -26,8 +26,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
 Route::get('/', [HomeController::class, 'home'])->name('pages.home');
 Route::get('/login', [AuthController::class, 'userLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'userLogin'])->name('user.login.store');
@@ -79,6 +77,14 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
 
 // Allow either a legacy 'user' role or new 'admin' tenant owner role
 Route::middleware(['auth'])->group(function () {
+
+Route::get('/vendor-payment-report', [VehicleHireController::class, 'vendorPaymentReport'])->name('vendor.payment.report');
+
+Route::get(
+    '/vendor-payment-report/export',
+    [VehicleHireController::class, 'exportVendorPayment']
+)->name('vendor.payment.export');
+
 
     // View-only routes (require basic authentication)
     Route::middleware(['permission:view shipments'])->get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
@@ -276,3 +282,5 @@ Route::get('/customer/{id}', function ($id) {
 Route::get('/vendor/{id}', [VehicleHireController::class, 'getVendor'])->name('vendor.details');
 Route::get('/vehicle/{id}', [VehicleHireController::class, 'getVehicle'])->name('vehicle.details');
 Route::get('/driver/{id}', [VehicleHireController::class, 'getDriver'])->name('driver.details');
+
+

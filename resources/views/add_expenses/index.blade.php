@@ -23,8 +23,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Date</th>
-                                    <th>Driver</th>
-                                    <th>Vehicle</th>
+                                    <th>Lr no</th>
                                     <th>Expense Type</th>
                                     <th>Amount</th>
                                     <th width="120">Action</th>
@@ -36,8 +35,7 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $expense->expense_date }}</td>
-                                        <td>{{ $expense->driver->name }}</td>
-                                        <td>{{ $expense->vehicle_no }}</td>
+                                        <td>{{ $expense->lr_no }}</td>
                                         <td>{{ $expense->expense_type }}</td>
                                         <td>{{ $expense->amount }}</td>
                                         <td>

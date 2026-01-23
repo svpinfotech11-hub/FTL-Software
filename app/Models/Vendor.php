@@ -20,4 +20,10 @@ class Vendor extends Model
         'minimum_kg',
         'user_id'
     ];
+
+   public function vehicleHires()
+    {
+        return $this->hasMany(VehicleHire::class);
+    }
+
 }
