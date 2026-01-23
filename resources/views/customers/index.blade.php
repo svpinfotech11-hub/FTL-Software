@@ -38,7 +38,7 @@
                         <div class="card-body">
                             <!-- Add table-responsive wrapper -->
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
+                                <table class="table table-bordered table-striped datatable">
                                     <thead>
                                         <tr>
                                             <th style="width: 10px">#</th>

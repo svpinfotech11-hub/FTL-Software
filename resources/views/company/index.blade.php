@@ -39,7 +39,7 @@
                             {{-- Card Body --}}
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped align-middle">
+                                    <table class="table table-bordered table-striped align-middle datatable">
                                         <thead>
                                             <tr>
                                                 <th style="width:10px">#</th>
@@ -51,25 +51,19 @@
                                                 <th style="width:140px">Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
 
-                                            @forelse($companies as $index => $company)
+                                        <tbody>
+                                            @foreach ($companies as $index => $company)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
 
                                                     <td>{{ $company->company_name }}</td>
 
-                                                    <td>
-                                                        {{ $company->user->address ?? 'N/A' }}
-                                                    </td>
+                                                    <td>{{ $company->user->address ?? 'N/A' }}</td>
 
-                                                    <td>
-                                                        {{ $company->user->phone ?? 'N/A' }}
-                                                    </td>
+                                                    <td>{{ $company->user->phone ?? 'N/A' }}</td>
 
-                                                    <td>
-                                                        {{ $company->user->email ?? 'N/A' }}
-                                                    </td>
+                                                    <td>{{ $company->user->email ?? 'N/A' }}</td>
 
                                                     <td>
                                                         @if ($company->logo)
@@ -85,6 +79,7 @@
                                                             class="btn btn-sm btn-primary">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
+
                                                         <form action="{{ route('company.destroy', $company->id) }}"
                                                             method="POST" class="d-inline delete-company-form">
                                                             @csrf
@@ -94,17 +89,13 @@
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>
-
                                                     </td>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="7" class="text-center">No companies found.</td>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
+
                             </div>
                         </div>
 

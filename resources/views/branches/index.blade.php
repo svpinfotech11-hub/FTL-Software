@@ -40,7 +40,7 @@
                             <!-- Card Body -->
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped align-middle">
+                                    <table class="table table-bordered table-striped align-middle datatable">
                                         <thead>
                                             <tr>
                                                 <th style="width:10px">#</th>

@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['permission:user.view'])->get('/user/index', [UserController::class, 'index'])->name('user.index');
     Route::middleware(['permission:user.delete'])->delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
     });
-    
+
     // Profile Routes
     Route::get('/auth/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
     Route::post('/auth/profile/update', [UserController::class, 'update'])->name('profile.update');
@@ -282,5 +282,9 @@ Route::get('/customer/{id}', function ($id) {
 Route::get('/vendor/{id}', [VehicleHireController::class, 'getVendor'])->name('vendor.details');
 Route::get('/vehicle/{id}', [VehicleHireController::class, 'getVehicle'])->name('vehicle.details');
 Route::get('/driver/{id}', [VehicleHireController::class, 'getDriver'])->name('driver.details');
+
+
+Route::delete('/users/{id}', [UserController::class, 'delete'])->name('users.delete');
+
 
 
