@@ -320,6 +320,17 @@
                 </li>
 
 
+                 <li class="nav-item">
+                    <a href="{{ route('vendor.payment.report') }}" class="nav-link">
+                        <i class="nav-icon bi bi-cash-stack"></i>
+                        <p>
+                            Vendor Payment Report
+                            <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->
+                        </p>
+                    </a>
+                </li>
+
+
                 @endif
 
                 {{-- USER MENU --}}
@@ -523,6 +534,16 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+
+                 <li class="nav-item">
+                    <a href="{{ route('vendor.payment.report') }}" class="nav-link">
+                        <i class="nav-icon bi bi-cash-stack"></i>
+                        <p>
+                            Vendor Payment Report
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
                 </li>
 
                 @endif

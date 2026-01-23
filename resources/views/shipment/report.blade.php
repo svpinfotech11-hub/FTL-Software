@@ -106,10 +106,11 @@
                                 <th>Vehicle Type</th>
                                 <th>Hire Register</th>
                                 <th>Hire Rate</th>
+                                <th>Expenses</th>
                                 <th>Advance Paid</th>
                                 <th>Balance</th>
                                 <th>Grand Total</th>
-                                <th>Total Cost</th>
+                                <!-- <th>Total Cost</th> -->
                                 <th>Profit/Loss</th>
                             </tr>
                         </thead>
@@ -139,13 +140,14 @@
                                             OWN
                                         @endif
                                     </td>
-                                    <td>{{ $row->vehicleHire ? number_format($row->vehicleHire->hire_rate, 2) : '-' }}</td>
-                                    <td>{{ $row->vehicleHire ? number_format($row->vehicleHire->advance_paid, 2) : '-' }}</td>
-                                    <td>{{ $row->vehicleHire ? number_format($row->vehicleHire->balance_payable, 2) : '-' }}</td>
-                                    <td class="fw-bold">{{ number_format($row->grand_total, 2) }}</td>
-                                    <td>{{ number_format($row->total_cost, 2) }}</td>
+                                    <td>{{ $row->vehicleHire ? number_format($row->vehicleHire->hire_rate) : '-' }}</td>
+                                    <td>{{ $row->expenses ? number_format($row->expenses->sum('amount')) : '-' }}</td>
+                                    <td>{{ $row->vehicleHire ? number_format($row->vehicleHire->advance_paid) : '-' }}</td>
+                                    <td>{{ $row->vehicleHire ? number_format($row->vehicleHire->balance_payable) : '-' }}</td>
+                                    <td class="fw-bold">{{ number_format($row->grand_total) }}</td>
+                                    <!-- <td>{{ number_format($row->total_cost) }}</td> -->
                                     <td class="fw-bold {{ $row->is_profit ? 'text-success' : 'text-danger' }}">
-                                        {{ $row->is_profit ? '+' : '' }}{{ number_format($row->profit_loss, 2) }}
+                                        {{ $row->is_profit ? '+' : '' }}{{ number_format($row->profit_loss) }}
                                     </td>
                                 </tr>
                             @empty
@@ -159,10 +161,10 @@
                         <tfoot>
                             <tr class="fw-bold">
                                 <td colspan="11" class="text-end">Total:</td>
-                                <td>{{ number_format($shipments->sum('grand_total'), 2) }}</td>
-                                <td>{{ number_format($shipments->sum('total_cost'), 2) }}</td>
+                                <td>{{ number_format($shipments->sum('grand_total')) }}</td>
+                                <!-- <td>{{ number_format($shipments->sum('total_cost')) }}</td> -->
                                 <td class="{{ $shipments->sum('profit_loss') >= 0 ? 'text-success' : 'text-danger' }}">
-                                    {{ $shipments->sum('profit_loss') >= 0 ? '+' : '' }}{{ number_format($shipments->sum('profit_loss'), 2) }}
+                                    {{ $shipments->sum('profit_loss') >= 0 ? '+' : '' }}{{ number_format($shipments->sum('profit_loss')) }}
                                 </td>
                             </tr>
                         </tfoot>

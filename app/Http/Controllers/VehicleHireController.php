@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Driver;
+use App\Models\Vendor;
 use App\Models\Vehicle;
 use App\Models\VehicleHire;
-use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\VendorPaymentExport;
 
 class VehicleHireController extends Controller
 {
@@ -89,7 +91,7 @@ class VehicleHireController extends Controller
     public function edit($id)
     {
         $vehicleHire = VehicleHire::findOrFail($id);
-$drivers = Driver::all();
+        $drivers = Driver::all();
         $vehicles = Vehicle::all();
         $vendors = Vendor::all();
         return view('vehicle_hires.edit', compact('vehicleHire', 'drivers', 'vehicles', 'vendors'));
@@ -171,5 +173,62 @@ $drivers = Driver::all();
         $driver = Driver::find($id);
         return response()->json($driver);
     }
+
+    public function vendorPaymentReport()
+    {
+        $userId = auth()->id(); 
+
+        // Get all vendors with their hires for this user
+        $vendors = Vendor::with(['vehicleHires' => function($query) use ($userId) {
+            $query->where('user_id', $userId);
+        }])->get();
+
+        $report = $vendors->map(function ($vendor) {
+
+    $totalHires = $vendor->vehicleHires->count();
+    $totalHireAmount = $vendor->vehicleHires->sum('hire_rate');
+    $totalAdvancePaid = $vendor->vehicleHires->sum('advance_paid');
+    $totalBalance = $vendor->vehicleHires->sum('balance_payable');
+
+    $fullyPaid = 0;
+    $partiallyPaid = 0;
+    $pending = 0;
+
+    foreach ($vendor->vehicleHires as $hire) {
+
+        if ($hire->balance_payable <= 0 || $hire->advance_paid >= $hire->hire_rate) {
+            $fullyPaid++;
+        } elseif ($hire->advance_paid > 0 && $hire->advance_paid < $hire->hire_rate) {
+            $partiallyPaid++;
+        } else {
+            $pending++;
+        }
+    }
+
+    return [
+        'vendor_id' => $vendor->id,
+        'vendor_name' => $vendor->vendor_name,
+        'total_hires' => $totalHires,
+        'total_hire_amount' => $totalHireAmount,
+        'total_advance_paid' => $totalAdvancePaid,
+        'total_balance' => $totalBalance,
+        'fully_paid_hires' => $fullyPaid,
+        'partially_paid_hires' => $partiallyPaid,
+        'pending_hires' => $pending,
+    ];
+});
+
+
+        return view('vendor_payment_report', compact('report'));
+    }
+
+    public function exportVendorPayment()
+{
+    return Excel::download(
+        new VendorPaymentExport,
+        'vendor_payment_report.xlsx'
+    );
+}
+
 
 }

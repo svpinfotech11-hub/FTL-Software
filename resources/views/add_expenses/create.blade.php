@@ -29,17 +29,6 @@
                                     value="{{ old('expense_date') }}">
                             </div>
 
-                            {{-- Driver --}}
-                            <div class="col-md-4">
-                                <label>Driver Name</label>
-                                <select name="driver_id" class="form-control form-select">
-                                    <option value="">-- Select Driver --</option>
-                                    @foreach ($drivers as $driver)
-                                    <option value="{{ $driver->id }}">{{ $driver->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
                             {{-- Expense Type --}}
                             <div class="col-md-4">
                                 <label>Expense Type</label>
@@ -54,22 +43,9 @@
                                     <option value="Tyre">Tyre / Maintenance</option>
                                 </select>
                             </div>
-                        </div>
+                       
 
-                        {{-- Vehicle & LR --}}
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label>Vehicle</label>
-                                <select name="vehicle_id" class="form-control form-select">
-                                    <option value="">-- Select Vehicle --</option>
-                                    @foreach ($vehicles as $vehicle)
-                                    <option value="{{ $vehicle->id }}">
-                                        {{ $vehicle->vehicle_number }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
+                           
                             <div class="col-md-4">
                                 <label>LR No</label>
                                 <select name="lr_no" class="form-control form-select">
@@ -85,10 +61,9 @@
                                 <input type="number" step="0.01" name="amount"
                                     class="form-control">
                             </div>
-                        </div>
+                        
 
-                        {{-- Paid By --}}
-                        <div class="row mb-3">
+                     
                             <div class="col-md-4">
                                 <label>Paid By</label>
                                 <select name="paid_by" class="form-control form-select">
