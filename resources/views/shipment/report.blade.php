@@ -172,11 +172,7 @@
                                         </td>
                                     </tr>
                                     @empty
-                                    <tr>
-                                        <td colspan="14" class="text-center text-muted py-4">
-                                            No Shipment Records Found
-                                        </td>
-                                    </tr>
+                                   
                                     @endforelse
                                 </tbody>
 
