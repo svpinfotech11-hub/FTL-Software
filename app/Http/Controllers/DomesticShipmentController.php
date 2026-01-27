@@ -128,18 +128,9 @@ class DomesticShipmentController extends Controller
 
             $consignerId = null;
 
-            Log::info('📦 Consigner input', [
-                'consigner_id'   => $request->consigner_id,
-                'save_consigner' => $request->save_consigner,
-            ]);
-
             // EXISTING CONSIGNER
             if (!empty($request->consigner_id)) {
                 $consignerId = $request->consigner_id;
-
-                Log::info('✅ Existing consigner used', [
-                    'consigner_id' => $consignerId,
-                ]);
             }
 
             // NEW CONSIGNER (save OR temp)
@@ -185,18 +176,9 @@ class DomesticShipmentController extends Controller
 
             $consigneeId = null;
 
-            Log::info('📦 Consignee input', [
-                'consignee_id'   => $request->consignee_id,
-                'save_consignee' => $request->save_consignee,
-            ]);
-
             // EXISTING CONSIGNEE
             if (!empty($request->consignee_id)) {
                 $consigneeId = $request->consignee_id;
-
-                Log::info('✅ Existing consignee used', [
-                    'consignee_id' => $consigneeId,
-                ]);
             }
 
             // NEW CONSIGNEE (save OR temp)
@@ -271,9 +253,6 @@ class DomesticShipmentController extends Controller
                 $data['driver_name']    = $hire->driver_details;
                 $data['driver_number']  = null;
             }
-
-
-
 
             DomesticShipment::create(array_merge([
                 'user_id'           => auth()->id(),

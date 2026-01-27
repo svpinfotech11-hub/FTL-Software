@@ -15,6 +15,7 @@
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                     <tr>
+                        <th class="text-center">#</th>
                         <th>Vendor</th>
                         <th>Total Hires</th>
                         <th>Total Hire Amount</th>
@@ -27,8 +28,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($report as $vendor)
+                    @foreach ($report as $key => $vendor)
                     <tr>
+                        <td class="text-center">{{ $key + 1 }}</td>
                         <td>{{ $vendor['vendor_name'] }}</td>
                         <td>{{ $vendor['total_hires'] }}</td>
                         <td>{{ number_format($vendor['total_hire_amount'], 2) }}</td>

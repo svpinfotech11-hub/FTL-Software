@@ -62,7 +62,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-people"></i>
                         <p>
-                            Users
+                            Staff
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>

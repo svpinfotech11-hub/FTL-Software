@@ -29,10 +29,10 @@ class VehicleController extends Controller
     }
 
     // Format the number: VH0001, VH0002...
-    $vehicleNumber = 'VH' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+    // $vehicleNumber = 'VH' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
     // Pass it to the view
-    return view('vehicles.create', compact('vehicleNumber'));
+    return view('vehicles.create');
 }
 
 

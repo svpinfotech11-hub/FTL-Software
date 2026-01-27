@@ -56,15 +56,14 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Route::middleware(['auth','role:user'])->group(function () {
-Route::get('/dashboard', [UserController::class, 'dashboard'])
-    ->name('user.dashboard');
+
 // });
 
 /* ================= SUPERADMIN ================= */
 Route::middleware('guest')->group(function () {
     Route::get('/superadmin/login', [SuperAdminController::class, 'getmethod'])
         ->name('superadmin.login');
-
+        
     Route::post('/superadmin/login', [SuperAdminController::class, 'adminLogin'])->name('superadmin.login');
 });
 
@@ -78,7 +77,6 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/admin-users/export/excel', [SuperAdminController::class, 'exportExcel'])->name('users.export.excel');
     Route::get('/admin-users/export/pdf', [SuperAdminController::class, 'exportPDF'])->name('users.export.pdf');
 });
-
 
 // Allow either a legacy 'user' role or new 'admin' tenant owner role
 Route::middleware(['auth'])->group(function () {
