@@ -10,9 +10,21 @@ class DriverController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
+        $user = Auth::user();
+        $query = Driver::query();
 
-        $drivers = Driver::where('user_id', $userId)->latest()->get();
+        if ($user->hasRole('super_admin')) {
+            // Super admin sees all drivers
+            $drivers = $query->latest()->get();
+        } elseif ($user->hasRole('admin')) {
+            // Admin sees drivers created by themselves and their created users
+            $userIds = \App\Models\User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $drivers = $query->whereIn('user_id', $userIds)->latest()->get();
+        } else {
+            // Regular users see only their own drivers
+            $drivers = $query->where('user_id', $user->id)->latest()->get();
+        }
+
         return view('drivers.index', compact('drivers'));
     }
 

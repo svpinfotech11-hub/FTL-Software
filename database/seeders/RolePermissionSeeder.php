@@ -63,12 +63,11 @@ class RolePermissionSeeder extends Seeder
         // ];
 
         $perms = [
-            // User Management
             'user.create',
-            'user.store',
             'user.view',
             'user.edit',
             'user.delete',
+
 
             // Shipments (Domestic)
             'manage.shipments',
@@ -136,7 +135,68 @@ class RolePermissionSeeder extends Seeder
 
             // Reports (general)
             'report.view', // view any kind of reports
+            'user.show',
+            'shipment.view',
+            'shipment.create',
+            'shipment.edit',
+            'shipment.delete',
+            'shipment.print',
+            'shipment.report',
+            'shipment.show',
+            'vendor.create',
+            'vendor.edit',
+            'vendor.delete',
+            'vendor.view',
+            'vendor.show',
+            'customer.create',
+            'customer.edit',
+            'customer.delete',
+            'customer.view',
+            'customer.show',
+            'vehicle.create',
+            'vehicle.edit',
+            'vehicle.delete',
+            'vehicle.view',
+            'vehicle.show',
+            'driver.create',
+            'driver.edit',
+            'driver.delete',
+            'driver.view',
+            'driver.show',
+            'expense.create',
+            'expense.edit',
+            'expense.delete',
+            'expense.view',
+            'expense.show',
+            'company.create',
+            'company.edit',
+            'company.delete',
+            'company.view',
+            'company.show',
+            'vehicle_hire.create',
+            'vehicle_hire.edit',
+            'vehicle_hire.delete',
+            'vehicle_hire.view',
+            'vehicle_hire.show',
+            'branch.create',
+            'branch.edit',
+            'branch.delete',
+            'branch.view',
+            'branch.show',
+            'role.create',
+            'role.view',
+            'role.edit',
+            'role.delete',
+            'role.show',
+            'permission.create',
+            'permission.view',
+            'permission.edit',
+            'permission.delete',
+            'permission.show',
+            'view.report'
+
         ];
+
 
         foreach ($perms as $p) {
             Permission::firstOrCreate(['name' => $p]);

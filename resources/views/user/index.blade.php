@@ -82,11 +82,7 @@
                                                 </tr>
                                             @endforeach
 
-                                            @if ($users->isEmpty())
-                                                <tr>
-                                                    <td colspan="8" class="text-center">No users found.</td>
-                                                </tr>
-                                            @endif
+                                            
                                         </tbody>
                                     </table>
                                 </div>

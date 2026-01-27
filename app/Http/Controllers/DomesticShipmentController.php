@@ -22,13 +22,24 @@ class DomesticShipmentController extends Controller
 {
     public function index(Request $request)
     {
+        $user = auth()->user();
         $query = DomesticShipment::with([
             'consigner:id,name',
             'consignee:id,name,city,pincode',
             'user:id,name',
             'vehicleHire:id,vendor_name'
-        ])
-            ->where('user_id', auth()->id());
+        ]);
+
+        if ($user->hasRole('super_admin')) {
+            // Super admin sees all shipments
+        } elseif ($user->hasRole('admin')) {
+            // Admin sees shipments created by themselves and their created users
+            $userIds = User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $query->whereIn('user_id', $userIds);
+        } else {
+            // Regular users see only their own shipments
+            $query->where('user_id', $user->id);
+        }
 
         if ($request->customer_id) {
             $query->where('customer_id', $request->customer_id);

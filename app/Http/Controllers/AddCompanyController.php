@@ -11,9 +11,20 @@ class AddCompanyController extends Controller
 {
     public function index()
     {
-        $companies = AddCompany::where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        $user = Auth::user();
+        $query = AddCompany::query();
+
+        if ($user->hasRole('super_admin')) {
+            // Super admin sees all companies
+            $companies = $query->latest()->get();
+        } elseif ($user->hasRole('admin')) {
+            // Admin sees companies created by themselves and their created users
+            $userIds = \App\Models\User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $companies = $query->whereIn('user_id', $userIds)->latest()->get();
+        } else {
+            // Regular users see only their own companies
+            $companies = $query->where('user_id', $user->id)->latest()->get();
+        }
 
         return view('company.index', compact('companies'));
     }

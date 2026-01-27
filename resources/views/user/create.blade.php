@@ -95,7 +95,7 @@
                                              <label class="form-label">Branch</label>
                                              <select name="branch_id" class="form-select" required>
                                                  <option value="">Select Branch</option>
-                                                 @foreach (\App\Models\Branch::all() as $branch)
+                                                 @foreach ($branches as $branch)
                                                      <option value="{{ $branch->id }}">{{ $branch->branch_name }}
                                                          ({{ $branch->branch_code }})</option>
                                                  @endforeach

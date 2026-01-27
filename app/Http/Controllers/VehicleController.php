@@ -10,9 +10,21 @@ class VehicleController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
+        $user = Auth::user();
+        $query = Vehicle::query();
 
-        $vehicles = Vehicle::where('user_id', $userId)->latest()->get();
+        if ($user->hasRole('super_admin')) {
+            // Super admin sees all vehicles
+            $vehicles = $query->latest()->get();
+        } elseif ($user->hasRole('admin')) {
+            // Admin sees vehicles created by themselves and their created users
+            $userIds = \App\Models\User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $vehicles = $query->whereIn('user_id', $userIds)->latest()->get();
+        } else {
+            // Regular users see only their own vehicles
+            $vehicles = $query->where('user_id', $user->id)->latest()->get();
+        }
+
         return view('vehicles.index', compact('vehicles'));
     }
 

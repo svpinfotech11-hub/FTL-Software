@@ -36,7 +36,14 @@ class PermissionServiceProvider extends ServiceProvider
                 }
             }
 
-            // Check user's assigned permissions
+            // Check direct permissions
+            foreach ($user->permissions as $userPermission) {
+                if ($userPermission->name === $permission) {
+                    return true;
+                }
+            }
+
+            // Check user's assigned permissions through roles
             foreach ($user->roles as $role) {
                 foreach ($role->permissions as $userPermission) {
                     if ($userPermission->name === $permission) {
@@ -84,8 +91,8 @@ class PermissionServiceProvider extends ServiceProvider
 
             $user = Auth::user();
 
-            // Admin and super_admin have all permissions
-            if (in_array($user->role, ['admin', 'super_admin'])) {
+            // Admin and super_admin have all permissions (check via roles)
+            if (method_exists($user, 'hasAnyRole') && $user->hasAnyRole(['admin', 'super_admin'])) {
                 return true;
             }
 
