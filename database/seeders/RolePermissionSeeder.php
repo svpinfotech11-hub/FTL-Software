@@ -69,18 +69,21 @@ class RolePermissionSeeder extends Seeder
             'shipment.print',
 
             // Vendors
+            'vendor.manage',
             'vendor.create',
             'vendor.view',
             'vendor.edit',
             'vendor.delete',
 
             // Customers
+            'customer.manage',
             'customer.create',
             'customer.view',
             'customer.edit',
             'customer.delete',
 
             // Vehicles
+            'vehicle.manage',
             'vehicle.create',
             'vehicle.view',
             'vehicle.edit',
@@ -88,11 +91,20 @@ class RolePermissionSeeder extends Seeder
 
             // Branches
             'branch.manage', // create, edit, delete, view
+            'branch.create',
+            'branch.view',
+            'branch.edit',
+            'branch.delete',
 
             // Drivers
             'driver.manage', // create, edit, delete, view
+            'driver.create',
+            'driver.view',
+            'driver.edit',
+            'driver.delete',
 
             // Companies
+            'company.manage',
             'company.create',
             'company.view',
             'company.edit',
@@ -100,9 +112,17 @@ class RolePermissionSeeder extends Seeder
 
             // Vehicle Hires
             'vehicle_hire.manage', // create, edit, delete, view
+            'vehicle_hire.create',
+            'vehicle_hire.view',
+            'vehicle_hire.edit',
+            'vehicle_hire.delete',
 
             // Expenses
             'expense.manage', // create, edit, delete, view
+            'expense.create',
+            'expense.view',
+            'expense.edit',
+            'expense.delete',
 
             // Reports (general)
             'report.view', // view any kind of reports

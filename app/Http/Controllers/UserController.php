@@ -24,16 +24,10 @@ use App\Models\VehicleHire;
 
 class UserController extends Controller
 {
-    // public function dashboard()
-    // {
-    //     $userId = auth()->id();
-    //     return view('user.dashboard', compact('userId'));
-    // }
-
     public function dashboard()
     {
         $userId = auth()->id();
-        $user = auth()->user();
+        $user   = auth()->user();
 
         $data = [
             'usersCount'        => User::where('created_by', $userId)->count(),
@@ -55,6 +49,7 @@ class UserController extends Controller
 
         return view('user.dashboard', $data);
     }
+
 
     public function index()
     {
@@ -180,17 +175,5 @@ class UserController extends Controller
         $user->save();
 
         return back()->with('success', 'Password updated successfully');
-    }
-
-    public function delete($id)
-    {
-        $user = User::findOrFail($id);
-
-        if ($user->role === 'admin') {
-            $user->delete();
-            return redirect()->back()->with('success', 'Admin deleted successfully!');
-        }
-
-        return redirect()->back()->with('error', 'You cannot delete this user!');
     }
 }
