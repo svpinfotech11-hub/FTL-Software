@@ -6,11 +6,21 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        DB::table('permission_role')->truncate();
+        DB::table('role_user')->truncate();
+        Permission::truncate();
+        Role::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         // Roles used in the project
         $roles = [
             'super_admin',
@@ -61,68 +71,68 @@ class RolePermissionSeeder extends Seeder
             'user.delete',
 
             // Shipments (Domestic)
-            'shipment.create',
-            'shipment.view',
-            'shipment.edit',
-            'shipment.delete',
-            'shipment.report',
-            'shipment.print',
+            'manage.shipments',
+            'create.shipments',
+            'edit.shipments',
+            'delete.shipments',
+            'view shipments',
+            'pod.shipments',
 
             // Vendors
-            'vendor.manage',
-            'vendor.create',
-            'vendor.view',
-            'vendor.edit',
-            'vendor.delete',
+            'manage.vendors',
+            'create.vendors',
+            'edit.vendors',
+            'delete.vendors',
+            'view.vendors',
 
             // Customers
-            'customer.manage',
-            'customer.create',
-            'customer.view',
-            'customer.edit',
-            'customer.delete',
+            'manage.customers',
+            'create.customers',
+            'edit.customers',
+            'delete.customers',
+            'view.customers',
 
             // Vehicles
-            'vehicle.manage',
-            'vehicle.create',
-            'vehicle.view',
-            'vehicle.edit',
-            'vehicle.delete',
+            'manage.vehicles',
+            'create.vehicles',
+            'edit.vehicles',
+            'delete.vehicles',
+            'view.vehicles',
 
             // Branches
-            'branch.manage', // create, edit, delete, view
-            'branch.create',
-            'branch.view',
-            'branch.edit',
-            'branch.delete',
+            'manage.branches', // create, edit, delete, view
+            'create.branches',
+            'edit.branches',
+            'delete.branches',
+            'view.branches',
 
             // Drivers
-            'driver.manage', // create, edit, delete, view
-            'driver.create',
-            'driver.view',
-            'driver.edit',
-            'driver.delete',
+            'manage.drivers', // create, edit, delete, view
+            'create.drivers',
+            'edit.drivers',
+            'delete.drivers',
+            'view.drivers',
 
             // Companies
-            'company.manage',
-            'company.create',
-            'company.view',
-            'company.edit',
-            'company.delete',
+            'manage.companies',
+            'create.companies',
+            'edit.companies',
+            'delete.companies',
+            'view.companies',
 
             // Vehicle Hires
-            'vehicle_hire.manage', // create, edit, delete, view
-            'vehicle_hire.create',
-            'vehicle_hire.view',
-            'vehicle_hire.edit',
-            'vehicle_hire.delete',
+            'manage.vehicle_hires', // create, edit, delete, view
+            'create.vehicle_hires',
+            'edit.vehicle_hires',
+            'delete.vehicle_hires',
+            'view.vehicle_hires',
 
             // Expenses
-            'expense.manage', // create, edit, delete, view
-            'expense.create',
-            'expense.view',
-            'expense.edit',
-            'expense.delete',
+            'manage.expense', // create, edit, delete, view
+            'create.expense',
+            'edit.expense',
+            'delete.expense',
+            'view.expense',
 
             // Reports (general)
             'report.view', // view any kind of reports
