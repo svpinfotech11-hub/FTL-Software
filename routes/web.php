@@ -303,6 +303,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['permission:view companies'])->get('/vehicle_hires/index', [AddCompanyController::class, 'index'])->name('company.index');
 
+    
     Route::middleware(['permission:manage vehicle hires'])->group(function () {
         Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
         Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
