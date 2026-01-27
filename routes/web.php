@@ -473,6 +473,10 @@ Route::get(
 
 
 });
+});
+});
+});
+});
 
 // Role & Permission management (super admin and tenant owner)
 Route::middleware(['auth', 'role:super_admin|admin'])->group(function () {
