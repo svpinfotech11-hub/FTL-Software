@@ -116,13 +116,25 @@ Route::middleware(['auth'])->group(function () {
     // Route::middleware(['permission:view shipments'])->get('/domestic-shipment/report', [DomesticShipmentController::class, 'report'])->name('domestic.shipment.report');
 
     // Vendor routes with permission checks
-    Route::middleware(['permission:create vendors'])->group(function () {
+    Route::middleware(['permission:manage vendors'])->group(function () {
         Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
         Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendors.store');
         Route::get('/vendors/{id}/edit', [VendorController::class, 'edit'])->name('vendors.edit');
         Route::put('/vendors/{id}', [VendorController::class, 'update'])->name('vendors.update');
         Route::delete('/vendors/{id}', [VendorController::class, 'destroy'])->name('vendors.destroy');
     });
+    Route::middleware(['permission:create vendors'])->group(function () {
+        Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
+        Route::post('/vendors/create', [VendorController::class, 'store'])->name('vendors.store');
+    });
+    Route::middleware(['permission:edit vendors'])->group(function () {
+        Route::get('/vendors/{id}/edit', [VendorController::class, 'edit'])->name('vendors.edit');
+        Route::put('/vendors/{id}', [VendorController::class, 'update'])->name('vendors.update');
+    });
+    Route::middleware(['permission:delete vendors'])->group(function () {
+        Route::delete('/vendors/{id}', [VendorController::class, 'destroy'])->name('vendors.destroy');
+    });
+
     Route::middleware(['permission:view vendors'])->get('/vendors/index', [VendorController::class, 'index'])->name('vendors.index');
 
     // Branch routes (admin only for now)
@@ -130,15 +142,45 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('branches', BranchController::class);
     });
 
+    Route::middleware(['permission:manage branches'])->group(function () {
+        Route::resource('branches', BranchController::class);
+    });
+    Route::middleware(['permission:create branches'])->group(function () {
+        Route::get('/branches/create', [BranchController::class, 'create'])->name('branches.create');
+        Route::post('/branches/store', [BranchController::class, 'store'])->name('branches.store');
+    });
+
+    Route::middleware(['permission:edit branches'])->group(function () {
+        Route::get('/branches/{id}/edit', [BranchController::class, 'edit'])->name('branches.edit');
+        Route::put('/branches/{id}', [BranchController::class, 'update'])->name('branches.update');
+    });
+
+    Route::middleware(['permission:delete branches'])->group(function () {
+        Route::delete('/branches/{id}', [BranchController::class, 'destroy'])->name('branches.destroy');
+    });
+
+    Route::middleware(['permission:view branches'])->get('/branches/index', [BranchController::class, 'index'])->name('branches.index');
+
     // Customer routes with permission checks
-    Route::middleware(['permission:create customers'])->group(function () {
+    Route::middleware(['permission:manage customers'])->group(function () {
         Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
         Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
         Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
         Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
         Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     });
-
+    Route::middleware(['permission:create customers'])->group(function () {
+        Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
+        Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
+    });
+    Route::middleware(['permission:edit customers'])->group(function () {
+        Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+        Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
+    });
+    Route::middleware(['permission:delete customers'])->group(function () {
+        Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    });
+    Route::middleware(['permission:view customers'])->get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
 
     Route::middleware(['permission:vehicle-create'])->group(function () {
         Route::middleware(['permission:view customers'])->get('/customers/index', [CustomerController::class, 'index'])->name('customers.index');
@@ -147,19 +189,73 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('vehicles', VehicleController::class);
         });
         Route::middleware(['permission:view shipments'])->get('/domestic-shipment/index', [DomesticShipmentController::class, 'index'])->name('domestic.shipment.index');
-        Route::resource('drivers', DriverController::class);
-        Route::resource('add-expenses', AddExpenseController::class);
+
+        Route::middleware(['permission:manage drivers'])->group(function () {
+            Route::resource('drivers', DriverController::class);
+        });
+
+        Route::middleware(['permission:create drivers'])->group(function () {
+            Route::get('/drivers/create', [DriverController::class, 'create'])->name('drivers.create');
+            Route::post('/drivers/store', [DriverController::class, 'store'])->name('drivers.store');
+        });
+
+        Route::middleware(['permission:edit drivers'])->group(function () {
+            Route::get('/drivers/{id}/edit', [DriverController::class, 'edit'])->name('drivers.edit');
+            Route::put('/drivers/{id}', [DriverController::class, 'update'])->name('drivers.update');
+        });
+
+        Route::middleware(['permission:delete drivers'])->group(function () {
+            Route::delete('/drivers/{id}', [DriverController::class, 'destroy'])->name('drivers.destroy');
+        });
+
+        Route::middleware(['permission:view drivers'])->get('/drivers/index', [DriverController::class, 'index'])->name('drivers.index');
+
+
+        Route::middleware(['permission:manage expense'])->group(function () {
+            Route::resource('add-expenses', AddExpenseController::class);
+        });
+
+        Route::middleware(['permission:create expense'])->group(function () {
+            Route::get('/add-expenses/create', [AddExpenseController::class, 'create'])->name('add-expenses.create');
+            Route::post('/add-expenses/store', [AddExpenseController::class, 'store'])->name('add-expenses.store');
+        });
+
+        Route::middleware(['permission:edit expense'])->group(function () {
+            Route::get('/add-expenses/{id}/edit', [AddExpenseController::class, 'edit'])->name('add-expenses.edit');
+            Route::put('/add-expenses/{id}', [AddExpenseController::class, 'update'])->name('add-expenses.update');
+        });
+
+        Route::middleware(['permission:delete expense'])->group(function () {
+            Route::delete('/add-expenses/{id}', [AddExpenseController::class, 'destroy'])->name('add-expenses.destroy');
+        });
+
+        Route::middleware(['permission:view add-expenses'])->get('/add-expenses/index', [AddExpenseController::class, 'index'])->name('add-expenses.index');
 
         Route::middleware(['permission:company-create'])->group(function () {
             Route::resource('company', AddCompanyController::class);
         });
 
-        Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
-        Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
-        Route::get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
-        Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
-        Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
-        Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
+        Route::middleware(['permission:manage vehicle_hires'])->group(function () {
+            Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
+            Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
+            Route::get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
+            Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
+            Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
+            Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
+        });
+        Route::middleware(['permission:create vehicle_hires'])->group(function () {
+            Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
+            Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
+        });
+        Route::middleware(['permission:edit vehicle_hires'])->group(function () {
+            Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
+            Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
+        });
+        Route::middleware(['permission:delete vehicle_hires'])->group(function () {
+            Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
+        });
+
+        Route::middleware(['permission:view vehicle_hires'])->get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
 
         Route::post('/domestic/print', [DomesticShipmentController::class, 'print'])
             ->name('domestic.shipment.print');
@@ -172,9 +268,40 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('add-expenses', AddExpenseController::class);
     });
 
-    Route::middleware(['permission:create companies'])->group(function () {
+    Route::middleware(['permission:create expenses'])->group(function () {
+        Route::get('/add-expenses/create', [AddExpenseController::class, 'create'])->name('add-expenses.create');
+        Route::post('/add-expenses/store', [AddExpenseController::class, 'store'])->name('add-expenses.store');
+    });
+
+    Route::middleware(['permission:edit expenses'])->group(function () {
+        Route::get('/add-expenses/{id}/edit', [AddExpenseController::class, 'edit'])->name('add-expenses.edit');
+        Route::put('/add-expenses/{id}', [AddExpenseController::class, 'update'])->name('add-expenses.update');
+    });
+
+    Route::middleware(['permission:delete expenses'])->group(function () {
+        Route::delete('/add-expenses/{id}', [AddExpenseController::class, 'destroy'])->name('add-expenses.destroy');
+    });
+
+    Route::middleware(['permission:view add-expenses'])->get('/add-expenses/index', [AddExpenseController::class, 'index'])->name('add-expenses.index');
+
+
+    Route::middleware(['permission:manage companies'])->group(function () {
         Route::resource('company', AddCompanyController::class);
     });
+
+    Route::middleware(['permission:create companies'])->group(function () {
+        Route::get('/company/create', [AddCompanyController::class, 'create'])->name('company.create');
+        Route::post('/company/store', [AddCompanyController::class, 'store'])->name('company.store');
+    });
+    Route::middleware(['permission:edit companies'])->group(function () {
+        Route::get('/company/{id}/edit', [AddCompanyController::class, 'edit'])->name('company.edit');
+        Route::put('/company/{id}', [AddCompanyController::class, 'update'])->name('company.update');
+    });
+    Route::middleware(['permission:delete companies'])->group(function () {
+        Route::delete('/company/{id}', [AddCompanyController::class, 'destroy'])->name('company.destroy');
+    });
+
+    Route::middleware(['permission:view companies'])->get('/vehicle_hires/index', [AddCompanyController::class, 'index'])->name('company.index');
 
     Route::middleware(['permission:manage vehicle hires'])->group(function () {
         Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
@@ -184,6 +311,20 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
         Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
     });
+
+    Route::middleware(['permission:create vehicle hires'])->group(function () {
+        Route::get('/vehicle_hires/create', [VehicleHireController::class, 'create'])->name('vehicle_hires.create');
+        Route::post('/vehicle_hires/store', [VehicleHireController::class, 'store'])->name('vehicle_hires.store');
+    });
+    Route::middleware(['permission:edit vehicle hires'])->group(function () {
+        Route::get('/vehicle_hires/{id}/edit', [VehicleHireController::class, 'edit'])->name('vehicle_hires.edit');
+        Route::put('/vehicle_hires/{id}', [VehicleHireController::class, 'update'])->name('vehicle_hires.update');
+    });
+    Route::middleware(['permission:delete vehicle hires'])->group(function () {
+        Route::delete('/vehicle_hires/{id}', [VehicleHireController::class, 'destroy'])->name('vehicle_hires.destroy');
+    });
+
+    Route::middleware(['permission:view vehicle hires'])->get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
 });
 
 // Role & Permission management (super admin and tenant owner)
