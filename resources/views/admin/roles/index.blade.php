@@ -153,24 +153,24 @@
         </div>
     </div>
 
-    <!-- Assign Permission to Role -->
+    <!-- Assign Permission to User -->
     <div class="col-md-6">
         <div class="card roles-card">
             <div class="card-header bg-info text-white">
                 <h5 class="card-title mb-0">
                     <i class="bi bi-link me-2"></i>
-                    Assign Permission to Role
+                    Assign Permission to User
                 </h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('roles.permission.assign') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="role_perm_select" class="form-label">Select Role</label>
-                        <select name="role" id="role_perm_select" class="form-select" required>
-                            <option value="">Choose a role...</option>
-                            @foreach($roles as $role)
-                                <option value="{{ $role->name }}">{{ $role->name }}</option>
+                        <label for="user_perm_select" class="form-label">Select User</label>
+                        <select name="user_id" id="user_perm_select" class="form-select" required>
+                            <option value="">Choose a user...</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                             @endforeach
                         </select>
                     </div>
@@ -191,7 +191,7 @@
                             @endif
                         </div>
                         <div class="form-text">
-                            Select one or more permissions to assign to the selected role.
+                            Select one or more permissions to assign to the selected user.
                         </div>
                     </div>
                     <div class="mb-3">

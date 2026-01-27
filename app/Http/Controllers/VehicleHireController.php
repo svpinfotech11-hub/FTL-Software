@@ -20,7 +20,20 @@ class VehicleHireController extends Controller
     }
     public function index()
     {
-     $vehicleHires = VehicleHire::with(['vendor', 'vehicle', 'driver'])->get();
+        $user = auth()->user();
+        $query = VehicleHire::with(['vendor', 'vehicle', 'driver']);
+
+        if ($user->hasRole('super_admin')) {
+            // Super admin sees all vehicle hires
+            $vehicleHires = $query->get();
+        } elseif ($user->hasRole('admin')) {
+            // Admin sees vehicle hires created by themselves and their created users
+            $userIds = \App\Models\User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $vehicleHires = $query->whereIn('user_id', $userIds)->get();
+        } else {
+            // Regular users see only their own vehicle hires
+            $vehicleHires = $query->where('user_id', $user->id)->get();
+        }
 
         return view('vehicle_hires.index', compact('vehicleHires'));
     }

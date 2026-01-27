@@ -18,6 +18,10 @@ class RolePermissionController extends Controller
             $roles = Role::all();
             $permissions = Permission::all();
             $users = User::all();
+        } elseif ($user->hasRole('admin')) {
+            $roles = Role::all();
+            $permissions = Permission::all();
+            $users = User::where('created_by', $user->id)->get();
         } else {
             $roles = Role::where(function($q) use ($user) {
                 $q->whereNull('user_id')->orWhere('user_id', $user->id);
@@ -39,7 +43,7 @@ class RolePermissionController extends Controller
 
         $rules = ['name' => 'required|string'];
 
-        if (!$user->hasRole('super_admin')) {
+        if (!$user->hasRole('super_admin') && !$user->hasRole('admin')) {
             $rules['name'] .= '|unique:roles,name,NULL,id,user_id,' . $user->id;
         } else {
             $rules['name'] .= '|unique:roles,name,NULL,id,user_id,NULL';
@@ -49,7 +53,7 @@ class RolePermissionController extends Controller
 
         $role = Role::create([
             'name' => $request->name,
-            'user_id' => $user->hasRole('super_admin') ? null : $user->id,
+            'user_id' => ($user->hasRole('super_admin') || $user->hasRole('admin')) ? null : $user->id,
         ]);
 
         return redirect()->back()->with('success', 'Role created.');
@@ -61,7 +65,7 @@ class RolePermissionController extends Controller
 
         $rules = ['name' => 'required|string'];
 
-        if (!$user->hasRole('super_admin')) {
+        if (!$user->hasRole('super_admin') && !$user->hasRole('admin')) {
             $rules['name'] .= '|unique:permissions,name,NULL,id,user_id,' . $user->id;
         } else {
             $rules['name'] .= '|unique:permissions,name,NULL,id,user_id,NULL';
@@ -71,7 +75,7 @@ class RolePermissionController extends Controller
 
         $perm = Permission::create([
             'name' => $request->name,
-            'user_id' => $user->hasRole('super_admin') ? null : $user->id,
+            'user_id' => ($user->hasRole('super_admin') || $user->hasRole('admin')) ? null : $user->id,
         ]);
 
         return redirect()->back()->with('success', 'Permission created.');
@@ -91,10 +95,15 @@ class RolePermissionController extends Controller
 
         $roleName = $request->role;
 
-        $role = Role::where('name', $roleName)
-            ->where(function($q) use ($current) {
-                $q->whereNull('user_id')->orWhere('user_id', $current->id);
-            })->first();
+        // Allow admins and super_admins to access all roles
+        if ($current->hasRole('super_admin') || $current->hasRole('admin')) {
+            $role = Role::where('name', $roleName)->first();
+        } else {
+            $role = Role::where('name', $roleName)
+                ->where(function($q) use ($current) {
+                    $q->whereNull('user_id')->orWhere('user_id', $current->id);
+                })->first();
+        }
 
         if (! $role) {
             abort(404, 'Role not found or not permitted');
@@ -108,24 +117,18 @@ class RolePermissionController extends Controller
     public function assignPermissionToRole(Request $request)
     {
         $request->validate([
-            'role' => 'required|string',
+            'user_id' => 'required|integer|exists:users,id',
             'permissions' => 'required|array|min:1',
             'permissions.*' => 'required|string'
         ]);
 
         $current = Auth::user();
 
-        // Find or create role within user's scope
-        $role = Role::where('name', $request->role)
-            ->where(function($q) use ($current) {
-                $q->whereNull('user_id')->orWhere('user_id', $current->id);
-            })->first();
+        $targetUser = User::find($request->user_id);
 
-        if (!$role) {
-            $role = Role::create([
-                'name' => $request->role,
-                'user_id' => $current->hasRole('super_admin') ? null : $current->id,
-            ]);
+        // Check if current user can assign to this user
+        if (!$current->hasRole('super_admin') && $targetUser->created_by !== $current->id) {
+            return redirect()->back()->with('error', 'You can only assign permissions to users you created.');
         }
 
         $assignedPermissions = [];
@@ -133,16 +136,20 @@ class RolePermissionController extends Controller
 
         // Process each selected permission
         foreach ($request->permissions as $permissionName) {
-            // Find or create permission within user's scope
-            $permission = Permission::where('name', $permissionName)
-                ->where(function($q) use ($current) {
-                    $q->whereNull('user_id')->orWhere('user_id', $current->id);
-                })->first();
+            // Allow admins and super_admins to access all permissions
+            if ($current->hasRole('super_admin') || $current->hasRole('admin')) {
+                $permission = Permission::where('name', $permissionName)->first();
+            } else {
+                $permission = Permission::where('name', $permissionName)
+                    ->where(function($q) use ($current) {
+                        $q->whereNull('user_id')->orWhere('user_id', $current->id);
+                    })->first();
+            }
 
             if (!$permission) {
                 $permission = Permission::create([
                     'name' => $permissionName,
-                    'user_id' => $current->hasRole('super_admin') ? null : $current->id,
+                    'user_id' => ($current->hasRole('super_admin') || $current->hasRole('admin')) ? null : $current->id,
                 ]);
                 $createdPermissions[] = $permissionName;
             }
@@ -150,10 +157,10 @@ class RolePermissionController extends Controller
             $assignedPermissions[] = $permission->id;
         }
 
-        // Attach all permissions to role via pivot (syncWithoutDetaching to avoid removing existing ones)
-        $role->permissions()->syncWithoutDetaching($assignedPermissions);
+        // Attach all permissions to user via pivot (syncWithoutDetaching to avoid removing existing ones)
+        $targetUser->permissions()->syncWithoutDetaching($assignedPermissions);
 
-        $message = count($request->permissions) . ' permission(s) assigned to role "' . $request->role . '"';
+        $message = count($request->permissions) . ' permission(s) assigned to user "' . $targetUser->name . '"';
         if (!empty($createdPermissions)) {
             $message .= '. Created new permission(s): ' . implode(', ', $createdPermissions);
         }

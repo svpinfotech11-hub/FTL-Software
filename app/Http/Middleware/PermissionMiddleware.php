@@ -43,6 +43,13 @@ class PermissionMiddleware
             return true;
         }
 
+        // Check direct user permissions
+        foreach ($user->permissions as $userPermission) {
+            if ($userPermission->name === $permission) {
+                return true;
+            }
+        }
+
         // Check user's assigned roles and their permissions
         foreach ($user->roles as $role) {
             foreach ($role->permissions as $userPermission) {
@@ -60,11 +67,23 @@ class PermissionMiddleware
      */
     protected function userHasRole($user, array $roles): bool
     {
+        // If User model provides hasAnyRole, prefer it (handles string `role` fallback)
+        if (method_exists($user, 'hasAnyRole')) {
+            return (bool) $user->hasAnyRole($roles);
+        }
+
+        // Check direct `role` column fallback
+        if (isset($user->role) && in_array($user->role, $roles, true)) {
+            return true;
+        }
+
+        // Finally, check roles relation
         foreach ($user->roles as $role) {
             if (in_array($role->name, $roles)) {
                 return true;
             }
         }
+
         return false;
     }
 }

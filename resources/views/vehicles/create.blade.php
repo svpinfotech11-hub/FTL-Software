@@ -90,7 +90,7 @@
                                     <div class="col-md-4">
                                         <label class="form-label">Vehicle Capacity</label>
                                         <!-- <input type="text" name="vehicle_capacity" -->
-                                        <input type="date" name="vehicle_capacity" value="{{ old('vehicle_capacity') }}" class="form-control"
+                                        <input type="text" name="vehicle_capacity" value="{{ old('vehicle_capacity') }}" class="form-control"
                                             placeholder="e.g. 10 TON">
                                     </div>
 

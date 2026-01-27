@@ -12,9 +12,21 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $customers = Customer::where('user_id', Auth::id())
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+        $user = Auth::user();
+        $query = Customer::query();
+
+        if ($user->hasRole('super_admin')) {
+            // Super admin sees all customers
+            $customers = $query->orderBy('id', 'desc')->paginate(10);
+        } elseif ($user->hasRole('admin')) {
+            // Admin sees customers created by themselves and their created users
+            $userIds = User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $customers = $query->whereIn('user_id', $userIds)->orderBy('id', 'desc')->paginate(10);
+        } else {
+            // Regular users see only their own customers
+            $customers = $query->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
+        }
+
         return view('customers.index', compact('customers'));
     }
 

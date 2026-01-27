@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Role;
+use App\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -58,10 +59,11 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id')
-            ->where(function($q) {
-                $q->whereNull('roles.user_id')
-                  ->orWhere('roles.user_id', $this->created_by);
-            });
+                        ->where(function($q) {
+                                $q->whereNull('roles.user_id')
+                                    ->orWhere('roles.user_id', $this->created_by)
+                                    ->orWhere('roles.user_id', $this->id);
+                        });
     }
 
     public function assignRole($role)
@@ -110,10 +112,20 @@ class User extends Authenticatable
         return $this->roles->pluck('name');
     }
 
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_user', 'user_id', 'permission_id');
+    }
+
     public function hasPermission($permission)
     {
-        // Admin and super_admin have all permissions
-        if (in_array($this->role, ['admin', 'super_admin'])) {
+        // Admin and super_admin have all permissions (check via roles)
+        if ($this->hasAnyRole(['admin', 'super_admin'])) {
+            return true;
+        }
+
+        // Check direct permissions
+        if ($this->permissions->contains('name', $permission)) {
             return true;
         }
 
@@ -131,12 +143,17 @@ class User extends Authenticatable
 
     public function hasAnyPermission($permissions)
     {
-        // Admin and super_admin have all permissions
-        if (in_array($this->role, ['admin', 'super_admin'])) {
+        // Admin and super_admin have all permissions (check via roles)
+        if ($this->hasAnyRole(['admin', 'super_admin'])) {
             return true;
         }
 
         $permissions = is_array($permissions) ? $permissions : [$permissions];
+
+        // Check direct permissions
+        if ($this->permissions->whereIn('name', $permissions)->count() > 0) {
+            return true;
+        }
 
         foreach ($this->roles as $role) {
             foreach ($role->permissions as $userPermission) {
@@ -151,8 +168,8 @@ class User extends Authenticatable
 
     public function hasAllPermissions($permissions)
     {
-        // Admin and super_admin have all permissions
-        if (in_array($this->role, ['admin', 'super_admin'])) {
+        // Admin and super_admin have all permissions (check via roles)
+        if ($this->hasAnyRole(['admin', 'super_admin'])) {
             return true;
         }
 

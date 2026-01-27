@@ -13,12 +13,20 @@ class AddExpenseController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
+        $user = Auth::user();
+        $query = AddExpense::with('driver');
 
-        $expenses = AddExpense::with('driver')
-            ->where('user_id', $userId)
-            ->latest()
-            ->get();
+        if ($user->hasRole('super_admin')) {
+            // Super admin sees all expenses
+            $expenses = $query->latest()->get();
+        } elseif ($user->hasRole('admin')) {
+            // Admin sees expenses created by themselves and their created users
+            $userIds = \App\Models\User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $expenses = $query->whereIn('user_id', $userIds)->latest()->get();
+        } else {
+            // Regular users see only their own expenses
+            $expenses = $query->where('user_id', $user->id)->latest()->get();
+        }
 
         return view('add_expenses.index', compact('expenses'));
     }

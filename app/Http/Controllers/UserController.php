@@ -67,7 +67,17 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('user.create');
+        $user = auth()->user();
+        if ($user->hasRole('super_admin')) {
+            $branches = \App\Models\Branch::all();
+        } elseif ($user->hasRole('admin')) {
+            $userIds = \App\Models\User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $branches = \App\Models\Branch::whereIn('user_id', $userIds)->get();
+        } else {
+            $branches = \App\Models\Branch::where('user_id', $user->id)->get();
+        }
+
+        return view('user.create', compact('branches'));
     }
 
     public function store(Request $request)

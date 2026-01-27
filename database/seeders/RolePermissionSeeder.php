@@ -6,11 +6,21 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        DB::table('permission_role')->truncate();
+        DB::table('role_user')->truncate();
+        Permission::truncate();
+        Role::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         // Roles used in the project
         $roles = [
             'super_admin',
@@ -53,60 +63,71 @@ class RolePermissionSeeder extends Seeder
         // ];
 
         $perms = [
-            // User Management
             'user.create',
-            'user.store',
             'user.view',
             'user.edit',
             'user.delete',
-
-            // Shipments (Domestic)
-            'shipment.create',
+            'user.show',
             'shipment.view',
+            'shipment.create',
             'shipment.edit',
             'shipment.delete',
-            'shipment.report',
             'shipment.print',
-
-            // Vendors
+            'shipment.report',
+            'shipment.show',
             'vendor.create',
-            'vendor.view',
             'vendor.edit',
             'vendor.delete',
-
-            // Customers
+            'vendor.view',
+            'vendor.show',
             'customer.create',
-            'customer.view',
             'customer.edit',
             'customer.delete',
-
-            // Vehicles
+            'customer.view',
+            'customer.show',
             'vehicle.create',
-            'vehicle.view',
             'vehicle.edit',
             'vehicle.delete',
-
-            // Branches
-            'branch.manage', // create, edit, delete, view
-
-            // Drivers
-            'driver.manage', // create, edit, delete, view
-
-            // Companies
+            'vehicle.view',
+            'vehicle.show',
+            'driver.create',
+            'driver.edit',
+            'driver.delete',
+            'driver.view',
+            'driver.show',
+            'expense.create',
+            'expense.edit',
+            'expense.delete',
+            'expense.view',
+            'expense.show',
             'company.create',
-            'company.view',
             'company.edit',
             'company.delete',
-
-            // Vehicle Hires
-            'vehicle_hire.manage', // create, edit, delete, view
-
-            // Expenses
-            'expense.manage', // create, edit, delete, view
-
-            // Reports (general)
-            'report.view', // view any kind of reports
+            'company.view',
+            'company.show',
+            'vehicle_hire.create',
+            'vehicle_hire.edit',
+            'vehicle_hire.delete',
+            'vehicle_hire.view',
+            'vehicle_hire.show',
+            'branch.create',
+            'branch.edit',
+            'branch.delete',
+            'branch.view',
+            'branch.show',
+            'role.create',
+            'role.view',
+            'role.edit',
+            'role.delete',
+            'role.show',
+            'permission.create',
+            'permission.view',
+            'permission.edit',
+            'permission.delete',
+            'permission.show',
+            'view.report'
         ];
+
 
         foreach ($perms as $p) {
             Permission::firstOrCreate(['name' => $p]);
