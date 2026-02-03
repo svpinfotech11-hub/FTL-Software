@@ -69,26 +69,35 @@ class AddExpenseController extends Controller
         // Validate request
         $data = $request->validate([
             'expense_date'    => 'required|date',
-            'expense_type'    => 'required|string|max:255',
+            'expense_type' => 'required|array',
+            'expense_type.*' => 'string|max:255',
             'vehicle_id'      => 'nullable|exists:vehicles,id',
             'driver_id'       => 'nullable|exists:drivers,id',
             'lr_no'           => 'nullable|string|max:255',
             'amount'          => 'required|numeric',
             'description'     => 'nullable|string',
-            'attachment'      => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx',
+            'attachment'      => 'nullable|array',
+            'attachment.*'    => 'file|mimes:jpg,jpeg,png,pdf,doc',
             'paid_by'         => 'nullable|in:Company,Driver,Vendor',
             'vehicle_hire_id' => 'nullable|exists:vehicle_hires,id',
         ]);
 
         // Handle file upload to public folder
-        if ($request->hasFile('attachment')) {
-            $file = $request->file('attachment');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move('uploads/expenses', $filename);
-
-            // Save relative path in DB
-            $data['attachment'] =  $filename;
+        if ($request->has('expense_type')) {
+            $data['expense_type'] = $request->expense_type; // array save
         }
+
+        // Multiple attachments upload
+        if ($request->hasFile('attachment')) {
+            $files = [];
+            foreach ($request->file('attachment') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move('uploads/expenses', $filename);
+                $files[] = $filename;
+            }
+            $data['attachment'] = $files;
+        }
+
 
         // Add authenticated user
         $data['user_id'] = $userId;
@@ -138,30 +147,46 @@ class AddExpenseController extends Controller
         // Validate request
         $data = $request->validate([
             'expense_date'    => 'required|date',
-            'expense_type'    => 'required|string|max:255',
+            'expense_type' => 'required|array',
+            'expense_type.*' => 'string|max:255',
             'vehicle_id'      => 'nullable|exists:vehicles,id',
             'driver_id'       => 'nullable|exists:drivers,id',
             'lr_no'           => 'nullable|string|max:255',
             'amount'          => 'required|numeric',
             'description'     => 'nullable|string',
-            'attachment'      => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx',
+            'attachment'      => 'nullable|array',
+            'attachment.*'    => 'file|mimes:jpg,jpeg,png,pdf,doc',
             'paid_by'         => 'nullable|in:Company,Driver,Vendor',
         ]);
 
-        // Handle file upload to public folder
-        if ($request->hasFile('attachment')) {
-            $file = $request->file('attachment');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move('uploads/expenses', $filename);
+        // Update expense types
+        if ($request->has('expense_type')) {
+            $data['expense_type'] = $request->expense_type;
+        }
 
-            // Delete old attachment if exists
-            if ($expense->attachment && file_exists($expense->attachment)) {
-                unlink($expense->attachment);
+        // Multiple file update
+        if ($request->hasFile('attachment')) {
+
+            // Old files delete
+            if (!empty($expense->attachment)) {
+                foreach ($expense->attachment as $oldFile) {
+                    $path = public_path('uploads/expenses/' . $oldFile);
+                    if (file_exists($path)) {
+                        unlink($path);
+                    }
+                }
             }
 
-            // Save new file path
-            $data['attachment'] =  $filename;
+            $files = [];
+            foreach ($request->file('attachment') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move('uploads/expenses', $filename);
+                $files[] = $filename;
+            }
+
+            $data['attachment'] = $files;
         }
+
 
         // Default paid_by if not sent
         if (empty($data['paid_by'])) {

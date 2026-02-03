@@ -12,6 +12,11 @@ class AddExpense extends Model
     // Table name (optional if it follows Laravel naming conventions)
     protected $table = 'add_expenses';
 
+    protected $casts = [
+        'expense_type' => 'array',
+        'attachment' => 'array',
+    ];
+
     /**
      * Mass assignable fields
      */
@@ -22,11 +27,11 @@ class AddExpense extends Model
         'vendor_id',
         'user_id',
         'expense_date',
-        'expense_type',
         'amount',
         'paid_by',
         'lr_no',
         'description',
+        'expense_type',
         'attachment',
     ];
 

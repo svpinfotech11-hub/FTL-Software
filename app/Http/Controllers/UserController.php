@@ -85,6 +85,7 @@ class UserController extends Controller
             'phone' => 'required|string|max:20',
             'branch_id' => 'required|exists:branches,id',
             'status' => 'required',
+            'user_type' => 'required|string',
         ]);
 
         // Generate random password (you can email it later)
@@ -97,6 +98,7 @@ class UserController extends Controller
             'phone' => $validated['phone'],
             'branch_id' => $validated['branch_id'],
             'status' => $validated['status'],
+            'user_type' => $validated['user_type'],
             'password' => Hash::make($password),
             // Optional nullable fields can be null
             'pan' => $request->pan ?? null,
@@ -151,6 +153,7 @@ class UserController extends Controller
             'country' => 'nullable|string',
             'state'   => 'nullable|string',
             'city'    => 'nullable|string',
+            'user_type' => 'required|string',
         ]);
 
         $user->update([
@@ -161,6 +164,7 @@ class UserController extends Controller
             'country' => $request->country,
             'state'   => $request->state,
             'city'    => $request->city,
+            'user_type' => $request->user_type,
         ]);
 
         $user->save();

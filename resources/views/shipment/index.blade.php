@@ -54,14 +54,30 @@
 
                                     <div class="col-md-2">
                                         <label>From Date</label>
-                                        <input type="date" name="from_date" id="from_date" class="form-control"
-                                            value="{{ request('from_date') }}" placeholder="YYYY-MM-DD">
+                                        <div class="input-group datepicker-group" id="startDatePicker">
+
+                                            <input type="text" name="from_date" class="form-control datepicker"
+                                                placeholder="YYYY-MM-DD" value="{{ request('from_date') }}" data-input>
+
+                                            <span class="input-group-text calendar-icon">
+                                                <i class="bi bi-calendar"></i>
+                                            </span>
+
+                                        </div>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label>To Date</label>
-                                        <input type="date" name="to_date" id="from_date" class="form-control"
-                                            value="{{ request('to_date') }}" placeholder="YYYY-MM-DD">
+                                        <div class="input-group datepicker-group" id="endDatePicker">
+
+                                            <input type="text" name="to_date" class="form-control datepicker"
+                                                placeholder="YYYY-MM-DD" value="{{ request('to_date') }}" data-input>
+
+                                            <span class="input-group-text calendar-icon">
+                                                <i class="bi bi-calendar"></i>
+                                            </span>
+
+                                        </div>
                                     </div>
 
                                     <div class="col-md-4 d-flex align-items-end gap-2">
@@ -252,8 +268,8 @@
             </div>
         </div>
 
-    </div>
-    </div>
+        </div>
+        </div>
 
     </main>
 @endsection
