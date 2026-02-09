@@ -190,6 +190,8 @@
                                 <p class="text-muted mb-0">No permissions available. Create some permissions first.</p>
                             @endif
                         </div>
+
+
                         <div class="form-text">
                             Select one or more permissions to assign to the selected user.
                         </div>
@@ -203,7 +205,9 @@
                             <i class="bi bi-x-circle me-1"></i>
                             Clear All
                         </button>
+
                     </div>
+                    
                     <button type="submit" class="btn btn-info">
                         <i class="bi bi-link me-2"></i>
                         Assign Permissions

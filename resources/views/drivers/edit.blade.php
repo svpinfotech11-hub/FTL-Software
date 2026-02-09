@@ -42,43 +42,66 @@
                                     </div>
                                 @endforeach
 
+                                <!-- Licence Expiry -->
                                 <div class="col-md-4">
-                                    <label>Licence Exp</label>
-                                    <input type="date" name="licence_exp" class="form-control datepicker"
-                                        placeholder="YYYY-MM-DD"
-                                        value="{{ old('licence_exp', optional($driver->licence_exp)->format('Y-m-d')) }}">
+                                    <label class="form-label">Licence Expiry</label>
+                                    <div class="input-group datepicker-group">
+                                        <input type="text" name="licence_exp" class="form-control datepicker"
+                                            placeholder="YYYY-MM-DD"
+                                            value="{{ old('licence_exp', optional($driver->licence_exp)->format('Y-m-d')) }}">
+                                        <span class="input-group-text calendar-icon">
+                                            <i class="bi bi-calendar"></i>
+                                        </span>
+                                    </div>
                                 </div>
 
+                                <!-- Joining Date -->
                                 <div class="col-md-4">
-                                    <label>Joining Date</label>
-                                    <input type="date" name="joining_date" class="form-control datepicker"
-                                        placeholder="YYYY-MM-DD"
-                                        value="{{ old('joining_date', optional($driver->joining_date)->format('Y-m-d')) }}">
+                                    <label class="form-label">Joining Date</label>
+                                    <div class="input-group datepicker-group">
+                                        <input type="text" name="joining_date" class="form-control datepicker"
+                                            placeholder="YYYY-MM-DD"
+                                            value="{{ old('joining_date', optional($driver->joining_date)->format('Y-m-d')) }}">
+                                        <span class="input-group-text calendar-icon">
+                                            <i class="bi bi-calendar"></i>
+                                        </span>
+                                    </div>
                                 </div>
 
+                                <!-- Leaving Date -->
                                 <div class="col-md-4">
-                                    <label>Leaving Date</label>
-                                    <input type="date" name="leaving_date" class="form-control datepicker"
-                                        placeholder="YYYY-MM-DD"
-                                        value="{{ old('leaving_date', optional($driver->leaving_date)->format('Y-m-d')) }}">
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label>Address</label>
-                                    <textarea name="address" class="form-control">{{ old('address', $driver->address) }}</textarea>
+                                    <label class="form-label">Leaving Date</label>
+                                    <div class="input-group datepicker-group">
+                                        <input type="text" name="leaving_date" class="form-control datepicker"
+                                            placeholder="YYYY-MM-DD"
+                                            value="{{ old('leaving_date', optional($driver->leaving_date)->format('Y-m-d')) }}">
+                                        <span class="input-group-text calendar-icon">
+                                            <i class="bi bi-calendar"></i>
+                                        </span>
+                                    </div>
                                 </div>
 
                             </div>
+
                         </div>
 
-                        <div class="card-footer text-end">
-                            <a href="{{ route('drivers.index') }}" class="btn btn-outline-secondary">Back</a>
-                            <button class="btn btn-primary">Update Driver</button>
+
+                        <div class="col-md-12">
+                            <label>Address</label>
+                            <textarea name="address" class="form-control">{{ old('address', $driver->address) }}</textarea>
                         </div>
 
-                    </form>
                 </div>
             </div>
+
+            <div class="card-footer text-end">
+                <a href="{{ route('drivers.index') }}" class="btn btn-outline-secondary">Back</a>
+                <button class="btn btn-primary">Update Driver</button>
+            </div>
+
+            </form>
+        </div>
+        </div>
         </div>
     </main>
 @endsection

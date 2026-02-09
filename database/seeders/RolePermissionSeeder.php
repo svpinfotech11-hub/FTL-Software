@@ -67,6 +67,74 @@ class RolePermissionSeeder extends Seeder
             'user.view',
             'user.edit',
             'user.delete',
+
+
+            // Shipments (Domestic)
+            'manage.shipments',
+            'create.shipments',
+            'edit.shipments',
+            'delete.shipments',
+            'view shipments',
+            'pod.shipments',
+
+            // Vendors
+            'manage.vendors',
+            'create.vendors',
+            'edit.vendors',
+            'delete.vendors',
+            'view.vendors',
+
+            // Customers
+            'manage.customers',
+            'create.customers',
+            'edit.customers',
+            'delete.customers',
+            'view.customers',
+
+            // Vehicles
+            'manage.vehicles',
+            'create.vehicles',
+            'edit.vehicles',
+            'delete.vehicles',
+            'view.vehicles',
+
+            // Branches
+            'manage.branches', // create, edit, delete, view
+            'create.branches',
+            'edit.branches',
+            'delete.branches',
+            'view.branches',
+
+            // Drivers
+            'manage.drivers', // create, edit, delete, view
+            'create.drivers',
+            'edit.drivers',
+            'delete.drivers',
+            'view.drivers',
+
+            // Companies
+            'manage.companies',
+            'create.companies',
+            'edit.companies',
+            'delete.companies',
+            'view.companies',
+
+            // Vehicle Hires
+            'manage.vehicle_hires', // create, edit, delete, view
+            'create.vehicle_hires',
+            'edit.vehicle_hires',
+            'delete.vehicle_hires',
+            'view.vehicle_hires',
+
+            // Expenses
+            'manage.expense', // create, edit, delete, view
+            'create.expense',
+            'edit.expense',
+            'delete.expense',
+            'view.expense',
+
+            // Reports (general)
+            'report.view', // view any kind of reports
             'user.show',
             'shipment.view',
             'shipment.create',
@@ -126,6 +194,7 @@ class RolePermissionSeeder extends Seeder
             'permission.delete',
             'permission.show',
             'view.report'
+
         ];
 
 

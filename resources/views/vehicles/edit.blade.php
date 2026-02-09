@@ -70,19 +70,28 @@
                                         <!-- PUC Date -->
                                         <div class="col-md-4">
                                             <label class="form-label">PUC Date</label>
-                                            <input type="text" name="vehicle_puc_date" class="form-control datepicker"
-                                                placeholder="YYYY-MM-DD"
-                                                value="{{ old('vehicle_puc_date', optional($vehicle->vehicle_puc_date)->format('Y-m-d')) }}">
+                                            <div class="input-group datepicker-group">
+                                                <input type="text" name="vehicle_puc_date"
+                                                    class="form-control datepicker" placeholder="YYYY-MM-DD"
+                                                    value="{{ old('vehicle_puc_date', optional($vehicle->vehicle_puc_date)->format('Y-m-d')) }}">
+                                                <span class="input-group-text calendar-icon">
+                                                    <i class="bi bi-calendar"></i>
+                                                </span>
+                                            </div>
                                         </div>
 
                                         <!-- Fitness Exp Date -->
                                         <div class="col-md-4">
                                             <label class="form-label">Fitness Exp Date</label>
-                                            <input type="text" name="vehicle_fitness_exp_date"
-                                                class="form-control datepicker" placeholder="YYYY-MM-DD"
-                                                value="{{ old('vehicle_fitness_exp_date', optional($vehicle->vehicle_fitness_exp_date)->format('Y-m-d')) }}">
+                                            <div class="input-group datepicker-group">
+                                                <input type="text" name="vehicle_fitness_exp_date"
+                                                    class="form-control datepicker" placeholder="YYYY-MM-DD"
+                                                    value="{{ old('vehicle_fitness_exp_date', optional($vehicle->vehicle_fitness_exp_date)->format('Y-m-d')) }}">
+                                                <span class="input-group-text calendar-icon">
+                                                    <i class="bi bi-calendar"></i>
+                                                </span>
+                                            </div>
                                         </div>
-
                                     </div>
 
                                     <div class="row g-3 mt-3">
@@ -90,17 +99,27 @@
                                         <!-- Permit -->
                                         <div class="col-md-4">
                                             <label class="form-label">Permit Renewal Date</label>
-                                            <input type="text" name="vehicle_permit_renewal_date"
-                                                class="form-control datepicker" placeholder="YYYY-MM-DD"
-                                                value="{{ old('vehicle_permit_renewal_date', optional($vehicle->vehicle_permit_renewal_date)->format('Y-m-d')) }}">
+                                            <div class="input-group datepicker-group">
+                                                <input type="text" name="vehicle_permit_renewal_date"
+                                                    class="form-control datepicker" placeholder="YYYY-MM-DD"
+                                                    value="{{ old('vehicle_permit_renewal_date', optional($vehicle->vehicle_permit_renewal_date)->format('Y-m-d')) }}">
+                                                <span class="input-group-text calendar-icon">
+                                                    <i class="bi bi-calendar"></i>
+                                                </span>
+                                            </div>
                                         </div>
 
-                                        <!-- Insurance -->
+                                        <!-- Insurance Renewal Date -->
                                         <div class="col-md-4">
                                             <label class="form-label">Insurance Renewal Date</label>
-                                            <input type="text" name="vehicle_insurance_renew_date"
-                                                class="form-control datepicker" placeholder="YYYY-MM-DD"
-                                                value="{{ old('vehicle_insurance_renew_date', optional($vehicle->vehicle_insurance_renew_date)->format('Y-m-d')) }}">
+                                            <div class="input-group datepicker-group">
+                                                <input type="text" name="vehicle_insurance_renew_date"
+                                                    class="form-control datepicker" placeholder="YYYY-MM-DD"
+                                                    value="{{ old('vehicle_insurance_renew_date', optional($vehicle->vehicle_insurance_renew_date)->format('Y-m-d')) }}">
+                                                <span class="input-group-text calendar-icon">
+                                                    <i class="bi bi-calendar"></i>
+                                                </span>
+                                            </div>
                                         </div>
 
                                         <!-- Capacity -->

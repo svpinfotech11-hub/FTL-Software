@@ -29,15 +29,25 @@
                     <div class="card mb-3">
                         <div class="card-header fw-bold">Shipment Info</div>
                         <div class="card-body">
-
-                            <div class="row mb-2">
-                                <label class="col-md-4">Date *</label>
+                            <div class="row mb-2 align-items-center">
+                                <label class="col-md-4 col-form-label">
+                                    Date & Time <span class="text-danger">*</span>
+                                </label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="shipment_date" name="shipment_date"
-                                        value="{{ $shipment->shipment_date }}">
+                                    <div class="input-group datepicker-group" id="shipmentDatePicker">
+
+                                        <input type="text" class="form-control datetimepicker" name="shipment_date"
+                                            placeholder="YYYY-MM-DD HH:mm"
+                                            value="{{ old('shipment_date', \Carbon\Carbon::parse($shipment->shipment_date)->format('Y-m-d H:i')) }}"
+                                            data-input>
+
+                                        <span class="input-group-text calendar-icon">
+                                            <i class="bi bi-calendar"></i>
+                                        </span>
+
+                                    </div>
                                 </div>
                             </div>
-
                             <div class="row mb-2">
                                 <label class="col-md-4">Courier *</label>
                                 <div class="col-md-8">
@@ -91,7 +101,7 @@
                                 </div>
                             </div>
 
-                           
+
 
                             <div class="row mb-2">
                                 <label class="col-md-4">Description</label>
@@ -100,15 +110,17 @@
                                 </div>
                             </div>
 
-                          
+
 
                             <div class="row mb-2">
                                 <label class="col-md-4">Vehicle Type *</label>
                                 <div class="col-md-8">
                                     <select class="form-control form-select" name="vehicle_type" id="vehicle_type">
                                         <option value="">Select Value</option>
-                                        <option value="own" {{ $shipment->vehicle_type == 'own' ? 'selected' : '' }}>Own</option>
-                                        <option value="rented" {{ $shipment->vehicle_type == 'rented' ? 'selected' : '' }}>Rented</option>
+                                        <option value="own" {{ $shipment->vehicle_type == 'own' ? 'selected' : '' }}>Own
+                                        </option>
+                                        <option value="rented" {{ $shipment->vehicle_type == 'rented' ? 'selected' : '' }}>
+                                            Rented</option>
                                     </select>
                                 </div>
                             </div>
@@ -117,21 +129,24 @@
                                 <div class="row mb-2">
                                     <label class="col-md-4">Driver Name</label>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" name="driver_name" value="{{ $shipment->driver_name }}">
+                                        <input type="text" class="form-control" name="driver_name"
+                                            value="{{ $shipment->driver_name }}">
                                     </div>
                                 </div>
 
                                 <div class="row mb-2">
                                     <label class="col-md-4">Driver Number</label>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" name="driver_number" value="{{ $shipment->driver_number }}">
+                                        <input type="text" class="form-control" name="driver_number"
+                                            value="{{ $shipment->driver_number }}">
                                     </div>
                                 </div>
 
                                 <div class="row mb-2">
                                     <label class="col-md-4">Vehicle Number</label>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" name="vehicle_number" value="{{ $shipment->vehicle_number }}">
+                                        <input type="text" class="form-control" name="vehicle_number"
+                                            value="{{ $shipment->vehicle_number }}">
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +158,9 @@
                                         <select class="form-control" name="vendor_id" id="vendor_id">
                                             <option value="">Select Vendor</option>
                                             @foreach ($vendors as $vendor)
-                                            <option value="{{ $vendor->id }}" {{ $shipment->vehicleHire && $shipment->vehicleHire->vendor_id == $vendor->id ? 'selected' : '' }}>{{ $vendor->vendor_name }}</option>
+                                                <option value="{{ $vendor->id }}"
+                                                    {{ $shipment->vehicleHire && $shipment->vehicleHire->vendor_id == $vendor->id ? 'selected' : '' }}>
+                                                    {{ $vendor->vendor_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -155,13 +172,14 @@
                                         <select class="form-control" name="vehicle_hire_id" id="vehicle_hire_id">
                                             <option value="">Select Hire Register</option>
                                             @foreach ($vehicleHires as $hire)
-                                            <option value="{{ $hire->id }}"
-                                                {{ $shipment->vehicle_hire_id == $hire->id ? 'selected' : '' }}
-                                                data-vendor="{{ $hire->vendor_id }}"
-                                                data-vehicle="{{ $hire->vehicle_no }}"
-                                                data-driver="{{ $hire->driver_details }}">
-                                                {{ $hire->hire_register_id }} - {{ $hire->vendor_name }} - {{ $hire->vehicle_no }}
-                                            </option>
+                                                <option value="{{ $hire->id }}"
+                                                    {{ $shipment->vehicle_hire_id == $hire->id ? 'selected' : '' }}
+                                                    data-vendor="{{ $hire->vendor_id }}"
+                                                    data-vehicle="{{ $hire->vehicle_no }}"
+                                                    data-driver="{{ $hire->driver_details }}">
+                                                    {{ $hire->hire_register_id }} - {{ $hire->vendor_name }} -
+                                                    {{ $hire->vehicle_no }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -179,25 +197,23 @@
                         <div class="card-body">
 
 
-                        <div class="row mb-2 align-items-center">
-                            <label class="col-md-4 col-form-label">Customer</label>
-                            <div class="col-md-8">
-                            <select class="form-control form-select"
-                                name="customer_id"
-                                id="customerSelect">
+                            <div class="row mb-2 align-items-center">
+                                <label class="col-md-4 col-form-label">Customer</label>
+                                <div class="col-md-8">
+                                    <select class="form-control form-select" name="customer_id" id="customerSelect">
 
-                            <option value="">Select Customer</option>
+                                        <option value="">Select Customer</option>
 
-                            @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}"
-                                    {{ isset($shipment) && $shipment->customer_id == $customer->id ? 'selected' : '' }}>
-                                    {{ $customer->customer_name }}
-                                </option>
-                            @endforeach
-                        </select>
+                                        @foreach ($customers as $customer)
+                                            <option value="{{ $customer->id }}"
+                                                {{ isset($shipment) && $shipment->customer_id == $customer->id ? 'selected' : '' }}>
+                                                {{ $customer->customer_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
 
+                                </div>
                             </div>
-                        </div>
 
                             <!-- Select Consigner -->
                             <div class="row mb-2 align-items-center">
@@ -238,30 +254,32 @@
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">Pincode<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="consignerPincode" name="consigner_pincode"
-                                        value="{{ $shipment->consigner->pincode }}">
+                                    <input type="text" class="form-control" id="consignerPincode"
+                                        name="consigner_pincode" value="{{ $shipment->consigner->pincode }}">
                                 </div>
                             </div>
 
                             <!-- State -->
-                           <div class="row mb-2 align-items-center">
-                            <label class="col-md-4 col-form-label">
-                                State <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-md-8">
-                               
-                               <input type="text" id="consigner_state" name="consigner_state" value="{{ $shipment->consigner->state }}" class="form-control">
-                            </div>
-                        </div>
+                            <div class="row mb-2 align-items-center">
+                                <label class="col-md-4 col-form-label">
+                                    State <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-8">
 
-                          <div class="row mb-2 align-items-center">
-                            <label class="col-md-4 col-form-label">
-                                City <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-md-8">
-                               <input type="text" id="consigner_city" name="consigner_city" value="{{ $shipment->consigner->city }}" class="form-control">
+                                    <input type="text" id="consigner_state" name="consigner_state"
+                                        value="{{ $shipment->consigner->state }}" class="form-control">
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="row mb-2 align-items-center">
+                                <label class="col-md-4 col-form-label">
+                                    City <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-8">
+                                    <input type="text" id="consigner_city" name="consigner_city"
+                                        value="{{ $shipment->consigner->city }}" class="form-control">
+                                </div>
+                            </div>
 
                             <!-- Contact -->
                             <div class="row mb-2 align-items-center">
@@ -278,23 +296,31 @@
                                 <div class="col-md-8">
                                     <select class="form-control form-select" name="coll_type" id="coll_type">
                                         <option>-Select-</option>
-                                        <option {{ $shipment->consigner && $shipment->consigner->coll_type == 'DOOR COLLATION' ? 'selected' : '' }}>DOOR COLLATION</option>
-                                        <option {{ $shipment->consigner && $shipment->consigner->coll_type == 'GODOWN COLLATION' ? 'selected' : '' }}>GODOWN COLLATION</option>
+                                        <option
+                                            {{ $shipment->consigner && $shipment->consigner->coll_type == 'DOOR COLLATION' ? 'selected' : '' }}>
+                                            DOOR COLLATION</option>
+                                        <option
+                                            {{ $shipment->consigner && $shipment->consigner->coll_type == 'GODOWN COLLATION' ? 'selected' : '' }}>
+                                            GODOWN COLLATION</option>
                                     </select>
                                 </div>
                             </div>
 
-                        <!-- Delivery Type -->
-                        <div class="row mb-2 align-items-center">
-                            <label class="col-md-4 col-form-label">Delivery Type</label>
-                            <div class="col-md-8">
-                                <select class="form-control form-select" name="delivery_type" id="delivery_type">
-                                    <option>-Select-</option>
-                                    <option {{ $shipment->consigner && $shipment->consigner->delivery_type == 'DOOR DELIVERY' ? 'selected' : '' }}>DOOR DELIVERY</option>
-                                    <option {{ $shipment->consigner && $shipment->consigner->delivery_type == 'GODOWN DELIVERY' ? 'selected' : '' }}>GODOWN DELIVERY</option>
-                                </select>
+                            <!-- Delivery Type -->
+                            <div class="row mb-2 align-items-center">
+                                <label class="col-md-4 col-form-label">Delivery Type</label>
+                                <div class="col-md-8">
+                                    <select class="form-control form-select" name="delivery_type" id="delivery_type">
+                                        <option>-Select-</option>
+                                        <option
+                                            {{ $shipment->consigner && $shipment->consigner->delivery_type == 'DOOR DELIVERY' ? 'selected' : '' }}>
+                                            DOOR DELIVERY</option>
+                                        <option
+                                            {{ $shipment->consigner && $shipment->consigner->delivery_type == 'GODOWN DELIVERY' ? 'selected' : '' }}>
+                                            GODOWN DELIVERY</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
                         </div>
                     </div>
@@ -353,8 +379,8 @@
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">Pincode<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="consigneePincode" name="consignee_pincode"
-                                        value="{{ $shipment->consignee->pincode }}">
+                                    <input type="text" class="form-control" id="consigneePincode"
+                                        name="consignee_pincode" value="{{ $shipment->consignee->pincode }}">
                                 </div>
                             </div>
 
@@ -362,8 +388,9 @@
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">State<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                 
-                                <input type="text" id="consignee_state" name="consigneestate" value="{{ $shipment->consignee->state }}" class="form-control" readonly>
+
+                                    <input type="text" id="consignee_state" name="consigneestate"
+                                        value="{{ $shipment->consignee->state }}" class="form-control" readonly>
                                 </div>
                             </div>
 
@@ -371,9 +398,10 @@
                             <div class="row mb-2 align-items-center">
                                 <label class="col-md-4 col-form-label">City<span class="text-danger">*</span></label>
                                 <div class="col-md-8">
-                                <input type="text" id="consignee_city" name="consignee_city" value="{{ $shipment->consignee->city }}" class="form-control" readonly>
+                                    <input type="text" id="consignee_city" name="consignee_city"
+                                        value="{{ $shipment->consignee->city }}" class="form-control" readonly>
                                 </div>
-                            
+
                             </div>
 
                             <!-- Zone -->
@@ -507,8 +535,8 @@
                                     Rate<span class="text-danger">*</span>
                                 </label>
                                 <div class="col-md-8">
-                                    <input type="number" step="0.01" class="form-control" name="rate" placeholder="Enter rate"
-                                        value="{{ old('rate', $shipment->rate) }}">
+                                    <input type="number" step="0.01" class="form-control" name="rate"
+                                        placeholder="Enter rate" value="{{ old('rate', $shipment->rate) }}">
                                 </div>
                             </div>
 
@@ -525,37 +553,36 @@
 
                                 <div class="col-md-6">
                                     @foreach ([
-                                'freight' => 'Freight',
-                                'door_collection' => 'Door Coll',
-                                'insurance' => 'Insurance',
-                                'awb_charge' => 'AWB Ch.',
-                                'hamali' => 'Hamali',
-                                'godown_collection' => 'Godown Coll Ch',
-                                'eway_charge' => 'Eway Ch.',
-                                'fuel_surcharge' => 'Fuel Surcharge',
-                            ] as $name => $label)
-                                        
-                            <div class="row mb-2 align-items-center">
-                                    <label class="col-md-6 col-form-label">{{ $label }}</label>
-                                    <div class="col-md-6">
-                                        <input type="number" step="0.01" class="form-control charge-input"
-                                            name="{{ $name }}"
-                                            value="{{ old($name, $shipment->$name) }}">
-                                    </div>
-                                </div>
-                            @endforeach
+            'freight' => 'Freight',
+            'door_collection' => 'Door Coll',
+            'insurance' => 'Insurance',
+            'awb_charge' => 'AWB Ch.',
+            'hamali' => 'Hamali',
+            'godown_collection' => 'Godown Coll Ch',
+            'eway_charge' => 'Eway Ch.',
+            'fuel_surcharge' => 'Fuel Surcharge',
+        ] as $name => $label)
+                                        <div class="row mb-2 align-items-center">
+                                            <label class="col-md-6 col-form-label">{{ $label }}</label>
+                                            <div class="col-md-6">
+                                                <input type="number" step="0.01" class="form-control charge-input"
+                                                    name="{{ $name }}"
+                                                    value="{{ old($name, $shipment->$name) }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
 
                                 <div class="col-md-6">
                                     @foreach ([
-                                        'handling_charge' => 'Handling Charge',
-                                        'door_delivery' => 'Door Delivery',
-                                        'cod' => 'COD',
-                                        'other_charge' => 'Other Ch.',
-                                        'appt_charge' => 'Appt Ch.',
-                                        'godown_delivery' => 'Godown Del Ch',
-                                        'fov_charge' => 'Fov Charges',
-                                    ] as $name => $label)
+            'handling_charge' => 'Handling Charge',
+            'door_delivery' => 'Door Delivery',
+            'cod' => 'COD',
+            'other_charge' => 'Other Ch.',
+            'appt_charge' => 'Appt Ch.',
+            'godown_delivery' => 'Godown Del Ch',
+            'fov_charge' => 'Fov Charges',
+        ] as $name => $label)
                                         <div class="row mb-2 align-items-center">
                                             <label class="col-md-6 col-form-label">{{ $label }}</label>
                                             <div class="col-md-6">
@@ -653,7 +680,8 @@
 
         function calculateCharges() {
             // Calculate freight = chargeable_weight * rate
-            const chargeableWeight = parseFloat(document.querySelector('input[name="chargeable_weight"]').value) || 0;
+            const chargeableWeight = parseFloat(document.querySelector('input[name="chargeable_weight"]')
+                .value) || 0;
             const rate = parseInt(document.querySelector('input[name="rate"]').value) || 0;
             const freight = chargeableWeight * rate;
             console.log('Chargeable Weight:', chargeableWeight);
@@ -708,97 +736,96 @@
 
 
 <script>
-$(document).ready(function () {
+    $(document).ready(function() {
 
-    $('#consignerPincode').on('keyup', function () {
+        $('#consignerPincode').on('keyup', function() {
 
-        let pincode = $(this).val();
+            let pincode = $(this).val();
 
-        if (pincode.length === 6) {
-            $.get('/get-location/' + pincode, function (res) {
+            if (pincode.length === 6) {
+                $.get('/get-location/' + pincode, function(res) {
 
-                // ✅ Set consigner state & city
-                $('#consigner_state').val(res.state);
-                $('#consigner_city').val(res.city);
+                    // ✅ Set consigner state & city
+                    $('#consigner_state').val(res.state);
+                    $('#consigner_city').val(res.city);
 
-            }).fail(function () {
-                alert('Invalid Pincode');
-            });
-        }
+                }).fail(function() {
+                    alert('Invalid Pincode');
+                });
+            }
+        });
+
     });
-
-});
 </script>
 
 
 <script>
-$(document).ready(function () {
+    $(document).ready(function() {
 
-    $('#consigneePincode').on('keyup', function () {
+        $('#consigneePincode').on('keyup', function() {
 
-        let pincode = $(this).val();
+            let pincode = $(this).val();
 
-        if (pincode.length === 6) {
-            $.get('/get-location/' + pincode, function (res) {
+            if (pincode.length === 6) {
+                $.get('/get-location/' + pincode, function(res) {
 
-                // ✅ Set consigner state & city
-                $('#consignee_state').val(res.state);
-                $('#consignee_city').val(res.city);
+                    // ✅ Set consigner state & city
+                    $('#consignee_state').val(res.state);
+                    $('#consignee_city').val(res.city);
 
-            }).fail(function () {
-                alert('Invalid Pincode');
-            });
-        }
+                }).fail(function() {
+                    alert('Invalid Pincode');
+                });
+            }
+        });
+
     });
-
-});
 </script>
 
 <script>
-$(document).ready(function() {
-    // Vehicle Type Toggle
-    $("#vehicle_type").on("change", function() {
-        var vehicleType = $(this).val();
-        
-        if (vehicleType === "own") {
-            $("#ownFields").removeClass("d-none");
-            $("#rentedFields").addClass("d-none");
-        } else if (vehicleType === "rented") {
-            $("#rentedFields").removeClass("d-none");
-            $("#ownFields").addClass("d-none");
-        } else {
-            $("#ownFields").addClass("d-none");
-            $("#rentedFields").addClass("d-none");
-        }
-    });
-    
-    // Vendor Change - Filter Hire Register
-    $("#vendor_id").on("change", function() {
-        var selectedVendorId = $(this).val();
-        var hireSelect = $("#vehicle_hire_id");
-        
-        if (selectedVendorId) {
-            hireSelect.find("option").each(function() {
-                var vendorId = $(this).data("vendor");
-                if ($(this).val() === "" || vendorId == selectedVendorId) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-            hireSelect.val("");
-        } else {
-            hireSelect.find("option").show();
-            hireSelect.val("");
-        }
-    });
-    
-    // Hire Register Change - Update Fields
-    $("#vehicle_hire_id").on("change", function() {
-        var selectedOption = $(this).find("option:selected");
-        var vendorId = selectedOption.data("vendor");
-        $("#vendor_id").val(vendorId);
-    });
-});
-</script>
+    $(document).ready(function() {
+        // Vehicle Type Toggle
+        $("#vehicle_type").on("change", function() {
+            var vehicleType = $(this).val();
 
+            if (vehicleType === "own") {
+                $("#ownFields").removeClass("d-none");
+                $("#rentedFields").addClass("d-none");
+            } else if (vehicleType === "rented") {
+                $("#rentedFields").removeClass("d-none");
+                $("#ownFields").addClass("d-none");
+            } else {
+                $("#ownFields").addClass("d-none");
+                $("#rentedFields").addClass("d-none");
+            }
+        });
+
+        // Vendor Change - Filter Hire Register
+        $("#vendor_id").on("change", function() {
+            var selectedVendorId = $(this).val();
+            var hireSelect = $("#vehicle_hire_id");
+
+            if (selectedVendorId) {
+                hireSelect.find("option").each(function() {
+                    var vendorId = $(this).data("vendor");
+                    if ($(this).val() === "" || vendorId == selectedVendorId) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                hireSelect.val("");
+            } else {
+                hireSelect.find("option").show();
+                hireSelect.val("");
+            }
+        });
+
+        // Hire Register Change - Update Fields
+        $("#vehicle_hire_id").on("change", function() {
+            var selectedOption = $(this).find("option:selected");
+            var vendorId = selectedOption.data("vendor");
+            $("#vendor_id").val(vendorId);
+        });
+    });
+</script>

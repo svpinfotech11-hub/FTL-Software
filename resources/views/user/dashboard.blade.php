@@ -170,45 +170,13 @@
                                 <p>Total Reports</p>
                             </div>
                             <i class="bi bi-bar-chart-fill small-box-icon"></i>
-                            <a href="{{ route('domestic.shipment.reports') }}" class="small-box-footer link-dark">More info</a>
+                            <a href="{{ route('domestic.shipment.reports') }}" class="small-box-footer link-dark">More
+                                info</a>
                         </div>
                     </div>
 
                 </div>
-                @if (auth()->user()->role === 'admin')
-                    <h3>Admin Users</h3>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($adminUsers as $admin)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $admin->name }}</td>
-                                    <td>{{ $admin->email }}</td>
-                                    <td>
-                                        <form action="{{ route('users.delete', $admin->id) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete this admin?');">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @endif
-
+                
                 <!--end::Row-->
                 <!--begin::Roles & Permissions Row-->
                 <div class="row">
@@ -295,7 +263,8 @@
                                                 @endphp
                                                 @if ($recentRoles->count() > 0)
                                                     @foreach ($recentRoles as $role)
-                                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center mb-2">
                                                             <span>{{ $role->name }}</span>
                                                             <small
                                                                 class="text-muted">{{ $role->created_at->diffForHumans() }}</small>

@@ -56,7 +56,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($branches as $index => $branch)
+                                            @foreach ($branches as $index => $branch)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $branch->branch_name }}</td>
@@ -82,9 +82,8 @@
                                                             </button>
                                                         </form>
                                                 </tr>
-                                            @empty
-                                               
-                                            @endforelse
+                                            @endforeach
+
                                         </tbody>
                                     </table>
                                 </div>

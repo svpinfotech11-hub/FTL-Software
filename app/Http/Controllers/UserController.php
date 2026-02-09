@@ -24,16 +24,10 @@ use App\Models\VehicleHire;
 
 class UserController extends Controller
 {
-    // public function dashboard()
-    // {
-    //     $userId = auth()->id();
-    //     return view('user.dashboard', compact('userId'));
-    // }
-
     public function dashboard()
     {
         $userId = auth()->id();
-        $user = auth()->user();
+        $user   = auth()->user();
 
         $data = [
             'usersCount'        => User::where('created_by', $userId)->count(),
@@ -55,6 +49,7 @@ class UserController extends Controller
 
         return view('user.dashboard', $data);
     }
+
 
     public function index()
     {
@@ -90,6 +85,7 @@ class UserController extends Controller
             'phone' => 'required|string|max:20',
             'branch_id' => 'required|exists:branches,id',
             'status' => 'required',
+            'user_type' => 'required|string',
         ]);
 
         // Generate random password (you can email it later)
@@ -102,6 +98,7 @@ class UserController extends Controller
             'phone' => $validated['phone'],
             'branch_id' => $validated['branch_id'],
             'status' => $validated['status'],
+            'user_type' => $validated['user_type'],
             'password' => Hash::make($password),
             // Optional nullable fields can be null
             'pan' => $request->pan ?? null,
@@ -156,6 +153,7 @@ class UserController extends Controller
             'country' => 'nullable|string',
             'state'   => 'nullable|string',
             'city'    => 'nullable|string',
+            'user_type' => 'required|string',
         ]);
 
         $user->update([
@@ -166,6 +164,7 @@ class UserController extends Controller
             'country' => $request->country,
             'state'   => $request->state,
             'city'    => $request->city,
+            'user_type' => $request->user_type,
         ]);
 
         $user->save();
@@ -190,17 +189,5 @@ class UserController extends Controller
         $user->save();
 
         return back()->with('success', 'Password updated successfully');
-    }
-
-    public function delete($id)
-    {
-        $user = User::findOrFail($id);
-
-        if ($user->role === 'admin') {
-            $user->delete();
-            return redirect()->back()->with('success', 'Admin deleted successfully!');
-        }
-
-        return redirect()->back()->with('error', 'You cannot delete this user!');
     }
 }

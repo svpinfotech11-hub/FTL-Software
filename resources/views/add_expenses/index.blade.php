@@ -36,7 +36,11 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $expense->expense_date }}</td>
                                         <td>{{ $expense->lr_no }}</td>
-                                        <td>{{ $expense->expense_type }}</td>
+                                        <td>
+                                            @if ($expense->expense_type)
+                                                {{ implode(', ', $expense->expense_type) }}
+                                            @endif
+                                        </td>
                                         <td>{{ $expense->amount }}</td>
                                         <td>
                                             <a href="{{ route('add-expenses.edit', $expense->id) }}"

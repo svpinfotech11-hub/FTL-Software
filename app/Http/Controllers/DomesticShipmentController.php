@@ -9,6 +9,7 @@ use App\Models\Consignee;
 use App\Models\Consigner;
 use App\Models\VehicleHire;
 use Illuminate\Http\Request;;
+
 use Illuminate\Validation\Rule;
 use App\Models\DomesticShipment;
 use App\Models\User;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\DomesticShipmentReportExport;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DomesticShipmentController extends Controller
@@ -346,12 +348,12 @@ class DomesticShipmentController extends Controller
             ->where('id', '!=', $id) // Exclude current shipment
             ->pluck('vehicle_hire_id')
             ->toArray();
-        
+
         $vehicleHires = VehicleHire::with(['vendor', 'vehicle', 'driver'])
             ->where('user_id', $userId)
-            ->where(function($query) use ($usedVehicleHireIds, $shipment) {
+            ->where(function ($query) use ($usedVehicleHireIds, $shipment) {
                 $query->whereNotIn('id', $usedVehicleHireIds)
-                      ->orWhere('id', $shipment->vehicle_hire_id); // Include currently assigned hire
+                    ->orWhere('id', $shipment->vehicle_hire_id); // Include currently assigned hire
             })
             ->get();
 
@@ -607,18 +609,18 @@ class DomesticShipmentController extends Controller
     //     // Calculate profit/loss for each shipment
     //     $shipments->transform(function ($shipment) {
     //         $purchaseCost = 0;
-            
+
     //         // Add vehicle hire costs if rented (this is the purchase cost)
     //         if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
     //             $hire = $shipment->vehicleHire;
     //             $purchaseCost += $hire->hire_rate; // Full hire rate as purchase cost
     //         }
-            
+
     //         $shipment->sales_value = $shipment->grand_total; // Grand total is sales value
     //         $shipment->purchase_value = $purchaseCost; // Hire costs are purchase value
     //         $shipment->profit_loss = $shipment->sales_value - $shipment->purchase_value;
     //         $shipment->is_profit = $shipment->profit_loss >= 0;
-            
+
     //         return $shipment;
     //     });
 
@@ -626,98 +628,98 @@ class DomesticShipmentController extends Controller
     // }
 
     public function reports(Request $request)
-{
+    {
 
-    $customers = Customer::where('user_id', auth()->id())
-        ->select('id', 'customer_name')
-        ->orderBy('customer_name')
-        ->get();
+        $customers = Customer::where('user_id', auth()->id())
+            ->select('id', 'customer_name')
+            ->orderBy('customer_name')
+            ->get();
 
-    $consigners = Consigner::where('user_id', auth()->id())
-        ->select('id', 'name')
-        ->orderBy('name')
-        ->get();
+        $consigners = Consigner::where('user_id', auth()->id())
+            ->select('id', 'name')
+            ->orderBy('name')
+            ->get();
 
-    $consignees = Consignee::where('user_id', auth()->id())
-        ->select('id', 'name')
-        ->orderBy('name')
-        ->get();
+        $consignees = Consignee::where('user_id', auth()->id())
+            ->select('id', 'name')
+            ->orderBy('name')
+            ->get();
 
 
-    $query = DomesticShipment::with([
-        'consigner:id,name',
-        'consignee:id,name,city',
-        'user:id,name',
-        'vehicleHire:id,hire_register_id,vendor_name,hire_rate,advance_paid,balance_payable',
-        'expenses:id,lr_no,amount,description'
-    ])->where('user_id', auth()->id());
-    // 🔹 Customer filter
-    if ($request->filled('customer_id')) {
-        $query->where('customer_id', $request->customer_id);
+        $query = DomesticShipment::with([
+            'consigner:id,name',
+            'consignee:id,name,city',
+            'user:id,name',
+            'vehicleHire:id,hire_register_id,vendor_name,hire_rate,advance_paid,balance_payable',
+            'expenses:id,lr_no,amount,description'
+        ])->where('user_id', auth()->id());
+        // 🔹 Customer filter
+        if ($request->filled('customer_id')) {
+            $query->where('customer_id', $request->customer_id);
+        }
+
+        // 🔹 Consigner filter
+        if ($request->filled('consigner_id')) {
+            $query->where('consigner_id', $request->consigner_id);
+        }
+
+        // 🔹 Consignee filter
+        if ($request->filled('consignee_id')) {
+            $query->where('consignee_id', $request->consignee_id);
+        }
+
+        // 🔹 Date range filter
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $start = Carbon::parse($request->start_date)->startOfDay();
+            $end = Carbon::parse($request->end_date)->endOfDay();
+            $query->whereBetween('shipment_date', [$start, $end]);
+        }
+
+
+        $shipments = $query->latest()->get();
+
+        // 🔹 Profit/Loss calculation
+        // $shipments->transform(function ($shipment) {
+        //     $purchaseCost = 0;
+
+        //     if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
+        //         $purchaseCost += $shipment->vehicleHire->hire_rate;
+        //     }
+
+        //     $shipment->sales_value = $shipment->grand_total;
+        //     $shipment->purchase_value = $purchaseCost;
+        //     $shipment->profit_loss = $shipment->sales_value - $shipment->purchase_value;
+        //     $shipment->is_profit = $shipment->profit_loss >= 0;
+
+        //     return $shipment;
+        // });
+
+        $shipments->transform(function ($shipment) {
+
+            // 1️⃣ Hire cost
+            $hireCost = 0;
+            if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
+                $hireCost = $shipment->vehicleHire->hire_rate;
+            }
+
+            // 2️⃣ Expense cost (MATCHING lr_no)
+            $expenseCost = $shipment->expenses->sum('amount');
+
+            // 3️⃣ Total cost
+            $totalCost = $hireCost + $expenseCost;
+
+            // 4️⃣ Profit/Loss
+            $shipment->total_cost = $totalCost;
+            $shipment->profit_loss = $shipment->grand_total - $totalCost;
+            $shipment->is_profit = $shipment->profit_loss >= 0;
+
+            return $shipment;
+        });
+
+
+
+        return view('shipment.report', compact('shipments', 'customers', 'consigners', 'consignees'));
     }
-
-    // 🔹 Consigner filter
-    if ($request->filled('consigner_id')) {
-        $query->where('consigner_id', $request->consigner_id);
-    }
-
-    // 🔹 Consignee filter
-    if ($request->filled('consignee_id')) {
-        $query->where('consignee_id', $request->consignee_id);
-    }
-
-    // 🔹 Date range filter
-    if ($request->filled('start_date') && $request->filled('end_date')) {
-        $query->whereBetween('shipment_date', [
-            $request->start_date,
-            $request->end_date
-        ]);
-    }
-
-    $shipments = $query->latest()->get();
-
-    // 🔹 Profit/Loss calculation
-    // $shipments->transform(function ($shipment) {
-    //     $purchaseCost = 0;
-
-    //     if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
-    //         $purchaseCost += $shipment->vehicleHire->hire_rate;
-    //     }
-
-    //     $shipment->sales_value = $shipment->grand_total;
-    //     $shipment->purchase_value = $purchaseCost;
-    //     $shipment->profit_loss = $shipment->sales_value - $shipment->purchase_value;
-    //     $shipment->is_profit = $shipment->profit_loss >= 0;
-
-    //     return $shipment;
-    // });
-
-    $shipments->transform(function ($shipment) {
-
-    // 1️⃣ Hire cost
-    $hireCost = 0;
-    if ($shipment->vehicle_type === 'rented' && $shipment->vehicleHire) {
-        $hireCost = $shipment->vehicleHire->hire_rate;
-    }
-
-    // 2️⃣ Expense cost (MATCHING lr_no)
-    $expenseCost = $shipment->expenses->sum('amount');
-
-    // 3️⃣ Total cost
-    $totalCost = $hireCost + $expenseCost;
-
-    // 4️⃣ Profit/Loss
-    $shipment->total_cost = $totalCost;
-    $shipment->profit_loss = $shipment->grand_total - $totalCost;
-    $shipment->is_profit = $shipment->profit_loss >= 0;
-
-    return $shipment;
-});
-
-    
-
-    return view('shipment.report', compact('shipments', 'customers', 'consigners', 'consignees'));
-}
 
     public function exportExcel(Request $request)
     {
@@ -726,5 +728,4 @@ class DomesticShipmentController extends Controller
             'domestic_shipment_report.xlsx'
         );
     }
-
 }

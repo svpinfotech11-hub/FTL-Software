@@ -82,15 +82,9 @@
 
                                                 </tr>
                                             @endforeach
-
-                                           
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-
-                            <div class="card-footer clearfix">
-                                {{ $vendors->links('pagination::bootstrap-5') }}
                             </div>
                         </div>
 

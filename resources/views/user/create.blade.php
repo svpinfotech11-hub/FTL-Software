@@ -68,22 +68,22 @@
                                          <!-- Name -->
                                          <div class="col-md-4">
                                              <label class="form-label">Full Name</label>
-                                             <input type="text" name="name" value="{{ old('name') }}" class="form-control"
-                                                 placeholder="Enter full name" required />
+                                             <input type="text" name="name" value="{{ old('name') }}"
+                                                 class="form-control" placeholder="Enter full name" required />
                                          </div>
 
                                          <!-- Email -->
                                          <div class="col-md-4">
                                              <label class="form-label">Email Address</label>
-                                             <input type="email" name="email" value="{{ old('email') }}" class="form-control"
-                                                 placeholder="Enter email" required />
+                                             <input type="email" name="email" value="{{ old('email') }}"
+                                                 class="form-control" placeholder="Enter email" required />
                                          </div>
 
                                          <!-- Phone -->
                                          <div class="col-md-4">
                                              <label class="form-label">Phone Number</label>
-                                             <input type="text" name="phone" value="{{ old('phone') }}" class="form-control"
-                                                 placeholder="Enter phone number" required />
+                                             <input type="text" name="phone" value="{{ old('phone') }}"
+                                                 class="form-control" placeholder="Enter phone number" required />
                                          </div>
 
                                      </div>
@@ -97,8 +97,24 @@
                                                  <option value="">Select Branch</option>
                                                  @foreach ($branches as $branch)
                                                      <option value="{{ $branch->id }}">{{ $branch->branch_name }}
-                                                         ({{ $branch->branch_code }})</option>
+                                                         ({{ $branch->branch_code }})
+                                                     </option>
                                                  @endforeach
+                                             </select>
+                                         </div>
+                                         <div class="col-md-4">
+                                             <label class="form-label">User Type</label>
+                                             <select class="form-control form-select" name="user_type" id="user_type">
+                                                 <option value="">Select User Type</option>
+                                                 <option value="Admin">Admin</option>
+                                                 <option value="Delivery Boy">Delivery Boy</option>
+                                                 <option value="Pickup Boy">Pickup Boy</option>
+                                                 <option value="Staff">Staff</option>
+                                                 <option value="B2B">B2B</option>
+                                                 <option value="Sales Person">Sales Person</option>
+                                                 <option value="Branch Admin">Branch Admin</option>
+                                                 <option value="Driver">Driver</option>
+                                                 <option value="Labour">Labour</option>
                                              </select>
                                          </div>
 
