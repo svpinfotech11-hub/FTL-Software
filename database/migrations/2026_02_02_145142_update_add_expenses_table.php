@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('add_expenses', function (Blueprint $table) {
-            $table->json('expense_type')->nullable()->change();
+            $table->string('expense_type', 255)->change();
             $table->json('attachment')->nullable()->change();
         });
     }
@@ -17,7 +17,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('add_expenses', function (Blueprint $table) {
-            $table->string('expense_type')->change();
+            $table->string('expense_type', 255)->change();
             $table->string('attachment')->nullable()->change();
         });
     }

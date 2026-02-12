@@ -109,6 +109,84 @@
                     </ul>
                 </li>
 
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-building"></i>
+                        <p>
+                            Add Product
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('products.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('products.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-building"></i>
+                        <p>
+                            Add Ledgers
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('ledgers.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('ledgers.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                 <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-building"></i>
+                        <p>
+                            Add BookingEntry
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('booking_entries.create') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('booking_entries.index') }}" class="nav-link">
+                                <i class="bi bi-circle"></i>
+                                <p>All Record</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 {{-- Vendors --}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
