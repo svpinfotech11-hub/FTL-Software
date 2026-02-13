@@ -25,6 +25,7 @@ use App\Http\Controllers\BrokerController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\VehicleHireController;
 use App\Http\Controllers\DomesticShipmentController;
+use App\Http\Controllers\FreightChallanController;
 use App\Http\Controllers\LoadingChallanController;
 
 Route::get('/', function () {
@@ -493,6 +494,7 @@ Route::middleware(['auth'])->group(function () {
 
                     Route::resource('brokers', BrokerController::class);
                     Route::resource('loading-challan', LoadingChallanController::class);
+                    Route::resource('freight-challan', FreightChallanController::class);
 
 
                     Route::middleware(['permission:view.vehicle_hires'])->get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
