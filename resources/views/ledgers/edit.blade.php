@@ -21,6 +21,22 @@
     .form-select.required.is-invalid {
         border: 2px solid #dc3545;
     }
+
+    .form-control:focus {
+        color: var(--bs-body-color);
+        background-color: var(--bs-body-bg);
+        outline: 0;
+        box-shadow: var(--bs-box-shadow-inset), 0 0 0 0.25rem rgb(242 243 244 / 25%);
+    }
+
+    .form-control {
+        border: 2px solid #a9abad;
+        border-radius: 0px;
+        box-shadow: var(--bs-box-shadow-inset);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    
 </style>
 
 <main class="app-main">
@@ -55,10 +71,7 @@
             </div>
             @endif
 
-            <div class="card border-success shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">Update Ledger</h5>
-                </div>
+            <div class="card border-primary border-4 shadow-sm">
 
                 <form action="{{ route('ledgers.update', $ledger->id) }}"
                     method="POST"
@@ -67,256 +80,264 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="card-body">
-
-                        <!-- ================= BASIC DETAILS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Party Name <span class="text-danger">*</span></label>
-                                <input type="text" name="party_name"
-                                    value="{{ old('party_name', $ledger->party_name) }}"
-                                    class="form-control required" required>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Ledger Group</label>
-                                <input type="text" name="ledger_group"
-                                    value="{{ old('ledger_group', $ledger->ledger_group) }}"
-                                    class="form-control">
-                            </div>
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-journal-text me-2"></i> Edit Ledger
+                            </h5>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Party Alias</label>
-                                <input type="text" name="party_alias"
-                                    value="{{ old('party_alias', $ledger->party_alias) }}"
-                                    class="form-control">
-                            </div>
+                        <div class="card-body">
 
-                            <div class="col-md-4">
-                                <label class="form-label">GST No</label>
-                                <input type="text" name="gst_no"
-                                    value="{{ old('gst_no', $ledger->gst_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label">PAN No</label>
-                                <input type="text" name="pan_no"
-                                    value="{{ old('pan_no', $ledger->pan_no) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- ================= ADDRESS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Address 1</label>
-                                <input type="text" name="address1"
-                                    value="{{ old('address1', $ledger->address1) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Address 2</label>
-                                <input type="text" name="address2"
-                                    value="{{ old('address2', $ledger->address2) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">State <span class="text-danger">*</span></label>
-                                <input type="text" name="state_name"
-                                    value="{{ old('state_name', $ledger->state_name) }}"
-                                    class="form-control required" required>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">City <span class="text-danger">*</span></label>
-                                <input type="text" name="city_name"
-                                    value="{{ old('city_name', $ledger->city_name) }}"
-                                    class="form-control required" required>
-                            </div>
-                        </div>
-
-                        <!-- ================= CONTACT ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">Phone No</label>
-                                <input type="text" name="phone_no"
-                                    value="{{ old('phone_no', $ledger->phone_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Mobile No</label>
-                                <input type="text" name="mobile_no"
-                                    value="{{ old('mobile_no', $ledger->mobile_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email"
-                                    value="{{ old('email', $ledger->email) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">License No</label>
-                                <input type="text" name="license_no"
-                                    value="{{ old('license_no', $ledger->license_no) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- ================= OTHER IDS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">IEC No</label>
-                                <input type="text" name="iec_no"
-                                    value="{{ old('iec_no', $ledger->iec_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Aadhar No</label>
-                                <input type="text" name="aadhar_no"
-                                    value="{{ old('aadhar_no', $ledger->aadhar_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">RC No</label>
-                                <input type="text" name="rc_no"
-                                    value="{{ old('rc_no', $ledger->rc_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">ARN No</label>
-                                <input type="text" name="arn_no"
-                                    value="{{ old('arn_no', $ledger->arn_no) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- ================= OPENING BAL ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Opening Balance</label>
-                                <input type="number" step="0.01" name="opening_bal"
-                                    value="{{ old('opening_bal', $ledger->opening_bal) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Opening Type</label>
-                                <select name="opening_type" class="form-control">
-                                    <option value="DR" {{ $ledger->opening_type == 'DR' ? 'selected' : '' }}>DR</option>
-                                    <option value="CR" {{ $ledger->opening_type == 'CR' ? 'selected' : '' }}>CR</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- ================= BANK DETAILS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">Bank Name</label>
-                                <input type="text" name="bank_name"
-                                    value="{{ old('bank_name', $ledger->bank_name) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Account No</label>
-                                <input type="text" name="account_no"
-                                    value="{{ old('account_no', $ledger->account_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Branch</label>
-                                <input type="text" name="branch_name"
-                                    value="{{ old('branch_name', $ledger->branch_name) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">IFSC Code</label>
-                                <input type="text" name="ifsc_code"
-                                    value="{{ old('ifsc_code', $ledger->ifsc_code) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- ================= DOCUMENT UPLOADS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-
-                                <label class="form-label">PAN Upload</label>
-                                <input type="file" name="pan_upload" class="form-control">
-                                @if($ledger->pan_upload)
-                                <a href="{{ asset($ledger->pan_upload) }}" target="_blank" class="text-success">
-                                    View PAN
-                                </a>
-                                @endif
+                            <!-- ===== BASIC DETAILS ===== -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-light border-start border-4 border-primary">
+                                    <strong><i class="bi bi-person-lines-fill me-2"></i> Basic Details</strong>
                                 </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Party Name <span class="text-danger">*</span></label>
+                                            <input type="text" name="party_name"
+                                                value="{{ old('party_name', $ledger->party_name) }}"
+                                                class="form-control required" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Ledger Group</label>
+                                            <input type="text" name="ledger_group"
+                                                value="{{ old('ledger_group', $ledger->ledger_group) }}"
+                                                class="form-control">
+                                        </div>
+                                    </div>
 
-                                <div class="col-md-4">
-                                <label class="form-label mt-2">Declaration Upload</label>
-                                <input type="file" name="declaration_upload" class="form-control">
-                                @if($ledger->declaration_upload)
-                                <a href="{{ asset($ledger->declaration_upload) }}" target="_blank" class="text-success">
-                                    View Declaration
-                                </a>
-                                @endif
+                                    <div class="row g-3 mt-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Party Alias</label>
+                                            <input type="text" name="party_alias"
+                                                value="{{ old('party_alias', $ledger->party_alias) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">GST No</label>
+                                            <input type="text" name="gst_no"
+                                                value="{{ old('gst_no', $ledger->gst_no) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">PAN No</label>
+                                            <input type="text" name="pan_no"
+                                                value="{{ old('pan_no', $ledger->pan_no) }}"
+                                                class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="col-md-4">
-                                <label class="form-label mt-2">Aadhar Upload</label>
-                                <input type="file" name="aadhar_upload" class="form-control">
-                                @if($ledger->aadhar_upload)
-                                <a href="{{ asset($ledger->aadhar_upload) }}" target="_blank" class="text-success">
-                                    View Aadhar
-                                </a>
-                                @endif
-                                </div>
-
-                                <div class="col-md-4">
-                                <label class="form-label mt-2">GST Upload</label>
-                                <input type="file" name="gst_upload" class="form-control">
-                                @if($ledger->gst_upload)
-                                <a href="{{ asset($ledger->gst_upload) }}" target="_blank" class="text-success">
-                                    View GST
-                                </a>
-                                @endif
-                                </div>
-
-                                <div class="col-md-4">
-                                <label class="form-label mt-2">Office Photo</label>
-                                <input type="file" name="office_photo" class="form-control">
-                                @if($ledger->office_photo)
-                                <a href="{{ asset($ledger->office_photo) }}" target="_blank" class="text-success">
-                                    View Photo
-                                </a>
-                                @endif
-
                             </div>
+
+                            <!-- ===== ADDRESS ===== -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-light border-start border-4 border-success">
+                                    <strong><i class="bi bi-geo-alt-fill me-2"></i> Address</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Address 1</label>
+                                            <input type="text" name="address1"
+                                                value="{{ old('address1', $ledger->address1) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Address 2</label>
+                                            <input type="text" name="address2"
+                                                value="{{ old('address2', $ledger->address2) }}"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mt-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">State <span class="text-danger">*</span></label>
+                                            <input type="text" name="state_name"
+                                                value="{{ old('state_name', $ledger->state_name) }}"
+                                                class="form-control required" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">City <span class="text-danger">*</span></label>
+                                            <input type="text" name="city_name"
+                                                value="{{ old('city_name', $ledger->city_name) }}"
+                                                class="form-control required" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===== CONTACT ===== -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-light border-start border-4 border-info">
+                                    <strong><i class="bi bi-telephone-fill me-2"></i> Contact Details</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-3">
+                                            <label>Phone No</label>
+                                            <input type="text" name="phone_no"
+                                                value="{{ old('phone_no', $ledger->phone_no) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Mobile No</label>
+                                            <input type="text" name="mobile_no"
+                                                value="{{ old('mobile_no', $ledger->mobile_no) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Email</label>
+                                            <input type="email" name="email"
+                                                value="{{ old('email', $ledger->email) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>License No</label>
+                                            <input type="text" name="license_no"
+                                                value="{{ old('license_no', $ledger->license_no) }}"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===== OTHER IDS ===== -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-light border-start border-4 border-warning">
+                                    <strong><i class="bi bi-credit-card-2-front me-2"></i> Identification</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-3">
+                                            <label>IEC No</label>
+                                            <input type="text" name="iec_no"
+                                                value="{{ old('iec_no', $ledger->iec_no) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Aadhar No</label>
+                                            <input type="text" name="aadhar_no"
+                                                value="{{ old('aadhar_no', $ledger->aadhar_no) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>RC No</label>
+                                            <input type="text" name="rc_no"
+                                                value="{{ old('rc_no', $ledger->rc_no) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>ARN No</label>
+                                            <input type="text" name="arn_no"
+                                                value="{{ old('arn_no', $ledger->arn_no) }}"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===== OPENING BALANCE ===== -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-light border-start border-4 border-secondary">
+                                    <strong><i class="bi bi-cash-stack me-2"></i> Opening Balance</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label>Opening Balance</label>
+                                            <input type="number" step="0.01" name="opening_bal"
+                                                value="{{ old('opening_bal', $ledger->opening_bal) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Opening Type</label>
+                                            <select name="opening_type" class="form-control">
+                                                <option value="DR" {{ $ledger->opening_type == 'DR' ? 'selected' : '' }}>DR</option>
+                                                <option value="CR" {{ $ledger->opening_type == 'CR' ? 'selected' : '' }}>CR</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===== BANK DETAILS ===== -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-light border-start border-4 border-success">
+                                    <strong><i class="bi bi-bank me-2"></i> Bank Details</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-3">
+                                            <label>Bank Name</label>
+                                            <input type="text" name="bank_name"
+                                                value="{{ old('bank_name', $ledger->bank_name) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Account No</label>
+                                            <input type="text" name="account_no"
+                                                value="{{ old('account_no', $ledger->account_no) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Branch</label>
+                                            <input type="text" name="branch_name"
+                                                value="{{ old('branch_name', $ledger->branch_name) }}"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>IFSC Code</label>
+                                            <input type="text" name="ifsc_code"
+                                                value="{{ old('ifsc_code', $ledger->ifsc_code) }}"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===== DOCUMENT UPLOADS ===== -->
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-header bg-light border-start border-4 border-dark">
+                                    <strong><i class="bi bi-folder2-open me-2"></i> Document Uploads</strong>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+
+                                        @foreach (['pan', 'declaration', 'aadhar', 'gst', 'office_photo'] as $doc)
+                                        <div class="col-md-4">
+                                            <label class="form-label text-capitalize">{{ str_replace('_', ' ', $doc) }}</label>
+                                            <input type="file" name="{{ $doc }}_upload" class="form-control mb-1">
+                                            @if($ledger->{$doc . '_upload'})
+                                            <a href="{{ asset($ledger->{$doc . '_upload'}) }}" target="_blank" class="text-success">
+                                                View {{ ucfirst(str_replace('_', ' ', $doc)) }}
+                                            </a>
+                                            @endif
+                                        </div>
+                                        @endforeach
+
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
-
+                        <!-- ===== FORM FOOTER ===== -->
+                        <div class="card-footer text-end bg-light">
+                            <a href="{{ route('ledgers.index') }}" class="btn btn-outline-secondary me-2">
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-1"></i> Update Ledger
+                            </button>
+                        </div>
                     </div>
-
-                    <div class="card-footer text-end">
-                        <a href="{{ route('ledgers.index') }}" class="btn btn-outline-secondary me-2">Back</a>
-                        <button class="btn btn-success">Update Ledger</button>
-                    </div>
-
                 </form>
+
 
             </div>
 

@@ -133,14 +133,15 @@ class BookingEntryController extends Controller
     /**
      * Show edit form
      */
-    public function edit(BookingEntry $booking_entry)
+    public function edit($id)
     {
-        $ledgers = Ledger::orderBy('party_name')->get();
+        $booking_entry = BookingEntry::findOrFail($id);
+        $ledger = Ledger::orderBy('party_name')->get();
         $products = Product::orderBy('product_name')->get();
 
         return view('booking_entries.edit', [
-            'booking' => $booking_entry,
-            'ledgers' => $ledgers,
+            'booking_entry' => $booking_entry,
+            'ledger' => $ledger,
             'products' => $products
         ]);
     }
@@ -148,8 +149,9 @@ class BookingEntryController extends Controller
     /**
      * Update booking
      */
-    public function update(Request $request, BookingEntry $booking_entry)
+    public function update(Request $request, $id)
     {
+         $booking_entry = BookingEntry::findOrFail($id);
         $validated = $request->validate([
             'lr_no' => 'required|unique:booking_entries,lr_no,' . $booking_entry->id,
             'lr_date' => 'required|date',

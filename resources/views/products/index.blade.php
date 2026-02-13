@@ -25,9 +25,9 @@
                 <div class="col-md-12">
 
                     @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
                     @endif
 
                     <div class="card card-primary card-outline mb-4">
@@ -36,45 +36,95 @@
                             <a href="{{ route('products.create') }}" class="btn btn-primary btn-sm">Add Product</a>
                         </div>
 
+                        <!-- Card Body -->
                         <div class="card-body table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
+
+                            <table class="table align-middle table-hover">
+                                <thead class="table-light">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Qty</th>
-                                        <th>Actual Weight</th>
-                                        <th>Charge Weight</th>
-                                        <th>Amount</th>
-                                        <th>Actions</th>
+                                        <th>#</th>
+                                        <th>Product</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-center">Actual Wt</th>
+                                        <th class="text-center">Charge Wt</th>
+                                        <th class="text-end">Amount</th>
+                                        <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @forelse ($products as $product)
-                                        <tr>
-                                            <td>{{ $product->id }}</td>
-                                            <td>{{ $product->product_name }}</td>
-                                            <td>{{ $product->qty }}</td>
-                                            <td>{{ $product->actual_wt }}</td>
-                                            <td>{{ $product->charge_wt }}</td>
-                                            <td>{{ $product->amount }}</td>
-                                            <td>
-                                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <tr>
+                                        <td class="fw-semibold text-muted">
+                                            {{ $product->id }}
+                                        </td>
 
-                                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this product?')">Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
+                                        <td>
+                                            <div class="fw-semibold">
+                                                {{ $product->product_name }}
+                                            </div>
+                                            <small class="text-muted">
+                                                {{ $product->description }}
+                                            </small>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span class="badge bg-secondary">
+                                                {{ $product->qty }}
+                                            </span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span class="badge bg-info">
+                                                {{ $product->actual_wt ?? 0 }} KG
+                                            </span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span class="badge bg-warning text-dark">
+                                                {{ $product->charge_wt ?? 0 }} KG
+                                            </span>
+                                        </td>
+
+                                        <td class="text-end fw-bold text-success">
+                                            ₹ {{ number_format($product->amount, 2) }}
+                                        </td>
+
+                                        <td class="text-center">
+                                            <a href="{{ route('products.edit', $product->id) }}"
+                                                class="btn btn-sm btn-outline-warning me-1">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            <form action="{{ route('products.destroy', $product->id) }}"
+                                                method="POST"
+                                                class="d-inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    onclick="return confirm('Are you sure to delete this product?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+
                                     @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center">No products found.</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="7" class="text-center py-5">
+                                            <i class="bi bi-inbox display-6 text-muted"></i>
+                                            <p class="mt-2 text-muted mb-0">No products found</p>
+                                            <a href="{{ route('products.create') }}"
+                                                class="btn btn-sm btn-primary mt-2">
+                                                Add First Product
+                                            </a>
+                                        </td>
+                                    </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+
                         </div>
 
                     </div>

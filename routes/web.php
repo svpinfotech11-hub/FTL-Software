@@ -59,8 +59,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Route::middleware(['auth','role:user'])->group(function () {
-Route::get('/dashboard', [UserController::class, 'dashboard'])
-    ->name('user.dashboard');
+// Route::get('/dashboard', [UserController::class, 'dashboard'])
+//     ->name('user.dashboard');
 // });
 
 /* ================= SUPERADMIN ================= */

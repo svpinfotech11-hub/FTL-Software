@@ -60,7 +60,7 @@
                     <h5 class="mb-0">Update Ledger</h5>
                 </div>
 
-                <form action="{{ route('ledgers.update', $ledger->id) }}"
+                <form action="{{ route('booking_entries.update', $booking_entry->id) }}"
                     method="POST"
                     enctype="multipart/form-data"
                     id="ledgerEditForm">
@@ -69,242 +69,376 @@
 
                     <div class="card-body">
 
-                        <!-- ================= BASIC DETAILS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Party Name <span class="text-danger">*</span></label>
-                                <input type="text" name="party_name"
-                                    value="{{ old('party_name', $ledger->party_name) }}"
-                                    class="form-control required" required>
+
+                        {{-- ================= LR DETAILS ================= --}}
+                        <div class="card shadow-sm border-0 mb-4">
+                            <div class="card-header bg-light border-start border-4 border-success">
+                                <strong>
+                                    <i class="bi bi-file-earmark-text me-2"></i> LR Details
+                                </strong>
                             </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Ledger Group</label>
-                                <input type="text" name="ledger_group"
-                                    value="{{ old('ledger_group', $ledger->ledger_group) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Party Alias</label>
-                                <input type="text" name="party_alias"
-                                    value="{{ old('party_alias', $ledger->party_alias) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label">GST No</label>
-                                <input type="text" name="gst_no"
-                                    value="{{ old('gst_no', $ledger->gst_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label">PAN No</label>
-                                <input type="text" name="pan_no"
-                                    value="{{ old('pan_no', $ledger->pan_no) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- ================= ADDRESS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Address 1</label>
-                                <input type="text" name="address1"
-                                    value="{{ old('address1', $ledger->address1) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Address 2</label>
-                                <input type="text" name="address2"
-                                    value="{{ old('address2', $ledger->address2) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">State <span class="text-danger">*</span></label>
-                                <input type="text" name="state_name"
-                                    value="{{ old('state_name', $ledger->state_name) }}"
-                                    class="form-control required" required>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">City <span class="text-danger">*</span></label>
-                                <input type="text" name="city_name"
-                                    value="{{ old('city_name', $ledger->city_name) }}"
-                                    class="form-control required" required>
-                            </div>
-                        </div>
-
-                        <!-- ================= CONTACT ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">Phone No</label>
-                                <input type="text" name="phone_no"
-                                    value="{{ old('phone_no', $ledger->phone_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Mobile No</label>
-                                <input type="text" name="mobile_no"
-                                    value="{{ old('mobile_no', $ledger->mobile_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email"
-                                    value="{{ old('email', $ledger->email) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">License No</label>
-                                <input type="text" name="license_no"
-                                    value="{{ old('license_no', $ledger->license_no) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- ================= OTHER IDS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">IEC No</label>
-                                <input type="text" name="iec_no"
-                                    value="{{ old('iec_no', $ledger->iec_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Aadhar No</label>
-                                <input type="text" name="aadhar_no"
-                                    value="{{ old('aadhar_no', $ledger->aadhar_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">RC No</label>
-                                <input type="text" name="rc_no"
-                                    value="{{ old('rc_no', $ledger->rc_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">ARN No</label>
-                                <input type="text" name="arn_no"
-                                    value="{{ old('arn_no', $ledger->arn_no) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- ================= OPENING BAL ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Opening Balance</label>
-                                <input type="number" step="0.01" name="opening_bal"
-                                    value="{{ old('opening_bal', $ledger->opening_bal) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label">Opening Type</label>
-                                <select name="opening_type" class="form-control">
-                                    <option value="DR" {{ $ledger->opening_type == 'DR' ? 'selected' : '' }}>DR</option>
-                                    <option value="CR" {{ $ledger->opening_type == 'CR' ? 'selected' : '' }}>CR</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- ================= BANK DETAILS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">Bank Name</label>
-                                <input type="text" name="bank_name"
-                                    value="{{ old('bank_name', $ledger->bank_name) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Account No</label>
-                                <input type="text" name="account_no"
-                                    value="{{ old('account_no', $ledger->account_no) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Branch</label>
-                                <input type="text" name="branch_name"
-                                    value="{{ old('branch_name', $ledger->branch_name) }}"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">IFSC Code</label>
-                                <input type="text" name="ifsc_code"
-                                    value="{{ old('ifsc_code', $ledger->ifsc_code) }}"
-                                    class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- ================= DOCUMENT UPLOADS ================= -->
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-
-                                <label class="form-label">PAN Upload</label>
-                                <input type="file" name="pan_upload" class="form-control">
-                                @if($ledger->pan_upload)
-                                <a href="{{ asset($ledger->pan_upload) }}" target="_blank" class="text-success">
-                                    View PAN
-                                </a>
-                                @endif
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            LR No
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Auto generated LR Number. Cannot be edited."></i>
+                                        </label>
+                                        <input type="text" name="lr_no" value="{{ $booking_entry->lr_no }}" class="form-control bg-light" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            LR Date *
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Select booking date of LR"></i>
+                                        </label>
+                                        <input type="date" name="lr_date" value="{{ $booking_entry->lr_date }}" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            Ref LR No
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter reference LR number if available"></i>
+                                        </label>
+                                        <input type="text" name="ref_lr_no" value="{{ $booking_entry->ref_lr_no }}" class="form-control">
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="col-md-4">
-                                <label class="form-label mt-2">Declaration Upload</label>
-                                <input type="file" name="declaration_upload" class="form-control">
-                                @if($ledger->declaration_upload)
-                                <a href="{{ asset($ledger->declaration_upload) }}" target="_blank" class="text-success">
-                                    View Declaration
-                                </a>
-                                @endif
+                        {{-- ================= SOURCE & DESTINATION ================= --}}
+                        <div class="card shadow-sm border-0 mb-4 rounded-3">
+                            <div class="card-header bg-light border-start border-4 border-primary fw-bold">
+                                <i class="bi bi-geo-alt me-2"></i> Route Details
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row g-4">
+
+                                    {{-- ================= SOURCE ================= --}}
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">
+                                            Source Ledger *
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Select the dispatching party (From Location)"></i>
+                                        </label>
+                                        <select name="source_ledger_id" class="form-select" required>
+                                            <option value="">Select Source</option>
+                                            @foreach($ledgers as $ledger)
+                                            <option value="{{ $ledger->id }}">
+                                                {{ $ledger->party_name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">
+                                            Source Address
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter pickup location full address"></i>
+                                        </label>
+                                        <input type="text" name="source_address" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">
+                                            State
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter source state name"></i>
+                                        </label>
+                                        <input type="text" name="source_state" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">
+                                            City
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter source city"></i>
+                                        </label>
+                                        <input type="text" name="source_city" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">
+                                            District
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter source district"></i>
+                                        </label>
+                                        <input type="text" name="source_district" class="form-control">
+                                    </div>
+
+
+                                    {{-- ================= DESTINATION ================= --}}
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">
+                                            Destination Ledger *
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Select the receiving party (To Location)"></i>
+                                        </label>
+                                        <select name="destination_ledger_id" class="form-select" required>
+                                            <option value="">Select Destination</option>
+                                            @foreach($ledgers as $ledger)
+                                            <option value="{{ $ledger->id }}">
+                                                {{ $ledger->party_name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">
+                                            Destination Address
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter delivery location full address"></i>
+                                        </label>
+                                        <input type="text" name="destination_address" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">
+                                            State
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter destination state name"></i>
+                                        </label>
+                                        <input type="text" name="destination_state" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">
+                                            City
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter destination city"></i>
+                                        </label>
+                                        <input type="text" name="destination_city" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label fw-semibold">
+                                            District
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter destination district"></i>
+                                        </label>
+                                        <input type="text" name="destination_district" class="form-control">
+                                    </div>
+
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="col-md-4">
-                                <label class="form-label mt-2">Aadhar Upload</label>
-                                <input type="file" name="aadhar_upload" class="form-control">
-                                @if($ledger->aadhar_upload)
-                                <a href="{{ asset($ledger->aadhar_upload) }}" target="_blank" class="text-success">
-                                    View Aadhar
-                                </a>
-                                @endif
+
+                        {{-- ================= CONSIGNOR ================= --}}
+                        <div class="card shadow-sm border-0 mb-4 rounded-3">
+                            <div class="card-header bg-light border-start border-4 border-warning fw-bold">
+                                <i class="bi bi-person-badge me-2"></i> Consignor Details
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row g-4">
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            Consignor Ledger Name
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter consignor company or person name"></i>
+                                        </label>
+                                        <input type="text" name="consignor_ledger_name" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            GSTIN
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter 15-digit GST Identification Number"></i>
+                                        </label>
+                                        <input type="text" name="consignor_gstin"
+                                            class="form-control"
+                                            maxlength="15"
+                                            placeholder="22AAAAA0000A1Z5">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            Mobile
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter primary mobile number of consignor"></i>
+                                        </label>
+                                        <input type="text" name="consignor_mobile"
+                                            class="form-control"
+                                            maxlength="10"
+                                            placeholder="Enter 10 digit mobile number">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">
+                                            Address 1
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter primary address (Street / Area)"></i>
+                                        </label>
+                                        <input type="text" name="consignor_address1" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">
+                                            Address 2
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter additional address details (Optional)"></i>
+                                        </label>
+                                        <input type="text" name="consignor_address2" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            State
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter consignor state name"></i>
+                                        </label>
+                                        <input type="text" name="consignor_state" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            City
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter consignor city"></i>
+                                        </label>
+                                        <input type="text" name="consignor_city" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            Phone
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter landline number (Optional)"></i>
+                                        </label>
+                                        <input type="text" name="consignor_phone" class="form-control">
+                                    </div>
+
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="col-md-4">
-                                <label class="form-label mt-2">GST Upload</label>
-                                <input type="file" name="gst_upload" class="form-control">
-                                @if($ledger->gst_upload)
-                                <a href="{{ asset($ledger->gst_upload) }}" target="_blank" class="text-success">
-                                    View GST
-                                </a>
-                                @endif
+
+                        {{-- ================= CONSIGNEE ================= --}}
+                        <div class="card shadow-sm border-0 mb-4 rounded-3">
+                            <div class="card-header bg-light border-start border-4 border-info fw-bold">
+                                <i class="bi bi-person-check me-2"></i> Consignee Details
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row g-4">
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            Consignee Ledger Name
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter consignee company or receiving party name"></i>
+                                        </label>
+                                        <input type="text" name="consignee_ledger_name" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            GSTIN
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter 15-digit GST number of consignee (if applicable)"></i>
+                                        </label>
+                                        <input type="text"
+                                            name="consignee_gstin"
+                                            class="form-control"
+                                            maxlength="15"
+                                            placeholder="22AAAAA0000A1Z5">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            Mobile
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter primary mobile number of consignee"></i>
+                                        </label>
+                                        <input type="text"
+                                            name="consignee_mobile"
+                                            class="form-control"
+                                            maxlength="10"
+                                            placeholder="Enter 10 digit mobile number">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">
+                                            Address 1
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter main delivery address (Street / Area)"></i>
+                                        </label>
+                                        <input type="text" name="consignee_address1" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">
+                                            Address 2
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter additional address details (Optional)"></i>
+                                        </label>
+                                        <input type="text" name="consignee_address2" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            State
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter consignee state name"></i>
+                                        </label>
+                                        <input type="text" name="consignee_state" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            City
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter consignee city"></i>
+                                        </label>
+                                        <input type="text" name="consignee_city" class="form-control">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">
+                                            Phone
+                                            <i class="bi bi-info-circle text-primary"
+                                                data-bs-toggle="tooltip"
+                                                title="Enter landline number (Optional)"></i>
+                                        </label>
+                                        <input type="text" name="consignee_phone" class="form-control">
+                                    </div>
+
                                 </div>
-
-                                <div class="col-md-4">
-                                <label class="form-label mt-2">Office Photo</label>
-                                <input type="file" name="office_photo" class="form-control">
-                                @if($ledger->office_photo)
-                                <a href="{{ asset($ledger->office_photo) }}" target="_blank" class="text-success">
-                                    View Photo
-                                </a>
-                                @endif
-
                             </div>
                         </div>
 

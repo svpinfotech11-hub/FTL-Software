@@ -43,9 +43,16 @@
                     </div>
                     @endif
 
-                    <div class="card border-secondary shadow-sm">
-                        <div class="card-header bg-secondary text-white">
-                            <h5 class="card-title mb-0">Product Details</h5>
+                    <div class="card shadow border-4 border-dark">
+
+                        <!-- Header -->
+                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-pencil-square me-2"></i> Update Product
+                            </h5>
+                            <span class="badge bg-light text-dark">
+                                ID: {{ $product->id }}
+                            </span>
                         </div>
 
                         <form action="{{ route('products.update', $product->id) }}" method="POST" id="productForm">
@@ -54,100 +61,231 @@
 
                             <div class="card-body">
 
-                                <!-- Row 1: Name & Description -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="product_name" class="form-label" id="label_product_name">Product Name <span class="text-danger">*</span></label>
-                                        <input type="text" name="product_name" id="product_name" value="{{ old('product_name', $product->product_name) }}" class="form-control" placeholder="Enter Product Name" required>
+                                <!-- ================= BASIC INFO ================= -->
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-light border-start border-4 border-primary">
+                                        <strong><i class="bi bi-box-seam me-2"></i> Basic Information</strong>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="description" class="form-label text-muted">Description (Optional)</label>
-                                        <input type="text" name="description" id="description" value="{{ old('description', $product->description) }}" class="form-control border-secondary" placeholder="Enter Description">
+                                    <div class="card-body">
+                                        <div class="row g-3">
+
+                                            <div class="col-md-6">
+                                                <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                                                <input type="text"
+                                                    name="product_name"
+                                                    value="{{ old('product_name', $product->product_name) }}"
+                                                    class="form-control"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted">Description</label>
+                                                <input type="text"
+                                                    name="description"
+                                                    value="{{ old('description', $product->description) }}"
+                                                    class="form-control border-secondary">
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Row 2: Quantity & Weights -->
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="qty" class="form-label" id="label_qty">Quantity <span class="text-danger">*</span></label>
-                                        <input type="number" id="qty" name="qty" value="{{ old('qty', $product->qty) }}" class="form-control" placeholder="Enter Quantity" required>
+                                <!-- ================= QUANTITY & RATE ================= -->
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-light border-start border-4 border-success">
+                                        <strong><i class="bi bi-calculator me-2"></i> Quantity & Rate Details</strong>
                                     </div>
-                                    <div class="col-md-3">
-                                        <label for="actual_wt" class="form-label text-muted">Actual Weight (Optional)</label>
-                                        <input type="number" step="0.01" id="actual_wt" name="actual_wt" value="{{ old('actual_wt', $product->actual_wt) }}" class="form-control border-secondary" placeholder="Enter Actual Weight">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="charge_wt" class="form-label text-muted">Charge Weight (Optional)</label>
-                                        <input type="number" step="0.01" id="charge_wt" name="charge_wt" value="{{ old('charge_wt', $product->charge_wt) }}" class="form-control border-secondary" placeholder="Enter Charge Weight">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="unit_bag_rate" class="form-label" id="label_unit_bag_rate">Unit/BAG Rate <span class="text-danger">*</span></label>
-                                        <input type="number" step="0.01" id="unit_bag_rate" name="unit_bag_rate" value="{{ old('unit_bag_rate', $product->unit_bag_rate) }}" class="form-control" placeholder="Enter Rate" required>
+                                    <div class="card-body">
+
+                                        <div class="row g-3">
+
+                                            <div class="col-md-3">
+                                                <label class="form-label">Quantity *</label>
+                                                <input type="number"
+                                                    name="qty"
+                                                    id="qty"
+                                                    value="{{ old('qty', $product->qty) }}"
+                                                    class="form-control"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label text-muted">Actual Weight</label>
+                                                <div class="input-group">
+                                                    <input type="number" step="0.01"
+                                                        name="actual_wt"
+                                                        id="actual_wt"
+                                                        value="{{ old('actual_wt', $product->actual_wt) }}"
+                                                        class="form-control border-secondary">
+                                                    <span class="input-group-text">KG</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label text-muted">Charge Weight</label>
+                                                <div class="input-group">
+                                                    <input type="number" step="0.01"
+                                                        name="charge_wt"
+                                                        id="charge_wt"
+                                                        value="{{ old('charge_wt', $product->charge_wt) }}"
+                                                        class="form-control border-secondary">
+                                                    <span class="input-group-text">KG</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label">Unit / BAG Rate *</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">₹</span>
+                                                    <input type="number" step="0.01"
+                                                        name="unit_bag_rate"
+                                                        id="unit_bag_rate"
+                                                        value="{{ old('unit_bag_rate', $product->unit_bag_rate) }}"
+                                                        class="form-control"
+                                                        required>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row g-3 mt-3">
+
+                                            <div class="col-md-6">
+                                                <label class="form-label">Rate Type *</label>
+                                                <select name="rate_type"
+                                                    class="form-select"
+                                                    id="rate_type"
+                                                    required>
+                                                    <option value="">Select Rate Type</option>
+                                                    @php
+                                                    $rateTypes = ['Qty', 'Actual Weight', 'Chargeable Weight', 'Fixed'];
+                                                    $selectedRate = old('rate_type', $product->rate_type ?? '');
+                                                    @endphp
+                                                    @foreach ($rateTypes as $rate)
+                                                    <option value="{{ $rate }}" {{ $selectedRate == $rate ? 'selected' : '' }}>
+                                                        {{ $rate }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label class="form-label">Amount</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-success text-white">₹</span>
+                                                    <input type="number" step="0.01"
+                                                        name="amount"
+                                                        id="amount"
+                                                        value="{{ old('amount', $product->amount) }}"
+                                                        class="form-control bg-light fw-bold"
+                                                        readonly>
+                                                </div>
+                                                <small class="text-muted">Auto calculated</small>
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
 
-                                <!-- Row 3: Rate Type & Amount -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="rate_type" class="form-label" id="label_rate_type">Rate Type <span class="text-danger">*</span></label>
-                                        <select name="rate_type" class="form-select" id="rate_type" required>
-                                            <option value="">Select Rate Type</option>
-                                            @php
-                                            $rateTypes = ['Qty', 'Actual Weight', 'Chargeable Weight', 'Fixed'];
-                                            $selectedRate = old('rate_type', $product->rate_type ?? '');
-                                            @endphp
-                                            @foreach ($rateTypes as $rate)
-                                            <option value="{{ $rate }}" {{ $selectedRate == $rate ? 'selected' : '' }}>{{ $rate }}</option>
-                                            @endforeach
-                                        </select>
+                                <!-- ================= SHORTAGE ================= -->
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-header bg-light border-start border-4 border-warning">
+                                        <strong><i class="bi bi-exclamation-triangle me-2"></i> Shortage Details</strong>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="amount" class="form-label">Amount</label>
-                                        <input type="number" step="0.01" id="amount" name="amount" value="{{ old('amount', $product->amount) }}" class="form-control" placeholder="Calculated Automatically" readonly>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+
+                                            <div class="col-md-4">
+                                                <label class="form-label text-muted">Shortage Weight</label>
+                                                <input type="number" step="0.01"
+                                                    name="shortage_wt"
+                                                    id="shortage_wt"
+                                                    value="{{ old('shortage_wt', $product->shortage_wt) }}"
+                                                    class="form-control border-secondary">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label text-muted">Shortage Rate</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">₹</span>
+                                                    <input type="number" step="0.01"
+                                                        name="shortage_rate"
+                                                        id="shortage_rate"
+                                                        value="{{ old('shortage_rate', $product->shortage_rate) }}"
+                                                        class="form-control border-secondary">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Shortage Amount</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning">₹</span>
+                                                    <input type="number" step="0.01"
+                                                        name="shortage_amt"
+                                                        id="shortage_amt"
+                                                        value="{{ old('shortage_amt', $product->shortage_amt) }}"
+                                                        class="form-control bg-light fw-bold"
+                                                        readonly>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Row 4: Shortage -->
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="shortage_wt" class="form-label text-muted">Shortage Weight (Optional)</label>
-                                        <input type="number" step="0.01" name="shortage_wt" id="shortage_wt" value="{{ old('shortage_wt', $product->shortage_wt) }}" class="form-control border-secondary" placeholder="Enter Shortage Weight">
+                                <!-- ================= DIMENSIONS ================= -->
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-light border-start border-4 border-secondary">
+                                        <strong><i class="bi bi-aspect-ratio me-2"></i> Dimensions</strong>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label for="shortage_rate" class="form-label text-muted">Shortage Rate (Optional)</label>
-                                        <input type="number" step="0.01" name="shortage_rate" id="shortage_rate" value="{{ old('shortage_rate', $product->shortage_rate) }}" class="form-control border-secondary" placeholder="Enter Shortage Rate">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="shortage_amt" class="form-label">Shortage Amount</label>
-                                        <input type="number" step="0.01" name="shortage_amt" id="shortage_amt" value="{{ old('shortage_amt', $product->shortage_amt) }}" class="form-control" placeholder="Calculated Automatically" readonly>
-                                    </div>
-                                </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
 
-                                <!-- Row 5: Dimensions -->
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="length" class="form-label text-muted">Length (Optional)</label>
-                                        <input type="number" step="0.01" name="length" id="length" value="{{ old('length', $product->length) }}" class="form-control border-secondary" placeholder="Enter Length">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="width" class="form-label text-muted">Width (Optional)</label>
-                                        <input type="number" step="0.01" name="width" id="width" value="{{ old('width', $product->width) }}" class="form-control border-secondary" placeholder="Enter Width">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="height" class="form-label text-muted">Height (Optional)</label>
-                                        <input type="number" step="0.01" name="height" id="height" value="{{ old('height', $product->height) }}" class="form-control border-secondary" placeholder="Enter Height">
+                                            <div class="col-md-4">
+                                                <label class="form-label text-muted">Length</label>
+                                                <input type="number" step="0.01"
+                                                    name="length"
+                                                    value="{{ old('length', $product->length) }}"
+                                                    class="form-control border-secondary">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label text-muted">Width</label>
+                                                <input type="number" step="0.01"
+                                                    name="width"
+                                                    value="{{ old('width', $product->width) }}"
+                                                    class="form-control border-secondary">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label text-muted">Height</label>
+                                                <input type="number" step="0.01"
+                                                    name="height"
+                                                    value="{{ old('height', $product->height) }}"
+                                                    class="form-control border-secondary">
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
 
                             </div>
 
-                            <div class="card-footer text-end bg-light">
-                                <a href="{{ route('products.index') }}" class="btn btn-outline-secondary me-2">Back</a>
-                                <button type="submit" class="btn btn-secondary">Update Product</button>
+                            <!-- Footer -->
+                            <div class="card-footer bg-light text-end">
+                                <a href="{{ route('products.index') }}" class="btn btn-outline-secondary me-2">
+                                    <i class="bi bi-arrow-left-circle me-1"></i> Back
+                                </a>
+
+                                <button type="submit" class="btn btn-dark px-4">
+                                    <i class="bi bi-check-circle me-1"></i> Update Product
+                                </button>
                             </div>
 
                         </form>
                     </div>
+
 
                 </div>
             </div>
@@ -165,14 +303,14 @@
         if (!field.value || (field.type === 'number' && parseFloat(field.value) <= 0)) {
             field.classList.add('border-danger');
             field.classList.remove('border-success');
-            if(label) {
+            if (label) {
                 label.classList.add('text-danger');
                 label.classList.remove('text-success');
             }
         } else {
             field.classList.remove('border-danger');
             field.classList.add('border-success');
-            if(label) {
+            if (label) {
                 label.classList.remove('text-danger');
                 label.classList.add('text-success');
             }
@@ -202,7 +340,7 @@
 
     fields.forEach(id => {
         const field = document.getElementById(id);
-        if(field) {
+        if (field) {
             field.addEventListener('input', () => {
                 validateField(id);
                 calculateAmount();
@@ -212,7 +350,7 @@
 
     ['actual_wt', 'charge_wt', 'shortage_wt', 'shortage_rate', 'unit_bag_rate'].forEach(id => {
         const el = document.getElementById(id);
-        if(el) el.addEventListener('input', calculateAmount);
+        if (el) el.addEventListener('input', calculateAmount);
     });
 
     // initial validation and calculation
