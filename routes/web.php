@@ -21,9 +21,11 @@ use App\Http\Controllers\LRMasterController;
 use App\Http\Controllers\AddCompanyController;
 use App\Http\Controllers\AddExpenseController;
 use App\Http\Controllers\BookingEntryController;
+use App\Http\Controllers\BrokerController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\VehicleHireController;
 use App\Http\Controllers\DomesticShipmentController;
+use App\Http\Controllers\LoadingChallanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -488,6 +490,10 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/ledgers/{id}/edit', [LedgerController::class, 'edit'])->name('ledgers.edit');
                     Route::put('/ledgers/{id}', [LedgerController::class, 'update'])->name('ledgers.update');
                     Route::delete('/ledgers/{id}', [LedgerController::class, 'destroy'])->name('ledgers.destroy');
+
+                    Route::resource('brokers', BrokerController::class);
+                    Route::resource('loading-challan', LoadingChallanController::class);
+
 
                     Route::middleware(['permission:view.vehicle_hires'])->get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
 
