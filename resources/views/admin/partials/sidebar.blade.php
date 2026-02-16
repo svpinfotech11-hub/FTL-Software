@@ -222,7 +222,7 @@
                                 </li>
                             </ul>
                         </li>
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-building"></i>
                                 <p>
@@ -241,6 +241,31 @@
 
                                 <li class="nav-item">
                                     <a href="{{ route('loading-challan.index') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>All Record</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-building"></i>
+                                <p>
+                                    Freight Challan
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('freight-challan.create') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>Add New</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('freight-challan.index') }}" class="nav-link">
                                         <i class="bi bi-circle"></i>
                                         <p>All Record</p>
                                     </a>
