@@ -14,7 +14,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-header d-flex justify-content-between">
                         <h3 class="card-title">Brokers Table</h3>
-                        <a href="{{ route('brokers.create') }}" class="btn btn-primary btn-sm">Add Broker</a>
+                        <a href="{{ route('brokers.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Add Broker</a>
                     </div>
 
                     <div class="card-body table-responsive">

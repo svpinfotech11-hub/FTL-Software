@@ -187,8 +187,8 @@
                             </div>
                         </div>
                         <div class="card-footer text-end">
-                            <a href="{{ route('company.index') }}" class="btn btn-outline-secondary">Back</a>
-                            <button class="btn btn-primary">Update Company</button>
+                            <a href="{{ route('company.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left-circle me-1"></i> Back</a>
+                            <button class="btn btn-primary"><i class="bi bi-arrow-left-circle me-1"></i> Update Company</button>
                         </div>
                     </form>
                 </div>

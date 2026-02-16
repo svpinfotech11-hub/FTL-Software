@@ -249,12 +249,14 @@ class BookingEntryController extends Controller
     $sourceAddresses = BookingEntry::select('source_address')->distinct()->pluck('source_address');
     $destinationAddresses = BookingEntry::select('destination_address')->distinct()->pluck('destination_address');
     $lrTypes = BookingEntry::select('lr_type')->distinct()->pluck('lr_type');
+    $addresses = BookingEntry::all();
 
     return view('reports.lr_register', compact(
-        'bookingEntry', 
-        'sourceAddresses', 
-        'destinationAddresses', 
-        'lrTypes'
+        'bookingEntry',
+        'sourceAddresses',
+        'destinationAddresses',
+        'lrTypes',
+        'addresses'
     ));
 }
 

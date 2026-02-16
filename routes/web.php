@@ -26,6 +26,7 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\VehicleHireController;
 use App\Http\Controllers\DomesticShipmentController;
 use App\Http\Controllers\FreightChallanController;
+use App\Http\Controllers\FTLReportController;
 use App\Http\Controllers\LoadingChallanController;
 
 Route::get('/', function () {
@@ -495,6 +496,11 @@ Route::middleware(['auth'])->group(function () {
                     Route::resource('brokers', BrokerController::class);
                     Route::resource('loading-challan', LoadingChallanController::class);
                     Route::resource('freight-challan', FreightChallanController::class);
+
+                    Route::get('billing-register', [FTLReportController::class, 'billing'])
+                        ->name('billing-register.billing');
+                    Route::get('lr-pending-register', [FTLReportController::class, 'pending'])
+                        ->name('lr-pending-register.pending');
 
 
                     Route::middleware(['permission:view.vehicle_hires'])->get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');

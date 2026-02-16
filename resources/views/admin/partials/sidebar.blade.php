@@ -187,7 +187,7 @@
                             </ul>
                         </li>
 
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a href="{{ route('reports.lr_register') }}" class="nav-link">
                                 <i class="nav-icon bi bi-cash-stack"></i>
                                 <p>
@@ -196,7 +196,32 @@
                                 </p>
                             </a>
                         </li>
-                        
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-building"></i>
+                                <p>
+                                    FTL Report
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('billing-register.billing') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p> Billing Register (FTL)</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('lr-pending-register.pending') }}" class="nav-link">
+                                        <i class="bi bi-circle"></i>
+                                        <p>LR Pending (Challan)</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-building"></i>
@@ -706,7 +731,6 @@
                                 </p>
                             </a>
                         </li>
-
                     @endif
 
                 @endauth
