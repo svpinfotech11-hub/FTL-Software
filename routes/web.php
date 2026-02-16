@@ -497,6 +497,9 @@ Route::middleware(['auth'])->group(function () {
 
                     Route::middleware(['permission:view.vehicle_hires'])->get('/vehicle_hires/index', [VehicleHireController::class, 'index'])->name('vehicle_hires.index');
 
+
+                    Route::get('/reports/lr_register', [BookingEntryController::class, 'indexMethod'])->name('reports.lr_register');
+
                     Route::middleware(['permission:shipment.print'])->post('/domestic/print', [DomesticShipmentController::class, 'print'])->name('domestic.shipment.print');
                     Route::middleware(['permission:shipment.report'])->get('/domestic/report', [DomesticShipmentController::class, 'report'])->name('domestic.shipment.report');
                 });

@@ -186,6 +186,17 @@
                                 </li>
                             </ul>
                         </li>
+
+                         <li class="nav-item">
+                            <a href="{{ route('reports.lr_register') }}" class="nav-link">
+                                <i class="nav-icon bi bi-cash-stack"></i>
+                                <p>
+                                    Lr Reports
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                        </li>
+                        
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-building"></i>
@@ -670,6 +681,7 @@
                                 </p>
                             </a>
                         </li>
+
                     @endif
 
                 @endauth

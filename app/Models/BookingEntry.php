@@ -78,6 +78,9 @@ class BookingEntry extends Model
 
         'advance',
         'grand_total',
+
+        'lr_type',
+        'apply_gst'
     ];
 
     /*

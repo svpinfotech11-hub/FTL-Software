@@ -204,4 +204,58 @@ class BookingEntryController extends Controller
         return redirect()->route('booking_entries.index')
             ->with('success', 'Booking deleted successfully!');
     }
+
+    // public function indexMethod(){
+    //     $bookingEntry = BookingEntry::all();
+    //     return view('reports.lr-register', compact('bookingEntry'));
+    // }
+
+
+    public function indexMethod(Request $request)
+{
+    $query = BookingEntry::query();
+
+    // Filter by dates
+    if ($request->filled('from_date')) {
+        $query->whereDate('booking_date', '>=', $request->from_date);
+    }
+    if ($request->filled('to_date')) {
+        $query->whereDate('booking_date', '<=', $request->to_date);
+    }
+
+    // Filter by source
+    if ($request->filled('source_address')) {
+        $query->where('source_address', $request->source_address);
+    }
+
+    // Filter by destination
+    if ($request->filled('destination_address')) {
+        $query->where('destination_address', $request->destination_address);
+    }
+
+    // Filter by LR type
+    if ($request->filled('lr_type')) {
+        $query->where('lr_type', $request->lr_type);
+    }
+
+    // Filter by vehicle no
+    if ($request->filled('vehicle_no')) {
+        $query->where('vehicle_no', 'like', '%'.$request->vehicle_no.'%');
+    }
+
+    $bookingEntry = $query->get();
+
+    // For dropdowns
+    $sourceAddresses = BookingEntry::select('source_address')->distinct()->pluck('source_address');
+    $destinationAddresses = BookingEntry::select('destination_address')->distinct()->pluck('destination_address');
+    $lrTypes = BookingEntry::select('lr_type')->distinct()->pluck('lr_type');
+
+    return view('reports.lr_register', compact(
+        'bookingEntry', 
+        'sourceAddresses', 
+        'destinationAddresses', 
+        'lrTypes'
+    ));
+}
+
 }
