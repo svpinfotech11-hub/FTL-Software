@@ -45,12 +45,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0 text-primary">Create Ledger</h3>
+                    <h3 class="mb-0 text-secondary" style="font-weight: bold;">Create Ledger</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="{{ route('ledgers.index') }}">Home</a></li>
-                        <li class="breadcrumb-item active text-primary">Create Ledger</li>
+                        <li class="breadcrumb-item active text-secondary">Create Ledger</li>
                     </ol>
                 </div>
             </div>
@@ -315,8 +315,8 @@
                                     <a href="{{ route('ledgers.index') }}" class="btn btn-outline-secondary me-2">
                                         <i class="bi bi-arrow-left-circle me-1"></i> Back
                                     </a>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-check-circle me-1"></i> Create Ledger
+                                    <button type="submit" class="btn btn-secondary">
+                                        <i class="bi bi-plus-circle me-1"></i> Create Ledger
                                     </button>
                                 </div>
                             </div>

@@ -252,30 +252,32 @@ class BookingEntryController extends Controller
         $sourceAddresses = BookingEntry::distinct()->pluck('source_address');
         $destinationAddresses = BookingEntry::distinct()->pluck('destination_address');
         $lrTypes = BookingEntry::distinct()->pluck('lr_type');
+        $addresses = BookingEntry::all();
 
         return view('reports.lr_register', compact(
             'bookingEntry',
             'sourceAddresses',
             'destinationAddresses',
-            'lrTypes'
+            'lrTypes',
+            'addresses'
         ));
     }
 
+    public function FrmBChallanRegMethod(Request $request)
+    {
+        // Get brokers for dropdown
+        $brokers = Broker::all();
 
-    // For dropdowns
-    $sourceAddresses = BookingEntry::select('source_address')->distinct()->pluck('source_address');
-    $destinationAddresses = BookingEntry::select('destination_address')->distinct()->pluck('destination_address');
-    $lrTypes = BookingEntry::select('lr_type')->distinct()->pluck('lr_type');
-    $addresses = BookingEntry::all();
+        // Query Challan records
+        $query = LoadingChallan::query();
 
-    return view('reports.lr_register', compact(
-        'bookingEntry',
-        'sourceAddresses',
-        'destinationAddresses',
-        'lrTypes',
-        'addresses'
-    ));
-}
+        if ($request->filled('from_date')) {
+            $query->whereDate('challan_date', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('challan_date', '<=', $request->to_date);
+        }
 
         if ($request->filled('broker_id')) {
             $query->where('broker_id', $request->broker_id);

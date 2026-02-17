@@ -40,7 +40,7 @@
                                     <label>GST No</label>
                                     <input type="text" name="gst_no" value="{{ $broker->gst_no }}" class="form-control">
                                 </div>
-                                 <div class="col-md-4">
+                                <div class="col-md-4">
                                     <label>Address 1</label>
                                     <input type="text" name="address1" value="{{ $broker->address1 }}"
                                         class="form-control">
@@ -56,7 +56,7 @@
                                     <label>State</label>
                                     <input type="text" name="state" value="{{ $broker->state }}" class="form-control">
                                 </div>
-                                 <div class="col-md-4">
+                                <div class="col-md-4">
                                     <label>City</label>
                                     <input type="text" name="city" value="{{ $broker->city }}" class="form-control">
                                 </div>
@@ -69,9 +69,10 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="card-footer text-end">
-                                <button class="btn btn-primary">Update Broker</button>
-                                <a href="{{ route('brokers.index') }}" class="btn btn-secondary">Back</a>
+                            <div class="card-footer text-end bg-light">
+                                <a href="{{ route('brokers.index') }}" class="btn btn-outline-secondary mt-3"><i
+                                        class="bi bi-arrow-left-circle me-1"></i> Back</a>
+                                <button type="submit" class="btn btn-secondary mt-3"><i class="bi bi-check-circle me-1"></i> Update Broker</button>
                             </div>
                         </div>
                     </form>

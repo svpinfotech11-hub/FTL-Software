@@ -25,9 +25,9 @@
 
     <div class="container-fluid mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>
+            <h4 class="mb-0 text-secondary" style="font-weight: bold;">
                 <i class="bi bi-clock-history text-danger me-2"></i>
-                LR Pending Register (Freight Challan)
+                LR Pending (Challan)
             </h4>
 
             <a href="#" class="btn btn-success btn-sm">
