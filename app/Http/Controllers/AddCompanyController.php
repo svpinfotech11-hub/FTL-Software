@@ -85,7 +85,7 @@ class AddCompanyController extends Controller
         AddCompany::create($data);
 
         return redirect()
-            ->route('company.index')
+            ->route('branches.create')
             ->with('success', 'Company Added Successfully');
     }
 

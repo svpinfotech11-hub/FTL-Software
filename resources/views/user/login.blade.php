@@ -181,7 +181,7 @@ $(document).ready(function () {
                 });
 
                 setTimeout(() => {
-                    window.location.href = '/';
+                    window.location.href = '/company/create';
                 }, 1500);
             } else {
                 Swal.fire('Error', res.message, 'error');

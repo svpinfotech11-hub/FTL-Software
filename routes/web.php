@@ -501,6 +501,9 @@ Route::middleware(['auth'])->group(function () {
 
 
                     Route::get('/reports/lr_register', [BookingEntryController::class, 'indexMethod'])->name('reports.lr_register');
+                    Route::get('/reports/FrmBChallanReg', [BookingEntryController::class, 'FrmBChallanRegMethod'])->name('reports.FrmBChallanReg');
+
+                    // FrmBChallanReg
 
                     Route::middleware(['permission:shipment.print'])->post('/domestic/print', [DomesticShipmentController::class, 'print'])->name('domestic.shipment.print');
                     Route::middleware(['permission:shipment.report'])->get('/domestic/report', [DomesticShipmentController::class, 'report'])->name('domestic.shipment.report');

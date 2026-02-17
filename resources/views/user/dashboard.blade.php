@@ -10,9 +10,7 @@
                 <!--begin::Row-->
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0">Admin Dashboard <br> {{ Auth::user()->name }} <br>
-                            {{ Auth::user()->email }}
-                        </h3>
+                        <h3 class="mb-0">Admin Dashboard</h3>
                     </div>
 
                     <div class="col-sm-6">

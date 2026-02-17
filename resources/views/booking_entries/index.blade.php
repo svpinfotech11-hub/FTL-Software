@@ -42,6 +42,7 @@
                                 <th>Product</th>
                                 <th>Vehicle No</th>
                                 <th>Grand Total</th>
+                                <th>Created At</th>
                                 <th width="150">Action</th>
                             </tr>
                         </thead>
@@ -56,6 +57,7 @@
                                     <td>{{ $booking->product->product_name ?? '-' }}</td>
                                     <td>{{ $booking->vehicle_no }}</td>
                                     <td>{{ number_format($booking->grand_total, 2) }}</td>
+                                    <td>{{ $booking->created_at }}</td>
                                     <td>
                                         <a href="{{ route('booking_entries.edit', $booking->id) }}"
                                            class="btn btn-sm btn-primary">Edit</a>
