@@ -70,6 +70,7 @@
                           <img src="{{ $profileImage }}" class="rounded-circle shadow" alt="User Image" />
                           <p>
                               {{ $user->name }} - {{ $designation }}
+                              {{ Auth::user()->email }}
                               <small>
                                   Member since {{ $user->created_at->format('M Y') }}
                               </small>

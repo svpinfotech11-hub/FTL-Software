@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BookingEntry;
+use App\Models\Broker;
 use App\Models\Ledger;
+use App\Models\LoadingChallan;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -151,7 +153,7 @@ class BookingEntryController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $booking_entry = BookingEntry::findOrFail($id);
+        $booking_entry = BookingEntry::findOrFail($id);
         $validated = $request->validate([
             'lr_no' => 'required|unique:booking_entries,lr_no,' . $booking_entry->id,
             'lr_date' => 'required|date',
@@ -212,38 +214,53 @@ class BookingEntryController extends Controller
 
 
     public function indexMethod(Request $request)
-{
-    $query = BookingEntry::query();
+    {
+        $query = BookingEntry::query();
 
-    // Filter by dates
-    if ($request->filled('from_date')) {
-        $query->whereDate('booking_date', '>=', $request->from_date);
-    }
-    if ($request->filled('to_date')) {
-        $query->whereDate('booking_date', '<=', $request->to_date);
+        // Date filters
+        if ($request->filled('from_date')) {
+            $query->whereDate('lr_date', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('lr_date', '<=', $request->to_date);
+        }
+
+        // Source filter
+        if ($request->filled('source_address')) {
+            $query->where('source_address', $request->source_address);
+        }
+
+        // Destination filter
+        if ($request->filled('destination_address')) {
+            $query->where('destination_address', $request->destination_address);
+        }
+
+        // LR Type filter
+        if ($request->filled('lr_type')) {
+            $query->where('lr_type', $request->lr_type);
+        }
+
+        // Vehicle filter
+        if ($request->filled('vehicle_no')) {
+            $query->where('vehicle_no', 'like', '%' . $request->vehicle_no . '%');
+        }
+
+        $bookingEntry = $query->orderBy('lr_date', 'desc')->get();
+
+        // Dropdown data
+        $sourceAddresses = BookingEntry::distinct()->pluck('source_address');
+        $destinationAddresses = BookingEntry::distinct()->pluck('destination_address');
+        $lrTypes = BookingEntry::distinct()->pluck('lr_type');
+
+        return view('reports.lr_register', compact(
+            'bookingEntry',
+            'sourceAddresses',
+            'destinationAddresses',
+            'lrTypes'
+        ));
     }
 
-    // Filter by source
-    if ($request->filled('source_address')) {
-        $query->where('source_address', $request->source_address);
-    }
-
-    // Filter by destination
-    if ($request->filled('destination_address')) {
-        $query->where('destination_address', $request->destination_address);
-    }
-
-    // Filter by LR type
-    if ($request->filled('lr_type')) {
-        $query->where('lr_type', $request->lr_type);
-    }
-
-    // Filter by vehicle no
-    if ($request->filled('vehicle_no')) {
-        $query->where('vehicle_no', 'like', '%'.$request->vehicle_no.'%');
-    }
-
-    $bookingEntry = $query->get();
 
     // For dropdowns
     $sourceAddresses = BookingEntry::select('source_address')->distinct()->pluck('source_address');
@@ -260,4 +277,12 @@ class BookingEntryController extends Controller
     ));
 }
 
+        if ($request->filled('broker_id')) {
+            $query->where('broker_id', $request->broker_id);
+        }
+
+        $challans = $query->orderBy('challan_date', 'desc')->get();
+
+        return view('reports.FrmBChallanReg', compact('brokers', 'challans'));
+    }
 }
