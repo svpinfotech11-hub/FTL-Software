@@ -67,8 +67,10 @@
                             </div>
                             <br>
                             <div class="card-footer text-end">
-                                <button class="btn btn-success">Save Broker</button>
-                                <a href="{{ route('brokers.index') }}" class="btn btn-secondary">Back</a>
+                                <a href="{{ route('brokers.index') }}" class="btn btn-secondary"><i
+                                        class="bi bi-arrow-left-circle me-1"></i> Back</a>
+                                <button class="btn btn-success"><i class="bi bi-arrow-left-circle me-1"></i> Save
+                                    Broker</button>
                             </div>
                         </div>
                     </form>

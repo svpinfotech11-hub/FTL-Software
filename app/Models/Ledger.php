@@ -37,4 +37,9 @@ class Ledger extends Model
         'branch_name',
         'ifsc_code',
     ];
+
+    public function ledger()
+    {
+        return $this->belongsTo(Ledger::class );
+    }
 }

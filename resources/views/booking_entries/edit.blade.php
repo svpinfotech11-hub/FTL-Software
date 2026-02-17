@@ -28,12 +28,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0 text-success">Edit Ledger</h3>
+                    <h3 class="mb-0 text-success">Edit Booking Entries</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('ledgers.index') }}">Ledgers</a>
+                            <a href="{{ route('booking_entries.index') }}">Booking Entries</a>
                         </li>
                         <li class="breadcrumb-item active text-success">Edit</li>
                     </ol>
@@ -57,7 +57,7 @@
 
             <div class="card border-success shadow-sm">
                 <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">Update Ledger</h5>
+                    <h5 class="mb-0">Update Booking Entries </h5>
                 </div>
 
                 <form action="{{ route('booking_entries.update', $booking_entry->id) }}"
@@ -81,28 +81,28 @@
                                 <div class="row g-3">
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            LR No
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Auto generated LR Number. Cannot be edited."></i>
+                                                title="Auto generated LR Number. Cannot be edited."></i> LR No
+
                                         </label>
                                         <input type="text" name="lr_no" value="{{ $booking_entry->lr_no }}" class="form-control bg-light" readonly>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            LR Date *
-                                            <i class="bi bi-info-circle text-primary"
+                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Select booking date of LR"></i>
+                                                title="Select booking date of LR"></i> LR Date *
+
                                         </label>
                                         <input type="date" name="lr_date" value="{{ $booking_entry->lr_date }}" class="form-control" required>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            Ref LR No
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter reference LR number if available"></i>
+                                                title="Enter reference LR number if available"></i> Ref LR No
+
                                         </label>
                                         <input type="text" name="ref_lr_no" value="{{ $booking_entry->ref_lr_no }}" class="form-control">
                                     </div>
@@ -122,10 +122,10 @@
                                     {{-- ================= SOURCE ================= --}}
                                     <div class="col-md-3">
                                         <label class="form-label fw-semibold">
-                                            Source Ledger *
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Select the dispatching party (From Location)"></i>
+                                                title="Select the dispatching party (From Location)"></i> Source Ledger *
+
                                         </label>
                                         <select name="source_ledger_id" class="form-select" required>
                                             <option value="">Select Source</option>
@@ -139,40 +139,40 @@
 
                                     <div class="col-md-3">
                                         <label class="form-label fw-semibold">
-                                            Source Address
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter pickup location full address"></i>
+                                                title="Enter pickup location full address"></i> Source Address
+
                                         </label>
                                         <input type="text" name="source_address" class="form-control">
                                     </div>
 
                                     <div class="col-md-2">
                                         <label class="form-label fw-semibold">
-                                            State
-                                            <i class="bi bi-info-circle text-primary"
+                                          <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter source state name"></i>
+                                                title="Enter source state name"></i> State
+
                                         </label>
                                         <input type="text" name="source_state" class="form-control">
                                     </div>
 
                                     <div class="col-md-2">
                                         <label class="form-label fw-semibold">
-                                            City
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter source city"></i>
+                                                title="Enter source city"></i> City
+
                                         </label>
                                         <input type="text" name="source_city" class="form-control">
                                     </div>
 
                                     <div class="col-md-2">
                                         <label class="form-label fw-semibold">
-                                            District
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter source district"></i>
+                                                title="Enter source district"></i> District
+
                                         </label>
                                         <input type="text" name="source_district" class="form-control">
                                     </div>
@@ -181,10 +181,10 @@
                                     {{-- ================= DESTINATION ================= --}}
                                     <div class="col-md-3">
                                         <label class="form-label fw-semibold">
-                                            Destination Ledger *
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Select the receiving party (To Location)"></i>
+                                                title="Select the receiving party (To Location)"></i> Destination Ledger *
+
                                         </label>
                                         <select name="destination_ledger_id" class="form-select" required>
                                             <option value="">Select Destination</option>
@@ -198,40 +198,40 @@
 
                                     <div class="col-md-3">
                                         <label class="form-label fw-semibold">
-                                            Destination Address
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter delivery location full address"></i>
+                                                title="Enter delivery location full address"></i> Destination Address
+
                                         </label>
                                         <input type="text" name="destination_address" class="form-control">
                                     </div>
 
                                     <div class="col-md-2">
                                         <label class="form-label fw-semibold">
-                                            State
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter destination state name"></i>
+                                                title="Enter destination state name"></i> State
+
                                         </label>
                                         <input type="text" name="destination_state" class="form-control">
                                     </div>
 
                                     <div class="col-md-2">
                                         <label class="form-label fw-semibold">
-                                            City
-                                            <i class="bi bi-info-circle text-primary"
+                                          <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter destination city"></i>
+                                                title="Enter destination city"></i> City
+
                                         </label>
                                         <input type="text" name="destination_city" class="form-control">
                                     </div>
 
                                     <div class="col-md-2">
                                         <label class="form-label fw-semibold">
-                                            District
-                                            <i class="bi bi-info-circle text-primary"
+                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter destination district"></i>
+                                                title="Enter destination district"></i> District
+
                                         </label>
                                         <input type="text" name="destination_district" class="form-control">
                                     </div>
@@ -252,20 +252,20 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            Consignor Ledger Name
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter consignor company or person name"></i>
+                                                title="Enter consignor company or person name"></i> Consignor Ledger Name
+
                                         </label>
                                         <input type="text" name="consignor_ledger_name" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            GSTIN
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter 15-digit GST Identification Number"></i>
+                                                title="Enter 15-digit GST Identification Number"></i> GSTIN
+
                                         </label>
                                         <input type="text" name="consignor_gstin"
                                             class="form-control"
@@ -275,10 +275,10 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            Mobile
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter primary mobile number of consignor"></i>
+                                                title="Enter primary mobile number of consignor"></i> Mobile
+
                                         </label>
                                         <input type="text" name="consignor_mobile"
                                             class="form-control"
@@ -288,50 +288,50 @@
 
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">
-                                            Address 1
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter primary address (Street / Area)"></i>
+                                                title="Enter primary address (Street / Area)"></i> Address 1
+
                                         </label>
                                         <input type="text" name="consignor_address1" class="form-control">
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">
-                                            Address 2
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter additional address details (Optional)"></i>
+                                                title="Enter additional address details (Optional)"></i> Address 2
+
                                         </label>
                                         <input type="text" name="consignor_address2" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            State
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter consignor state name"></i>
+                                                title="Enter consignor state name"></i> State
+
                                         </label>
                                         <input type="text" name="consignor_state" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            City
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter consignor city"></i>
+                                                title="Enter consignor city"></i> City
+
                                         </label>
                                         <input type="text" name="consignor_city" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            Phone
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter landline number (Optional)"></i>
+                                                title="Enter landline number (Optional)"></i> Phone
+
                                         </label>
                                         <input type="text" name="consignor_phone" class="form-control">
                                     </div>
@@ -352,20 +352,20 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            Consignee Ledger Name
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter consignee company or receiving party name"></i>
+                                                title="Enter consignee company or receiving party name"></i> Consignee Ledger Name
+
                                         </label>
                                         <input type="text" name="consignee_ledger_name" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            GSTIN
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter 15-digit GST number of consignee (if applicable)"></i>
+                                                title="Enter 15-digit GST number of consignee (if applicable)"></i> GSTIN
+
                                         </label>
                                         <input type="text"
                                             name="consignee_gstin"
@@ -376,10 +376,10 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            Mobile
-                                            <i class="bi bi-info-circle text-primary"
+                                          <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter primary mobile number of consignee"></i>
+                                                title="Enter primary mobile number of consignee"></i> Mobile
+
                                         </label>
                                         <input type="text"
                                             name="consignee_mobile"
@@ -390,50 +390,50 @@
 
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">
-                                            Address 1
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter main delivery address (Street / Area)"></i>
+                                                title="Enter main delivery address (Street / Area)"></i> Address 1
+
                                         </label>
                                         <input type="text" name="consignee_address1" class="form-control">
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">
-                                            Address 2
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter additional address details (Optional)"></i>
+                                                title="Enter additional address details (Optional)"></i> Address 2
+
                                         </label>
                                         <input type="text" name="consignee_address2" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            State
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter consignee state name"></i>
+                                                title="Enter consignee state name"></i> State
+
                                         </label>
                                         <input type="text" name="consignee_state" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            City
-                                            <i class="bi bi-info-circle text-primary"
+                                           <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter consignee city"></i>
+                                                title="Enter consignee city"></i> City
+
                                         </label>
                                         <input type="text" name="consignee_city" class="form-control">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label fw-semibold">
-                                            Phone
                                             <i class="bi bi-info-circle text-primary"
                                                 data-bs-toggle="tooltip"
-                                                title="Enter landline number (Optional)"></i>
+                                                title="Enter landline number (Optional)"></i> Phone
+
                                         </label>
                                         <input type="text" name="consignee_phone" class="form-control">
                                     </div>
@@ -446,8 +446,8 @@
                     </div>
 
                     <div class="card-footer text-end">
-                        <a href="{{ route('ledgers.index') }}" class="btn btn-outline-secondary me-2">Back</a>
-                        <button class="btn btn-success">Update Ledger</button>
+                        <a href="{{ route('booking_entries.index') }}" class="btn btn-outline-secondary me-2"><i class="bi bi-arrow-left-circle me-1"></i> Back</a>
+                        <button class="btn btn-success"><i class="bi bi-arrow-left-circle me-1"></i> Update Booking</button>
                     </div>
 
                 </form>

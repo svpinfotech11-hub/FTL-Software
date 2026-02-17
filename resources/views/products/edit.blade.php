@@ -16,12 +16,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0 text-success">Update Product</h3>
+                    <h3 class="mb-0 text-primary">Update Product</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Home</a></li>
-                        <li class="breadcrumb-item active text-success">Update Product</li>
+                        <li class="breadcrumb-item active text-primary">Update Product</li>
                     </ol>
                 </div>
             </div>
@@ -43,10 +43,10 @@
                     </div>
                     @endif
 
-                    <div class="card shadow border-4 border-dark">
+                    <div class="card shadow border-4 border-primary">
 
                         <!-- Header -->
-                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">
                                 <i class="bi bi-pencil-square me-2"></i> Update Product
                             </h5>
@@ -70,7 +70,8 @@
                                         <div class="row g-3">
 
                                             <div class="col-md-6">
-                                                <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                                                <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Product Name"></i> Product Name <span class="text-danger">*</span></label>
                                                 <input type="text"
                                                     name="product_name"
                                                     value="{{ old('product_name', $product->product_name) }}"
@@ -79,7 +80,8 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="form-label text-muted">Description</label>
+                                                <label class="form-label text-muted"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Description"></i> Description</label>
                                                 <input type="text"
                                                     name="description"
                                                     value="{{ old('description', $product->description) }}"
@@ -100,7 +102,8 @@
                                         <div class="row g-3">
 
                                             <div class="col-md-3">
-                                                <label class="form-label">Quantity *</label>
+                                                <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Quantity"></i> Quantity *</label>
                                                 <input type="number"
                                                     name="qty"
                                                     id="qty"
@@ -110,7 +113,8 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label class="form-label text-muted">Actual Weight</label>
+                                                <label class="form-label text-muted"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Actual Weight"></i> Actual Weight</label>
                                                 <div class="input-group">
                                                     <input type="number" step="0.01"
                                                         name="actual_wt"
@@ -122,7 +126,8 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label class="form-label text-muted">Charge Weight</label>
+                                                <label class="form-label text-muted"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Charge Weight"></i> Charge Weight</label>
                                                 <div class="input-group">
                                                     <input type="number" step="0.01"
                                                         name="charge_wt"
@@ -134,7 +139,8 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label class="form-label">Unit / BAG Rate *</label>
+                                                <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Unit / BAG Rate"></i> Unit / BAG Rate *</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">₹</span>
                                                     <input type="number" step="0.01"
@@ -151,7 +157,8 @@
                                         <div class="row g-3 mt-3">
 
                                             <div class="col-md-6">
-                                                <label class="form-label">Rate Type *</label>
+                                                <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Select Rate Type"></i> Rate Type *</label>
                                                 <select name="rate_type"
                                                     class="form-select"
                                                     id="rate_type"
@@ -170,7 +177,8 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="form-label">Amount</label>
+                                                <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Amount"></i> Amount</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-success text-white">₹</span>
                                                     <input type="number" step="0.01"
@@ -197,7 +205,8 @@
                                         <div class="row g-3">
 
                                             <div class="col-md-4">
-                                                <label class="form-label text-muted">Shortage Weight</label>
+                                                <label class="form-label text-muted"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Shortage Weight"></i> Shortage Weight</label>
                                                 <input type="number" step="0.01"
                                                     name="shortage_wt"
                                                     id="shortage_wt"
@@ -206,7 +215,8 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="form-label text-muted">Shortage Rate</label>
+                                                <label class="form-label text-muted"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Shortage Rate"></i> Shortage Rate</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">₹</span>
                                                     <input type="number" step="0.01"
@@ -218,7 +228,8 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="form-label">Shortage Amount</label>
+                                                <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Shortage Amount"></i> Shortage Amount</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-warning">₹</span>
                                                     <input type="number" step="0.01"
@@ -243,7 +254,8 @@
                                         <div class="row g-3">
 
                                             <div class="col-md-4">
-                                                <label class="form-label text-muted">Length</label>
+                                                <label class="form-label text-muted"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Length"></i> Length</label>
                                                 <input type="number" step="0.01"
                                                     name="length"
                                                     value="{{ old('length', $product->length) }}"
@@ -251,7 +263,8 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="form-label text-muted">Width</label>
+                                                <label class="form-label text-muted"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Width"></i> Width</label>
                                                 <input type="number" step="0.01"
                                                     name="width"
                                                     value="{{ old('width', $product->width) }}"
@@ -259,7 +272,8 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="form-label text-muted">Height</label>
+                                                <label class="form-label text-muted"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Height"></i> Height</label>
                                                 <input type="number" step="0.01"
                                                     name="height"
                                                     value="{{ old('height', $product->height) }}"
@@ -278,7 +292,7 @@
                                     <i class="bi bi-arrow-left-circle me-1"></i> Back
                                 </a>
 
-                                <button type="submit" class="btn btn-dark px-4">
+                                <button type="submit" class="btn btn-primary px-4">
                                     <i class="bi bi-check-circle me-1"></i> Update Product
                                 </button>
                             </div>
