@@ -40,7 +40,7 @@
                          <div class="card card-primary card-outline mb-4">
                              <!--begin::Header-->
                              <div class="card-header">
-                                 <div class="card-title">Quick Example</div>
+                                 <div class="card-title">Create new Users</div>
                              </div>
                              <!--end::Header-->
                              <!--begin::Form-->
@@ -81,10 +81,17 @@
 
                                          <!-- Phone -->
                                          <div class="col-md-4">
-                                             <label class="form-label">Phone Number</label>
-                                             <input type="text" name="phone" value="{{ old('phone') }}"
-                                                 class="form-control" placeholder="Enter phone number" required />
-                                         </div>
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="text"
+                                            name="phone"
+                                            value="{{ old('phone') }}"
+                                            class="form-control"
+                                            placeholder="Enter phone number"
+                                            maxlength="10"
+                                            pattern="[0-9]{10}"
+                                            inputmode="numeric"
+                                            required>
+                                    </div>
 
                                      </div>
 

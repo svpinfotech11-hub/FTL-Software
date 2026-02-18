@@ -269,7 +269,7 @@
                                                     <label class="form-label fw-semibold">
                                                         <i class="bi bi-info-circle text-primary" data-bs-toggle="tooltip"
                                                             title="Enter consignor company or person name"></i> Consignor
-                                                        Ledger Name
+                                                         Name
 
                                                     </label>
                                                     <input type="text" name="consignor_ledger_name"
