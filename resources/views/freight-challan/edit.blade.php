@@ -17,14 +17,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0 text-primary">Edit Freight Challan</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">Edit Freight Challan</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
                             <li class="breadcrumb-item">
                                 <a href="{{ route('freight-challan.index') }}">Home</a>
                             </li>
-                            <li class="breadcrumb-item active text-primary">
+                            <li class="breadcrumb-item active text-secondary">
                                 Edit Freight Challan
                             </li>
                         </ol>
@@ -38,7 +38,8 @@
             <div class="container-fluid">
                 <div class="card shadow border-4 border-primary">
 
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center flex-wrap">
+                    <div
+                        class="card-header bg-primary text-white d-flex justify-content-between align-items-center flex-wrap">
                         <h5 class="mb-0">
                             <i class="bi bi-pencil-square me-2"></i> Edit Freight Challan Details
                         </h5>
@@ -507,11 +508,11 @@
                         {{-- FOOTER --}}
                         <div class="card-footer bg-light text-end">
                             <a href="{{ route('freight-challan.index') }}" class="btn btn-outline-secondary me-2">
-                               <i class="bi bi-arrow-left-circle me-1"></i> Back
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back
                             </a>
 
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-1"></i> Update Freight Challan
+                            <button type="submit" class="btn btn-secondary">
+                                <i class="bi bi-check-circle me-1"></i> Update Freight Challan
                             </button>
                         </div>
 

@@ -76,7 +76,7 @@
       <!--end::To the end-->
       <!--begin::Copyright-->
       <strong>
-        Copyright &copy; {{ date('Y') }}&nbsp; FTL Software. All rights reserved.
+          Copyright &copy; {{ date('Y') }}&nbsp; FTL Software. All rights reserved.
       </strong>
       <!--end::Copyright-->
   </footer>
@@ -308,7 +308,24 @@
       });
   </script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.7/tinymce.min.js"></script>
 
+  <script>
+      tinymce.init({
+          selector: '#invoice_term',
+          height: 400,
+          min_height: 400,
+          plugins: 'advlist lists link image table code fullscreen',
+          toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | fullscreen'
+      });
+      tinymce.init({
+          selector: '#bank_terms',
+          height: 400,
+          min_height: 400,
+          plugins: 'advlist lists link image table code fullscreen',
+          toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | fullscreen'
+      });
+  </script>
 
   <!--end::Script-->
   </body>

@@ -85,7 +85,7 @@
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
+                                <i class="nav-icon bi bi-buildings"></i>
                                 <p>
                                     Add Company
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -111,7 +111,7 @@
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
+                               <i class="nav-icon bi bi-box-seam"></i>
                                 <p>
                                     Add Product
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -137,7 +137,7 @@
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
+                                <i class="nav-icon bi bi-journal-text"></i>
                                 <p>
                                     Add Ledgers
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -163,7 +163,7 @@
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
+                                <i class="nav-icon bi bi-receipt-cutoff"></i>
                                 <p>
                                     Add BookingEntry
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -199,10 +199,11 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                             <a href="{{ route('reports.lr_register') }}" class="nav-link">
-                                <i class="nav-icon bi bi-cash-stack"></i>
+                                <i class="nav-icon bi bi-bar-chart-line"></i>
                                 <p>
                                     Lr Reports
                                     <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->
+
                                 </p>
                             </a>
                         </li>
@@ -220,7 +221,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
+                                <i class="nav-icon bi bi-truck"></i>
                                 <p>
                                     FTL Report
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -243,10 +244,10 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
+                                <i class="nav-icon bi bi-people-fill"></i>
                                 <p>
                                     Brokers
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -271,7 +272,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
+                                <i class="nav-icon bi bi-box-arrow-in-down"></i>
                                 <p>
                                     Loading Challan
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -296,7 +297,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-building"></i>
+                                <i class="nav-icon bi bi-cash-coin"></i>
                                 <p>
                                     Freight Challan
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -469,7 +470,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-cash-stack"></i>
+                                <i class="nav-icon bi bi-wallet2"></i>
                                 <p>
                                     Add Expense
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -492,11 +493,9 @@
                                 </li>
                             </ul>
                         </li>
-
-
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-cash-stack"></i>
+                               <i class="nav-icon bi bi-journal-bookmark"></i>
                                 <p>
                                     Add Hire Register
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -519,21 +518,18 @@
                                 </li>
                             </ul>
                         </li>
-
                         <li class="nav-item">
                             <a href="{{ route('domestic.shipment.reports') }}" class="nav-link">
-                                <i class="nav-icon bi bi-cash-stack"></i>
+                                <i class="nav-icon bi bi-bar-chart-line"></i>
                                 <p>
                                     Reports
                                     <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->
                                 </p>
                             </a>
                         </li>
-
-
                         <li class="nav-item">
                             <a href="{{ route('vendor.payment.report') }}" class="nav-link">
-                                <i class="nav-icon bi bi-cash-stack"></i>
+                            <i class="nav-icon bi bi-bank"></i>
                                 <p>
                                     Vendor Payment Report
                                     <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->

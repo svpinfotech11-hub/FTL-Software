@@ -17,14 +17,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0 text-primary">Edit Loading Challan</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">Edit Loading Challan</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
                             <li class="breadcrumb-item">
                                 <a href="{{ route('loading-challan.index') }}">Home</a>
                             </li>
-                            <li class="breadcrumb-item active text-primary">
+                            <li class="breadcrumb-item active text-secondary">
                                 Edit Loading Challan
                             </li>
                         </ol>
@@ -320,11 +320,11 @@
 
                         <div class="card-footer bg-light text-end">
                             <a href="{{ route('loading-challan.index') }}" class="btn btn-outline-secondary me-2">
-                                Cancel
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back
                             </a>
 
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-arrow-left-circle me-1"></i> Update Loading Challan
+                            <button type="submit" class="btn btn-secondary">
+                               <i class="bi bi-check-circle me-1"></i> Update Loading Challan
                             </button>
                         </div>
 

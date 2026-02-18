@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0">Loading Challan</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">Loading Challan</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
@@ -26,7 +26,8 @@
                 <div class="card card-primary card-outline mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="card-title">Loading Challan List</div>
-                        <a href="{{ route('loading-challan.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Add Loading
+                        <a href="{{ route('loading-challan.create') }}" class="btn btn-primary btn-sm"><i
+                                class="bi bi-plus-lg"></i> Add Loading
                             Challan</a>
                     </div>
 

@@ -16,12 +16,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0 text-primary">Update Product</h3>
+                    <h3 class="mb-0 text-secondary" style="font-weight: bold;">Update Product</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Home</a></li>
-                        <li class="breadcrumb-item active text-primary">Update Product</li>
+                        <li class="breadcrumb-item active text-secondary">Update Product</li>
                     </ol>
                 </div>
             </div>
@@ -292,7 +292,7 @@
                                     <i class="bi bi-arrow-left-circle me-1"></i> Back
                                 </a>
 
-                                <button type="submit" class="btn btn-primary px-4">
+                                <button type="submit" class="btn btn-secondary px-4">
                                     <i class="bi bi-check-circle me-1"></i> Update Product
                                 </button>
                             </div>

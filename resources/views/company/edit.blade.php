@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0">Edit Company</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">Edit Company</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
@@ -52,7 +52,8 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">Company Logo</label>
-                                    <input type="file" name="logo" class="form-control" accept="image/png, image/jpeg, image/jpg">
+                                    <input type="file" name="logo" class="form-control"
+                                        accept="image/png, image/jpeg, image/jpg">
 
                                     @if ($company->logo)
                                         <small class="d-block mt-1">
@@ -65,12 +66,14 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">Company Stamp</label>
-                                    <input type="file" name="stamp" class="form-control" accept="image/png, image/jpeg, image/jpg">
+                                    <input type="file" name="stamp" class="form-control"
+                                        accept="image/png, image/jpeg, image/jpg">
 
                                     @if ($company->stamp)
                                         <small class="d-block mt-1">
-                                            <a href="{{ asset('uploads/company/stamp/' . $company->stamp) }}" target="_blank">
-                                               View Stamp
+                                            <a href="{{ asset('uploads/company/stamp/' . $company->stamp) }}"
+                                                target="_blank">
+                                                View Stamp
                                             </a>
                                         </small>
                                     @endif
@@ -138,7 +141,7 @@
 
                                 <div class="col-md-12">
                                     <label class="form-label">Invoice Terms & Condition</label>
-                                    <textarea name="invoice_terms" class="form-control">{{ $company->invoice_terms }}</textarea>
+                                    <textarea name="invoice_terms" id="invoice_term" class="form-control">{{ $company->invoice_terms }}</textarea>
                                 </div>
 
                                 {{-- Bank Details --}}
@@ -181,14 +184,16 @@
 
                                 <div class="col-md-12">
                                     <label class="form-label">Bank Terms & Condition</label>
-                                    <textarea name="bank_terms" class="form-control">{{ $company->bank_terms }}</textarea>
+                                    <textarea name="bank_terms" id="bank_terms" class="form-control">{{ $company->bank_terms }}</textarea>
                                 </div>
 
                             </div>
                         </div>
                         <div class="card-footer text-end">
-                            <a href="{{ route('company.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left-circle me-1"></i> Back</a>
-                            <button class="btn btn-primary"><i class="bi bi-arrow-left-circle me-1"></i> Update Company</button>
+                            <a href="{{ route('company.index') }}" class="btn btn-outline-secondary"><i
+                                    class="bi bi-arrow-left-circle me-1"></i> Back</a>
+                            <button class="btn btn-secondary"><i class="bi bi-check-circle me-1"></i> Update
+                                Company</button>
                         </div>
                     </form>
                 </div>

@@ -252,12 +252,14 @@ class BookingEntryController extends Controller
         $sourceAddresses = BookingEntry::distinct()->pluck('source_address');
         $destinationAddresses = BookingEntry::distinct()->pluck('destination_address');
         $lrTypes = BookingEntry::distinct()->pluck('lr_type');
+        $addresses = BookingEntry::all();
 
         return view('reports.lr_register', compact(
             'bookingEntry',
             'sourceAddresses',
             'destinationAddresses',
-            'lrTypes'
+            'lrTypes',
+            'addresses'
         ));
     }
 
@@ -266,6 +268,9 @@ class BookingEntryController extends Controller
     {
         // Get brokers for dropdown
         $brokers = Broker::all();
+
+        // Query Challan records
+        $query = LoadingChallan::query();
 
         // Query Challan records
         $query = LoadingChallan::query();

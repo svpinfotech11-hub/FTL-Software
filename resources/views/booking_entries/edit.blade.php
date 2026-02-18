@@ -28,14 +28,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0 text-success">Edit Booking Entries</h3>
+                    <h3 class="mb-0 text-secondary" style="font-weight: bold;">Edit Booking Entries</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item">
                             <a href="{{ route('booking_entries.index') }}">Booking Entries</a>
                         </li>
-                        <li class="breadcrumb-item active text-success">Edit</li>
+                        <li class="breadcrumb-item active text-secondary">Edit</li>
                     </ol>
                 </div>
             </div>
@@ -447,7 +447,7 @@
 
                     <div class="card-footer text-end">
                         <a href="{{ route('booking_entries.index') }}" class="btn btn-outline-secondary me-2"><i class="bi bi-arrow-left-circle me-1"></i> Back</a>
-                        <button class="btn btn-success"><i class="bi bi-arrow-left-circle me-1"></i> Update Booking</button>
+                        <button class="btn btn-secondary"><i class="bi bi-check-circle me-1"></i> Update Booking</button>
                     </div>
 
                 </form>
