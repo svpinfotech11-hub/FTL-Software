@@ -269,7 +269,7 @@
                                                     <label class="form-label fw-semibold">
                                                         <i class="bi bi-info-circle text-primary" data-bs-toggle="tooltip"
                                                             title="Enter consignor company or person name"></i> Consignor
-                                                         Name
+                                                        Name
 
                                                     </label>
                                                     <input type="text" name="consignor_ledger_name"
@@ -747,20 +747,18 @@
                                     </div>
                                     <div class="card-footer text-end bg-light">
                                         <a href="{{ route('booking_entries.index') }}"
-                                            class="btn btn-outline-secondary mt-3"><i class="bi bi-arrow-left-circle me-1"></i> Back</a>
-                                        <button type="submit" class="btn btn-secondary mt-3"><i class="bi bi-plus-circle me-1"></i> Add Booking</button>
+                                            class="btn btn-outline-secondary mt-3"><i
+                                                class="bi bi-arrow-left-circle me-1"></i> Back</a>
+                                        <button type="submit" class="btn btn-secondary mt-3"><i
+                                                class="bi bi-plus-circle me-1"></i> Add Booking</button>
                                     </div>
 
                                 </div>
                             </form>
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
-        </div>
         </div>
     </main>
     <script>
@@ -824,7 +822,5 @@
 
         });
     </script>
-
-
 
 @endsection
