@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookingEntry;
 use App\Models\Broker;
 use App\Models\Driver;
 use App\Models\LoadingChallan;
@@ -19,7 +20,8 @@ class LoadingChallanController extends Controller
     {
         $brokers = Broker::all();
         $drivers = Driver::all();
-        return view('loading_challan.create', compact('brokers', 'drivers'));
+        $lr_no = BookingEntry::all();
+        return view('loading_challan.create', compact('brokers', 'drivers', 'lr_no'));
     }
 
     public function store(Request $request)
@@ -39,8 +41,11 @@ class LoadingChallanController extends Controller
         $loadingChallan = LoadingChallan::findOrFail($id);
         $brokers = Broker::all();
         $drivers = Driver::all();
+        $lr_no = BookingEntry::all();
 
-        return view('loading_challan.edit',compact('loadingChallan', 'brokers', 'drivers')
+        return view(
+            'loading_challan.edit',
+            compact('loadingChallan', 'brokers', 'drivers', 'lr_no')
         );
     }
 

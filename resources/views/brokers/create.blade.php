@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0">Create Brokers</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">Create Brokers</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
@@ -66,9 +66,10 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="card-footer text-end">
-                                <button class="btn btn-success">Save Broker</button>
-                                <a href="{{ route('brokers.index') }}" class="btn btn-secondary">Back</a>
+                            <div class="card-footer text-end bg-light">
+                                <a href="{{ route('brokers.index') }}" class="btn btn-outline-secondary mt-3"><i
+                                        class="bi bi-arrow-left-circle me-1"></i> Back</a>
+                                <button type="submit" class="btn btn-secondary mt-3"><i class="bi bi-plus-circle me-1"></i> Add Broker</button>
                             </div>
                         </div>
                     </form>

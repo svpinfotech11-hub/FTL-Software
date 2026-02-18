@@ -5,12 +5,13 @@
              <div class="container-fluid">
                  <div class="row">
                      <div class="col-sm-6">
-                         <h3 class="mb-0 text-success">Freight Challan List</h3>
+                         <h3 class="mb-0 text-secondary" style="font-weight: bold;">Freight Challan</h3>
                      </div>
                      <div class="col-sm-6">
-                         <a href="{{ route('freight-challan.create') }}" class="btn btn-success float-sm-end">
-                             + Create Freight Challan
-                         </a>
+                         <ol class="breadcrumb float-sm-end">
+                             <li class="breadcrumb-item"><a href="{{ route('freight-challan.index') }}">Home</a></li>
+                             <li class="breadcrumb-item active">Create Freight Challan</li>
+                         </ol>
                      </div>
                  </div>
              </div>
@@ -22,14 +23,15 @@
                  @if (session('success'))
                      <div class="alert alert-success">{{ session('success') }}</div>
                  @endif
-
-                 <div class="card border-success shadow-sm">
-                     <div class="card-header bg-success text-white">
-                         <h5 class="mb-0">Freight Challans</h5>
+                 <div class="card card-primary card-outline mb-4">
+                     <div class="card-header d-flex justify-content-between align-items-center">
+                         <div class="card-title">Freight Challans List</div>
+                         <a href="{{ route('freight-challan.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Add Freight
+                             Challan</a>
                      </div>
 
                      <div class="card-body table-responsive">
-                         <table class="table table-bordered table-hover datatable">
+                         <table class="table align-middle table-hover datatable">
                              <thead class="table-light">
                                  <tr>
                                      <th>ID</th>
@@ -48,15 +50,18 @@
                                          <td>{{ $c->driver->name ?? '' }}</td>
                                          <td>{{ $c->vehicle_no }}</td>
                                          <td>{{ $c->grand_total }}</td>
-                                         <td>
+                                         <td class="text-center">
                                              <a href="{{ route('freight-challan.edit', $c->id) }}"
-                                                 class="btn btn-warning btn-sm">
-                                                 <i class="bi bi-pencil"></i>
+                                                 class="btn btn-sm btn-outline-warning me-1">
+                                                 <i class="bi bi-pencil-square"></i>
                                              </a>
-                                             <form action="{{ route('freight-challan.destroy', $c->id) }}" method="POST"
-                                                 style="display:inline;">
-                                                 @csrf @method('DELETE')
-                                                 <button class="btn btn-danger btn-sm">
+
+                                             <form action="{{ route('freight-challan.destroy', $c->id) }}"
+                                                 method="POST" class="d-inline-block">
+                                                 @csrf
+                                                 @method('DELETE')
+                                                 <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                     onclick="return confirm('Are you sure to delete this freight challan?')">
                                                      <i class="bi bi-trash"></i>
                                                  </button>
                                              </form>

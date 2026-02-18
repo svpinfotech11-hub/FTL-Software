@@ -252,15 +252,16 @@ class BookingEntryController extends Controller
         $sourceAddresses = BookingEntry::distinct()->pluck('source_address');
         $destinationAddresses = BookingEntry::distinct()->pluck('destination_address');
         $lrTypes = BookingEntry::distinct()->pluck('lr_type');
+        $addresses = BookingEntry::all();
 
         return view('reports.lr_register', compact(
             'bookingEntry',
             'sourceAddresses',
             'destinationAddresses',
-            'lrTypes'
+            'lrTypes',
+            'addresses'
         ));
     }
-
 
     public function FrmBChallanRegMethod(Request $request)
     {

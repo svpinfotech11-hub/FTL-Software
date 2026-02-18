@@ -17,14 +17,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0 text-success">Create Loading Challan</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">Create Loading Challan</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
                             <li class="breadcrumb-item">
                                 <a href="{{ route('loading-challan.index') }}">Home</a>
                             </li>
-                            <li class="breadcrumb-item active text-success">
+                            <li class="breadcrumb-item active text-secondary">
                                 Create Loading Challan
                             </li>
                         </ol>
@@ -36,14 +36,15 @@
         <!-- CONTENT -->
         <div class="app-content">
             <div class="container-fluid">
-                <div class="card shadow border-4 border-dark">
-                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap">
+                <div class="card shadow border-4 border-primary">
+                    <div
+                        class="card-header bg-primary text-white d-flex justify-content-between align-items-center flex-wrap">
                         <!-- LEFT SIDE TITLE -->
                         <h5 class="mb-0">
                             <i class="bi bi-truck me-2"></i> Loading Challan Details
                         </h5>
                         <div class="d-flex gap-2 ms-auto flex-wrap">
-                            <a href="{{ route('loading-challan.create') }}" class="btn btn-sm btn-primary">
+                            <a href="{{ route('loading-challan.create') }}" class="btn btn-sm btn-dark">
                                 <i class="bi bi-plus-circle"></i> New
                             </a>
                             <a href="{{ route('loading-challan.index') }}" class="btn btn-sm btn-info text-white">
@@ -269,9 +270,15 @@
 
                                         <div class="col-md-3">
                                             <label class="form-label"><i class="bi bi-info-circle text-primary"
-                                                    title="Enter LR No"></i> LR No.</label>
-                                            <input type="text" name="lr_no" value="{{ old('lr_no') }}"
-                                                class="form-control">
+                                                    title="Select LR No"></i> Select LR No.</label>
+                                            <select name="lr_id" class="form-select">
+                                                <option value="">Select LR No</option>
+                                                @foreach ($lr_no as $l)
+                                                    <option value="{{ $l->id }}">
+                                                        {{ $l->lr_no }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
 
                                         <div class="col-md-3">
@@ -366,11 +373,11 @@
                         {{-- FOOTER --}}
                         <div class="card-footer bg-light text-end">
                             <a href="{{ route('loading-challan.index') }}" class="btn btn-outline-secondary me-2">
-                                Cancel
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back
                             </a>
 
-                            <button type="submit" class="btn btn-dark">
-                                Save Challan
+                            <button type="submit" class="btn btn-secondary">
+                               <i class="bi bi-plus-circle me-1"></i> Add Loading Challan
                             </button>
                         </div>
 

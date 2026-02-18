@@ -17,14 +17,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0 text-success">Create Freight Challan</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">Create Freight Challan</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
                             <li class="breadcrumb-item">
                                 <a href="{{ route('freight-challan.index') }}">Home</a>
                             </li>
-                            <li class="breadcrumb-item active text-success">
+                            <li class="breadcrumb-item active text-secondary">
                                 Create Freight Challan
                             </li>
                         </ol>
@@ -36,15 +36,15 @@
         <!-- CONTENT -->
         <div class="app-content">
             <div class="container-fluid">
-                <div class="card shadow border-4 border-dark">
+                <div class="card shadow border-4 border-primary">
 
-                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center flex-wrap">
                         <h5 class="mb-0">
                             <i class="bi bi-truck me-2"></i> Freight Challan Details
                         </h5>
 
                         <div class="d-flex gap-2 ms-auto flex-wrap">
-                            <a href="{{ route('freight-challan.create') }}" class="btn btn-sm btn-primary">
+                            <a href="{{ route('freight-challan.create') }}" class="btn btn-sm btn-dark">
                                 <i class="bi bi-plus-circle"></i> New
                             </a>
 
@@ -512,11 +512,11 @@
                         {{-- FOOTER --}}
                         <div class="card-footer bg-light text-end">
                             <a href="{{ route('freight-challan.index') }}" class="btn btn-outline-secondary me-2">
-                                Cancel
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back
                             </a>
 
-                            <button type="submit" class="btn btn-dark">
-                                Save Freight Challan
+                            <button type="submit" class="btn btn-secondary">
+                                <i class="bi bi-plus-circle me-1"></i> Add Freight Challan
                             </button>
                         </div>
 

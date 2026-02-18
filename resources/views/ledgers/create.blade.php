@@ -45,12 +45,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0 text-success">Create Ledger</h3>
+                    <h3 class="mb-0 text-secondary" style="font-weight: bold;">Create Ledger</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="{{ route('ledgers.index') }}">Home</a></li>
-                        <li class="breadcrumb-item active text-success">Create Ledger</li>
+                        <li class="breadcrumb-item active text-secondary">Create Ledger</li>
                     </ol>
                 </div>
             </div>
@@ -95,11 +95,13 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-6">
-                                                    <label class="form-label">Ledger Group</label>
+                                                    <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Ledger Group"></i> Ledger Group</label>
                                                     <input type="text" name="ledger_group" value="{{ old('ledger_group') }}" class="form-control" placeholder="Enter Ledger Group">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="form-label">GST No.</label>
+                                                    <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter GST No"></i> GST No.</label>
                                                     <input type="text" name="gst_no" value="{{ old('gst_no') }}" class="form-control" placeholder="Enter GST No">
                                                 </div>
                                             </div>
@@ -114,15 +116,18 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-4">
-                                                    <label class="form-label">Party Name *</label>
+                                                    <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Party Name"></i> Party Name *</label>
                                                     <input type="text" name="party_name" value="{{ old('party_name') }}" class="form-control" placeholder="Enter Party Name" required>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label">Party Alias</label>
+                                                    <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Party Alias"></i> Party Alias</label>
                                                     <input type="text" name="party_alias" value="{{ old('party_alias') }}" class="form-control" placeholder="Enter Party Alias">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label">State Name *</label>
+                                                    <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="State Name"></i> State Name *</label>
                                                     <select name="state_name" class="form-control" required>
                                                         <option value="">Select State</option>
                                                         <option value="Maharashtra">Maharashtra</option>
@@ -132,18 +137,21 @@
 
                                             <div class="row g-3 mt-3">
                                                 <div class="col-md-4">
-                                                    <label class="form-label">City Name *</label>
+                                                    <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Select City Name"></i> City Name *</label>
                                                     <select name="city_name" class="form-control" required>
                                                         <option value="">Select City</option>
                                                         <option value="Mumbai">Mumbai</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label">Address 1</label>
+                                                    <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Address 1"></i> Address 1</label>
                                                     <input type="text" name="address1" value="{{ old('address1') }}" class="form-control" placeholder="Enter Address 1">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label">Address 2</label>
+                                                    <label class="form-label"><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Address 2"></i> Address 2</label>
                                                     <input type="text" name="address2" value="{{ old('address2') }}" class="form-control" placeholder="Enter Address 2">
                                                 </div>
                                             </div>
@@ -158,19 +166,23 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-3">
-                                                    <label>PAN No.</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter PAN No"></i> PAN No.</label>
                                                     <input type="text" name="pan_no" value="{{ old('pan_no') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label>IEC No.</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter IEC No"></i> IEC No.</label>
                                                     <input type="text" name="iec_no" value="{{ old('iec_no') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label>Aadhar No.</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Aadhar No"></i> Aadhar No.</label>
                                                     <input type="text" name="aadhar_no" value="{{ old('aadhar_no') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label>R.C. No.</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter R.C. No"></i> R.C. No.</label>
                                                     <input type="text" name="rc_no" value="{{ old('rc_no') }}" class="form-control">
                                                 </div>
                                             </div>
@@ -185,15 +197,18 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-4">
-                                                    <label>Phone No.</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Phone No"></i> Phone No.</label>
                                                     <input type="text" name="phone_no" value="{{ old('phone_no') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label>Mobile No.</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Mobile No"></i> Mobile No.</label>
                                                     <input type="text" name="mobile_no" value="{{ old('mobile_no') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label>E-Mail</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter E-Mail"></i> E-Mail</label>
                                                     <input type="email" name="email" value="{{ old('email') }}" class="form-control">
                                                 </div>
                                             </div>
@@ -208,11 +223,13 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-6">
-                                                    <label>Opening Balance</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Opening Balance"></i> Opening Balance</label>
                                                     <input type="number" step="0.01" name="opening_bal" value="{{ old('opening_bal') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label>Opening Type</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Select Opening Type"></i> Opening Type</label>
                                                     <select name="opening_type" class="form-control">
                                                         <option value="DR">DR</option>
                                                         <option value="CR">CR</option>
@@ -230,23 +247,30 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-3">
-                                                    <label>ARN No.</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter ARN No"></i> ARN No.</label>
                                                     <input type="text" name="arn_no" value="{{ old('arn_no') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label>Exim Code</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Exim Code"></i> Exim Code</label>
                                                     <input type="text" name="exim_code" value="{{ old('exim_code') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label>PAN Upload</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="PAN Upload"></i> PAN Upload</label>
                                                     <input type="file" name="pan_upload" class="form-control mb-1">
-                                                    <label>Declaration Upload</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Declaration Upload"></i> Declaration Upload</label>
                                                     <input type="file" name="declaration_upload" class="form-control mb-1">
-                                                    <label>Aadhar Upload</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Aadhar Upload"></i> Aadhar Upload</label>
                                                     <input type="file" name="aadhar_upload" class="form-control mb-1">
-                                                    <label>GST Upload</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="GST Upload"></i> GST Upload</label>
                                                     <input type="file" name="gst_upload" class="form-control mb-1">
-                                                    <label>Office Photo</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Office Photo"></i> Office Photo</label>
                                                     <input type="file" name="office_photo" class="form-control mb-1">
                                                 </div>
                                             </div>
@@ -261,19 +285,23 @@
                                         <div class="card-body">
                                             <div class="row g-3">
                                                 <div class="col-md-3">
-                                                    <label>Bank Name</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Bank Name"></i> Bank Name</label>
                                                     <input type="text" name="bank_name" value="{{ old('bank_name') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label>Account No.</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Account No"></i> Account No.</label>
                                                     <input type="text" name="account_no" value="{{ old('account_no') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label>Branch Name</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter Branch Name"></i> Branch Name</label>
                                                     <input type="text" name="branch_name" value="{{ old('branch_name') }}" class="form-control">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label>IFSC Code</label>
+                                                    <label><i class="bi bi-info-circle text-primary"
+                                                    title="Enter IFSC Code"></i> IFSC Code</label>
                                                     <input type="text" name="ifsc_code" value="{{ old('ifsc_code') }}" class="form-control">
                                                 </div>
                                             </div>
@@ -287,8 +315,8 @@
                                     <a href="{{ route('ledgers.index') }}" class="btn btn-outline-secondary me-2">
                                         <i class="bi bi-arrow-left-circle me-1"></i> Back
                                     </a>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-check-circle me-1"></i> Create Ledger
+                                    <button type="submit" class="btn btn-secondary">
+                                        <i class="bi bi-plus-circle me-1"></i> Create Ledger
                                     </button>
                                 </div>
                             </div>

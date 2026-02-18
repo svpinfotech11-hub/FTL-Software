@@ -5,12 +5,13 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0 text-success">Loading Challans List</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">Loading Challan</h3>
                     </div>
                     <div class="col-sm-6">
-                        <a href="{{ route('loading-challan.create') }}" class="btn btn-success float-sm-end">
-                            + Create Loading Challan
-                        </a>
+                        <ol class="breadcrumb float-sm-end">
+                            <li class="breadcrumb-item"><a href="{{ route('loading-challan.index') }}">Home</a></li>
+                            <li class="breadcrumb-item active">Create Loading Challan</li>
+                        </ol>
                     </div>
                 </div>
             </div>
@@ -22,10 +23,12 @@
                 @if (session('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
-
-                <div class="card border-success shadow-sm">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">Loading Challans</h5>
+                <div class="card card-primary card-outline mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-title">Loading Challan List</div>
+                        <a href="{{ route('loading-challan.create') }}" class="btn btn-primary btn-sm"><i
+                                class="bi bi-plus-lg"></i> Add Loading
+                            Challan</a>
                     </div>
 
                     <div class="card-body table-responsive">
@@ -49,15 +52,20 @@
                                         <td>{{ $c->vehicle_no }}</td>
                                         <td>{{ $c->broker->broker_name ?? '' }}</td>
                                         <td>{{ $c->driver->name ?? '' }}</td>
-                                        <td>
+                                        <td class="text-center">
                                             <a href="{{ route('loading-challan.edit', $c->id) }}"
-                                                class="btn btn-sm btn-warning">Edit</a>
+                                                class="btn btn-sm btn-outline-warning me-1">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
 
                                             <form action="{{ route('loading-challan.destroy', $c->id) }}" method="POST"
-                                                style="display:inline">
+                                                class="d-inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    onclick="return confirm('Are you sure to delete this loading challan?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>

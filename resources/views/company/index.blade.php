@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mb-0">All Companies</h3>
+                        <h3 class="mb-0 text-secondary" style="font-weight: bold;">All Companies</h3>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-end">
@@ -73,19 +73,18 @@
                                                             <span class="text-muted">N/A</span>
                                                         @endif
                                                     </td>
-
-                                                    <td>
+                                                    <td class="text-center">
                                                         <a href="{{ route('company.edit', $company->id) }}"
-                                                            class="btn btn-sm btn-primary">
-                                                            <i class="bi bi-pencil"></i>
+                                                            class="btn btn-sm btn-outline-warning me-1">
+                                                            <i class="bi bi-pencil-square"></i>
                                                         </a>
 
                                                         <form action="{{ route('company.destroy', $company->id) }}"
-                                                            method="POST" class="d-inline delete-company-form">
+                                                            method="POST" class="d-inline-block">
                                                             @csrf
                                                             @method('DELETE')
-
-                                                            <button type="button" class="btn btn-sm btn-danger delete-btn">
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                                onclick="return confirm('Are you sure to delete this freight challan?')">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>
