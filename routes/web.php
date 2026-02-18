@@ -27,6 +27,7 @@ use App\Http\Controllers\VehicleHireController;
 use App\Http\Controllers\DomesticShipmentController;
 use App\Http\Controllers\FreightChallanController;
 use App\Http\Controllers\FTLReportController;
+use App\Http\Controllers\GstBillingController;
 use App\Http\Controllers\LoadingChallanController;
 
 Route::get('/', function () {
@@ -508,6 +509,8 @@ Route::middleware(['auth'])->group(function () {
 
                     Route::get('/reports/lr_register', [BookingEntryController::class, 'indexMethod'])->name('reports.lr_register');
                     Route::get('/reports/FrmBChallanReg', [BookingEntryController::class, 'FrmBChallanRegMethod'])->name('reports.FrmBChallanReg');
+                    Route::resource('gst-billing', GstBillingController::class);
+
 
                     // FrmBChallanReg
 

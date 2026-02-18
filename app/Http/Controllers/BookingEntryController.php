@@ -263,10 +263,14 @@ class BookingEntryController extends Controller
         ));
     }
 
+
     public function FrmBChallanRegMethod(Request $request)
     {
         // Get brokers for dropdown
         $brokers = Broker::all();
+
+        // Query Challan records
+        $query = LoadingChallan::query();
 
         // Query Challan records
         $query = LoadingChallan::query();

@@ -111,7 +111,7 @@
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                               <i class="nav-icon bi bi-box-seam"></i>
+                                <i class="nav-icon bi bi-box-seam"></i>
                                 <p>
                                     Add Product
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -188,12 +188,36 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.lr_register') }}" class="nav-link">
-                                <i class="nav-icon bi bi-bar-chart-line"></i>
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon bi bi-building"></i>
                                 <p>
-                                    Lr Reports
+                                    Reports
+                                    <i class="nav-arrow bi bi-chevron-right"></i>
                                 </p>
                             </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('reports.lr_register') }}" class="nav-link">
+                                        <i class="nav-icon bi bi-bar-chart-line"></i>
+                                        <p>
+                                            Lr Reports
+                                            <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->
+
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('reports.FrmBChallanReg') }}" class="nav-link">
+                                        <i class="nav-icon bi bi-cash-stack"></i>
+                                        <p>
+                                            FTL Reports
+                                            <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -296,7 +320,16 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('gst-billing.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-cash-coin"></i>
+                                <p>
+                                    GST Billing
+                                </p>
+                            </a>
 
+
+                        </li>
                         {{-- Vendors --}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -471,7 +504,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                               <i class="nav-icon bi bi-journal-bookmark"></i>
+                                <i class="nav-icon bi bi-journal-bookmark"></i>
                                 <p>
                                     Add Hire Register
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -505,7 +538,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('vendor.payment.report') }}" class="nav-link">
-                            <i class="nav-icon bi bi-bank"></i>
+                                <i class="nav-icon bi bi-bank"></i>
                                 <p>
                                     Vendor Payment Report
                                     <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->

@@ -64,12 +64,12 @@ class UserController extends Controller
     {
         $user = auth()->user();
         if ($user->hasRole('super_admin')) {
-            $branches = \App\Models\Branch::all();
+            $branches = Branch::all();
         } elseif ($user->hasRole('admin')) {
-            $userIds = \App\Models\User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
-            $branches = \App\Models\Branch::whereIn('user_id', $userIds)->get();
+            $userIds = User::where('created_by', $user->id)->orWhere('id', $user->id)->pluck('id');
+            $branches = Branch::whereIn('user_id', $userIds)->get();
         } else {
-            $branches = \App\Models\Branch::where('user_id', $user->id)->get();
+            $branches = Branch::where('user_id', $user->id)->get();
         }
 
         return view('user.create', compact('branches'));
@@ -82,7 +82,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|max:10',
             'branch_id' => 'required|exists:branches,id',
             'status' => 'required',
             'user_type' => 'required|string',
